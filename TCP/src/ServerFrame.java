@@ -22,7 +22,7 @@ public class ServerFrame {
 		try {
 			server = new ServerSocket(9005);
 			while(true) {
-				System.out.println("[ 클라이언트 접속 대기중 ]");
+				System.out.println("[클라이언트 접속 대기중]");
 				socket = server.accept();
 				
 				ServerThread reciveThread = new ServerThread(socket);
@@ -32,11 +32,11 @@ public class ServerFrame {
 			e.printStackTrace();
 		} finally {
 			try {
-				System.out.println("[ 서버 종료 ]");
+				System.out.println("[서버 종료]");
 				socket.close();
 				server.close();
 			} catch (IOException e) {
-				System.out.println("[ 서버 통신 에러 ]");
+				System.out.println("[서버 통신 에러]");
 				e.printStackTrace();
 			}
 		}

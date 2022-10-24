@@ -1,25 +1,31 @@
+package make;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.net.Socket;
-import java.util.Scanner;
 
-public class ClientFrame {
+import javax.swing.JTextArea;
+
+public class Client {
 
 	public static void main(String[] args) {
-		ClientFrame cliFrame = new ClientFrame();
-		cliFrame.start();
+		Client client = new Client();
+		client.start();
 	}
-	
-	public void start() {
+
+	private void start() {
 		Socket socket = null;
 		BufferedReader in = null;
 		try {
 			socket = new Socket("localhost", 9005);
-			System.out.println("[서버와 연결되었습니다.]");
 			
 			String name = "user" + (int)(Math.random()*10);
+			ChatFrame cf = new ChatFrame("name");
+			
+			JTextArea ta = cf.getTa();
+			ta.append("[서버와 연결되었습니다.]");
+			
 			Thread sendThread = new SendThread(socket, name);
 			sendThread.start();
 			
@@ -40,34 +46,5 @@ public class ClientFrame {
 		}
 		System.out.println("[서버 연결종료]");
 	}
-}
-
-class SendThread extends Thread {
-	Socket socket = null;
-	String name;
 	
-	Scanner sc = new Scanner(System.in);
-	
-	public SendThread(Socket socket, String name) {
-		this.socket = socket;
-		this.name = name;
-	}
-	
-	@Override
-	public void run() {
-		try {
-			PrintStream out = new PrintStream(socket.getOutputStream());
-			out.println(name);
-			out.flush();
-			
-			while(true) {
-				String outputMsg = sc.nextLine();
-				out.println(outputMsg);
-				out.flush();
-				if("quit".equals(outputMsg)) break;
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 }
