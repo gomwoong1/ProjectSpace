@@ -18,7 +18,7 @@ public class Server {
 			serverSock = new ServerSocket(9005);
 			
 			while(true) {
-				System.out.println("[Å¬¶óÀÌ¾ğÆ® Á¢¼Ó ´ë±âÁß...]");
+				System.out.println("[í´ë¼ì´ì–¸íŠ¸ ì ‘ì† ëŒ€ê¸°ì¤‘...]");
 				socket = serverSock.accept();
 				
 				ServerThread serverThread = new ServerThread(socket);
@@ -28,11 +28,11 @@ public class Server {
 			e.printStackTrace();
 		} finally {
 			try {
-				System.out.println("[¼­¹ö Á¾·á]");
+				System.out.println("[ì„œë²„ ì¢…ë£Œ]");
 				socket.close();
 				serverSock.close();
 			} catch (IOException e) {
-				System.out.println("[¼­¹ö Åë½Å ¿¡·¯]");
+				System.out.println("[ì„œë²„ í†µì‹  ì—ëŸ¬]");
 			}
 		}
 	}

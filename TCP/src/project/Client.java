@@ -20,7 +20,7 @@ public class Client {
 			socket = new Socket("localhost", 9005);
 			
 			String name = "user" + (int)(Math.random()*10);
-			System.out.println("[¼­¹ö¿Í ¿¬°áµÇ¾ú½À´Ï´Ù.]");
+			System.out.println("[ì„œë²„ì™€ ì—°ê²°ë˜ì—ˆìŠµë‹ˆë‹¤.]");
 			
 			Thread sendThread = new SendThread(socket, name);
 			sendThread.start();
@@ -28,7 +28,7 @@ public class Client {
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			while(in != null) {
 				String inputMsg = in.readLine();
-				if(("[" + name + "]´ÔÀÌ ÅğÀåÇÏ¼Ì½À´Ï´Ù.").equals(inputMsg)) break;
+				if(("[" + name + "]ë‹˜ì´ í‡´ì¥í•˜ì…¨ìŠµë‹ˆë‹¤.").equals(inputMsg)) break;
 				System.out.println("From:" + inputMsg);
 			}
 			
