@@ -23,6 +23,8 @@ public class gameFrame extends JFrame{
 		setResizable(false);  //�ш린 議곗�� 遺�媛��ν��寃� 留���
 		setLocationRelativeTo(null);   //��硫� 以����� �������� �⑤��濡� �ㅼ��
 		
+		// 주석이 갈까요? 그는 신인가! 그는 신인가!
+		
 		mainFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 22);
 		subFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 18);
 		subFont2 = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 10);
