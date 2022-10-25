@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,10 +13,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
-public class gameFrame extends JFrame{
+public class gameFrame extends JFrame implements ActionListener{
 	private Font mainFont;
 	private Font subFont;
 	private Font subFont2;
+	private Color seatColor;
+	private Color seatSelColor;
 
 	public gameFrame() {
 		setTitle("Ticket Game");
@@ -26,6 +30,9 @@ public class gameFrame extends JFrame{
 		mainFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 22);
 		subFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 18);
 		subFont2 = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 10);
+		
+		seatColor = new Color(211,211,211);
+		seatSelColor = new Color(255,215,0);
 
 		setTop();
 		setMain();
@@ -85,6 +92,9 @@ public class gameFrame extends JFrame{
 			for(int j = 0; j < 10; j++) {
 				seat[i][j] = new JButton();
 				seat[i][j].setBounds(x, y, 20, 20);
+				seat[i][j].addActionListener(this);
+				seat[i][j].setBorderPainted(false);
+				seat[i][j].setBackground(seatColor);
 				main.add(seat[i][j]);
 				x += 22;
 			}
@@ -99,6 +109,9 @@ public class gameFrame extends JFrame{
 			for(int j = 0; j < 10; j++) {
 				seat[i][j] = new JButton();
 				seat[i][j].setBounds(x, y, 20, 20);
+				seat[i][j].addActionListener(this);
+				seat[i][j].setBorderPainted(false);
+				seat[i][j].setBackground(seatColor);
 				main.add(seat[i][j]);
 				x += 22;
 			}
@@ -113,6 +126,9 @@ public class gameFrame extends JFrame{
 			for(int j = 0; j < 10; j++) {
 				seat[i][j] = new JButton();
 				seat[i][j].setBounds(x, y, 20, 20);
+				seat[i][j].addActionListener(this);
+				seat[i][j].setBorderPainted(false);
+				seat[i][j].setBackground(seatColor);
 				main.add(seat[i][j]);
 				x += 22;
 			}
@@ -132,5 +148,26 @@ public class gameFrame extends JFrame{
 			main.add(number[i]);
 			y += 22.5;
 		}
+		
+		x = 514;
+		y = -65;
+		JLabel[] number2 = new JLabel[seat.length];
+		for(int i = 0; i < seat.length; i++) {
+			number2[i] = new JLabel(""+(i+1));
+			number2[i].setBounds(x, y, 20, 200);
+			number2[i].setHorizontalAlignment(JLabel.CENTER);
+			number2[i].setForeground(Color.gray);
+			number2[i].setFont(subFont2);
+			main.add(number2[i]);
+			y += 22.5;
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object obj = e.getSource();
+		JButton jb = (JButton) obj;
+		jb.setBackground(seatSelColor);
+		jb.setEnabled(false);
 	}
 }
