@@ -18,10 +18,10 @@ public class gameFrame extends JFrame{
 
 	public gameFrame() {
 		setTitle("Ticket Game");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  //프레임 닫으면 종료되게 설정
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  //������ �レ�쇰㈃ 醫�猷���寃� �ㅼ��
 		setSize(800, 600);
-		setResizable(false);  //크기 조절 불가능하게 만듦
-		setLocationRelativeTo(null);   //화면 중앙에 프레임이 뜨도록 설정
+		setResizable(false);  //�ш린 議곗�� 遺�媛��ν��寃� 留���
+		setLocationRelativeTo(null);   //��硫� 以����� �������� �⑤��濡� �ㅼ��
 		
 		mainFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 22);
 		subFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 18);
