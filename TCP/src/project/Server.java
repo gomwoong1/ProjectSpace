@@ -18,7 +18,7 @@ public class Server {
 			serverSock = new ServerSocket(9005);
 			
 			while(true) {
-				System.out.println("[클라이언트 접속 대기중...");
+				System.out.println("[클라이언트 접속 대기중...]");
 				socket = serverSock.accept();
 				
 				ServerThread serverThread = new ServerThread(socket);
