@@ -14,6 +14,7 @@ import javax.swing.border.LineBorder;
 public class gameFrame extends JFrame{
 	private Font mainFont;
 	private Font subFont;
+	private Font subFont2;
 
 	public gameFrame() {
 		setTitle("Ticket Game");
@@ -24,6 +25,7 @@ public class gameFrame extends JFrame{
 		
 		mainFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 22);
 		subFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 18);
+		subFont2 = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 10);
 
 		setTop();
 		setMain();
@@ -118,10 +120,17 @@ public class gameFrame extends JFrame{
 			y += 22;
 		}
 		
+		x = 248;
+		y = -65;
 		JLabel[] number = new JLabel[seat.length];
 		for(int i = 0; i < seat.length; i++) {
-			number[i] = new JLabel();
-			int val = i+1;
+			number[i] = new JLabel(""+(i+1));
+			number[i].setBounds(x, y, 20, 200);
+			number[i].setHorizontalAlignment(JLabel.CENTER);
+			number[i].setForeground(Color.gray);
+			number[i].setFont(subFont2);
+			main.add(number[i]);
+			y += 22.5;
 		}
 	}
 }
