@@ -19,6 +19,7 @@ public class gameFrame extends JFrame implements ActionListener{
 	private Font subFont2;
 	private Color seatColor;
 	private Color seatSelColor;
+	private Object jb_info;
 
 	public gameFrame() {
 		setTitle("Ticket Game");
@@ -166,8 +167,23 @@ public class gameFrame extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
+		setData(obj);
 		JButton jb = (JButton) obj;
 		jb.setBackground(seatSelColor);
 		jb.setEnabled(false);
+	}
+	
+	public void setSeat(Object obj) {
+		JButton jb = (JButton) obj;
+		jb.setBackground(Color.red);
+		jb.setEnabled(false);
+	}
+	
+	public void setData(Object obj) {
+		jb_info = obj;
+	}
+	
+	public Object getData() {
+		return jb_info;
 	}
 }

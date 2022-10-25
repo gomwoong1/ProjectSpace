@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.JButton;
+
 // 서버 - 클라이언트가 접속할 때마다 새로운 스레드 생성함
 class ServerThread extends Thread{
 	static List<PrintWriter> list = Collections.synchronizedList(new ArrayList<PrintWriter>());
@@ -39,9 +41,10 @@ class ServerThread extends Thread{
 			sendAll("[" + name + "]님이 입장하셨습니다.");
 			
 			while(in != null) {
-				String inputMsg = in.readLine();
-				if("quit".equals(inputMsg))	break;
-				sendAll("["+ name + "]: " + inputMsg);
+				Object obj = in.readLine();
+				sendAll(obj);
+//				if("quit".equals(inputMsg))	break;
+//				sendAll("["+ name + "]: " + inputMsg);
 			}
 		} catch (IOException e) {
 			System.out.println("log: [" + name + "님 접속이 끊어졌습니다.]");
@@ -58,22 +61,30 @@ class ServerThread extends Thread{
 	}
 	// 서버가 접속한 클라이언트에게 모두 메시지를 보낼 때 사용하는 메서드
 	// 리스트인 이유는 클라이언트가 여러 개 일 수 있기 때문
-	private void sendAll (String s) {
+	private void sendAll (Object s) {
 		for (PrintWriter out: list) {
 			out.println(s);
 			out.flush();
 		}
 	}
+//	private void sendAll (String s) {
+//		for (PrintWriter out: list) {
+//			out.println(s);
+//			out.flush();
+//		}
+//	}
 }
 
 
 class SendThread extends Thread{
 	Socket socket = null;
 	String name;
+	private gameFrame gf;
 	
 	Scanner sc = new Scanner(System.in);
 	
-	public SendThread(Socket socket, String name) {
+	public SendThread(Socket socket, String name, gameFrame gf) {
+		this.gf = gf;
 		this.socket = socket;
 		this.name = name;
 	}
@@ -86,10 +97,9 @@ class SendThread extends Thread{
 			out.flush();
 			
 			while(true) {
-				String outputMsg = sc.nextLine();
+				Object outputMsg = gf.getData();
 				out.println(outputMsg);
 				out.flush();
-				if("quit".equals(outputMsg)) break;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

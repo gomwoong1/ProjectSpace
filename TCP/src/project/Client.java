@@ -12,6 +12,8 @@ public class Client {
 		client.start();
 	}
 
+	private String inputMsg;
+
 	private void start() {
 		Socket socket = null;
 		BufferedReader in = null;
@@ -22,14 +24,16 @@ public class Client {
 			String name = "user" + (int)(Math.random()*10);
 			System.out.println("[서버와 연결되었습니다.]");
 			
-			Thread sendThread = new SendThread(socket, name);
+			gameFrame gf = new gameFrame();
+			
+			Thread sendThread = new SendThread(socket, name, gf);
 			sendThread.start();
+			
 			
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			while(in != null) {
-				String inputMsg = in.readLine();
-				if(("[" + name + "]님이 퇴장하셨습니다.").equals(inputMsg)) break;
-				System.out.println("From:" + inputMsg);
+				inputMsg = in.readLine();
+				gf.setSeat(inputMsg);
 			}
 			
 		} catch (IOException e) {
