@@ -24,6 +24,7 @@ public class gameFrame extends JFrame{
 		setLocationRelativeTo(null);   //��硫� 以����� �������� �⑤��濡� �ㅼ��
 		
 		// 주석이 갈까요? 그는 신인가! 그는 신인가!
+		// 주석은 신이고 주석을 쓰는 나는 주신이다
 		
 		mainFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 22);
 		subFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 18);
