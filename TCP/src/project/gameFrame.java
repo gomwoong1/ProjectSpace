@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.Socket;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,9 +20,11 @@ public class gameFrame extends JFrame implements ActionListener{
 	private Font subFont2;
 	private Color seatColor;
 	private Color seatSelColor;
-	private Object jb_info;
+	private String jb_info;
+	private Socket socket;
 
-	public gameFrame() {
+	public gameFrame(Socket socket) {
+		this.socket = socket;
 		setTitle("Ticket Game");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // 프레임 닫으면 종료되게 설정
 		setSize(800, 600);
@@ -167,23 +170,28 @@ public class gameFrame extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
-		setData(obj);
 		JButton jb = (JButton) obj;
 		jb.setBackground(seatSelColor);
 		jb.setEnabled(false);
+		
+		setData(String.valueOf(obj));
+		Thread sendThread = new SendThread(socket, this);
+		sendThread.start();
 	}
 	
-	public void setSeat(Object obj) {
-		JButton jb = (JButton) obj;
-		jb.setBackground(Color.red);
-		jb.setEnabled(false);
+	public void setSeat(String btn_info) {
+		System.out.println("잘받음" + btn_info);
+//		Object jb = (String) btn_info;
+//		JButton btn = (JButton) jb;
+//		btn.setBackground(Color.red);
+//		btn.setEnabled(false);
 	}
 	
-	public void setData(Object obj) {
-		jb_info = obj;
+	public void setData(String btn_info) {
+		jb_info = btn_info;
 	}
 	
-	public Object getData() {
+	public String getData() {
 		return jb_info;
 	}
 }

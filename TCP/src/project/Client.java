@@ -24,16 +24,17 @@ public class Client {
 			String name = "user" + (int)(Math.random()*10);
 			System.out.println("[서버와 연결되었습니다.]");
 			
-			gameFrame gf = new gameFrame();
+			gameFrame gf = new gameFrame(socket);
 			
 			Thread sendThread = new SendThread(socket, name, gf);
-			sendThread.start();
-			
+//			sendThread.start();
 			
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			while(in != null) {
-				inputMsg = in.readLine();
-				gf.setSeat(inputMsg);
+				for(int i = 0; i < 1; i++) {
+					inputMsg = in.readLine();
+					gf.setSeat(inputMsg);
+				}
 			}
 			
 		} catch (IOException e) {
