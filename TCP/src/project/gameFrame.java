@@ -31,11 +31,11 @@ public class gameFrame extends JFrame implements ActionListener{
 		setResizable(false);  //크기 조절 불가능하게 만듦
 		setLocationRelativeTo(null);   //화면 중앙에 프레임이 뜨도록 설정
 		
-		mainFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 22);
+		mainFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 22); // 폰트 설정
 		subFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 18);
 		subFont2 = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 10);
 		
-		seatColor = new Color(211,211,211);
+		seatColor = new Color(211,211,211); // 좌석 색 지정
 		seatSelColor = new Color(255,215,0);
 
 		setTop();
@@ -169,17 +169,17 @@ public class gameFrame extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Object obj = e.getSource();
-		JButton jb = (JButton) obj;
-		jb.setBackground(seatSelColor);
-		jb.setEnabled(false);
+		Object obj = e.getSource(); // 정보 받아서 구조체로 변경
+		JButton jb = (JButton) obj; // 구조체를 jbutton으로 변환화여 jb 생성
+		jb.setBackground(seatSelColor);  // 눌렀을때 색 변경
+		jb.setEnabled(false); // 이후 변경 안되게 지정
 		
-		setData(String.valueOf(obj));
-		Thread sendThread = new SendThread(socket, this);
+		setData(String.valueOf(obj)); // 스트링으로 정보 만듬
+		Thread sendThread = new SendThread(socket, this); // 전송
 		sendThread.start();
 	}
 	
-	public void setSeat(String btn_info) {
+	public void setSeat(String btn_info) {   // ??? 이거는 모르겠음
 		System.out.println("잘받음" + btn_info);
 //		Object jb = (String) btn_info;
 //		JButton btn = (JButton) jb;
@@ -187,7 +187,7 @@ public class gameFrame extends JFrame implements ActionListener{
 //		btn.setEnabled(false);
 	}
 	
-	public void setData(String btn_info) {
+	public void setData(String btn_info) { 
 		jb_info = btn_info;
 	}
 	
