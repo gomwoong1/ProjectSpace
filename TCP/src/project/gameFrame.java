@@ -43,6 +43,10 @@ public class gameFrame extends JFrame implements ActionListener{
 
 		setTop();
 		setMain();
+		
+		ServerRandomThread random = new ServerRandomThread();
+		random.start();
+		
 		setVisible(true);
 	}
 
@@ -181,12 +185,11 @@ public class gameFrame extends JFrame implements ActionListener{
 	}
 	
 	public void setSeat(String btn_info) {   // ??? 이거는 모르겠음
-		String seatName;
-		int row, col;
-		seatName = btn_info.substring(0, btn_info.indexOf(","));
+		int seatName, row, col;
+		seatName = Integer.parseInt(btn_info.substring(0, btn_info.indexOf(",")));
 		row = Integer.parseInt(btn_info.substring(btn_info.indexOf(",")+1, btn_info.lastIndexOf(",")));
 		col = Integer.parseInt(btn_info.substring( btn_info.lastIndexOf(",")+1));
-		
+		System.out.println("도착 정보: " + seatName + "+" + row + "+" + col);
 		changeSeat(seatName, row, col);
 	}
 	
@@ -198,12 +201,12 @@ public class gameFrame extends JFrame implements ActionListener{
 		return jb_info;
 	}
 	
-	public void changeSeat(String name, int row, int col) {
-		if(name.equals("0")) {
+	public void changeSeat(int name, int row, int col) {
+		if(name == 0) {
 			seat[row][col].setBackground(seatSelColor);
-		}if(name.equals("1")) {
+		}if(name == 1) {
 			seat2[row][col].setBackground(seatSelColor);
-		}if(name.equals("2")) {
+		}if(name == 2) {
 			seat3[row][col].setBackground(seatSelColor);
 		}
 	}

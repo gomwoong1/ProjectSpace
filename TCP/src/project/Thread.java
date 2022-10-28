@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 // 서버 - 클라이언트가 접속할 때마다 새로운 스레드 생성함
 class ServerThread extends Thread{
@@ -49,11 +50,52 @@ class ServerThread extends Thread{
 			}
 		}
 	}
+	
 	// 서버가 접속한 클라이언트에게 모두 메시지를 보낼 때 사용하는 메서드
 	// 리스트인 이유는 클라이언트가 여러 개 일 수 있기 때문
 	private void sendAll (String s) {
 		for (PrintWriter out: list) {
 			out.println(s);
+			out.flush();
+		}
+	}
+
+	public static List<PrintWriter> getList() {
+		return list;
+	}
+}
+
+class ServerRandomThread extends Thread{
+	private List<PrintWriter> list;
+
+	public ServerRandomThread() {
+		list = ServerThread.getList();
+	}
+	
+	public void run() {
+		int row, col;
+		
+		while(true) {
+			for(int i = 0; i < 3; i++) {
+				for(int j = 0; j < 3; j++) {
+					Random random = new Random();
+					row = random.nextInt(11);
+					col = random.nextInt(19);
+					
+					String str = (i + "," + row + "," + col);
+					sendRandom(str);
+				}
+			}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
+		}
+	}
+	
+	private void sendRandom (String str) {
+		for (PrintWriter out: list) {
+			out.println(str);
 			out.flush();
 		}
 	}
