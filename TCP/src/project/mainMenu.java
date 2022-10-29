@@ -56,6 +56,7 @@ public class mainMenu extends JFrame implements ActionListener {
 		btnStart.setBorderPainted(false);
 		btnStart.setContentAreaFilled(false);
 		btnStart.addActionListener(this);
+		btnStart.setFocusable(false);
 		main.add(btnStart);
 		
 		btnRank = new JButton(new ImageIcon("image/btnRank.png"));
@@ -63,12 +64,19 @@ public class mainMenu extends JFrame implements ActionListener {
 		btnRank.setBorderPainted(false);
 		btnRank.setContentAreaFilled(false);
 		btnRank.addActionListener(this);
+		btnRank.setFocusable(false);
 		main.add(btnRank);
 		
 		add(main);
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		Object obj = e.getSource();
 		
+		if(obj == btnStart) {
+			System.out.println("게임을 시작합니다.");
+		} else if(obj == btnRank) {
+			ranking rk = new ranking();
+		}
 	}
 }
