@@ -29,7 +29,6 @@ public class ranking extends JFrame{
 	
 public ranking() {
 	setTitle("Ranking");
-	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	setSize(500,600);
 	setResizable(false);
 	setLocationRelativeTo(null);
@@ -54,21 +53,21 @@ public void setUp() {
 	step.setBounds(50,30,388,300);
 	up.add(step);
 	
-	firstrank = new JTextArea("1µî:",1,15);
+	firstrank = new JTextArea("1ë“±:",1,15);
 	firstrank.setEditable(false);
 	firstrank.setFont(inputFont);
 	firstrank.setBounds(175, 150, 50, 20);
 	firstrank.setBorder(BorderFactory.createEmptyBorder());
 	up.add(firstrank);
 	
-	secondrank = new JTextArea("2µî:",1,15);
+	secondrank = new JTextArea("2ë“±:",1,15);
 	secondrank.setEditable(false);
 	secondrank.setFont(inputFont);
 	secondrank.setBounds(55, 220, 50, 20);
 	secondrank.setBorder(BorderFactory.createEmptyBorder());
 	up.add(secondrank);
 	
-	thirdrank = new JTextArea("2µî:",1,15);
+	thirdrank = new JTextArea("3ë“±:",1,15);
 	thirdrank.setEditable(false);
 	thirdrank.setFont(inputFont);
 	thirdrank.setBounds(325, 220, 50, 20);
@@ -86,17 +85,17 @@ public void setDown() {
 	down.setLayout(null);
 	
 	JLabel man = new JLabel(new ImageIcon("image/man.png"));
-	man.setBounds(55,50,136,148);
+	man.setBounds(30,65,136,148);
 	down.add(man);
 	
 	JLabel cmt = new JLabel(new ImageIcon("image/cmt.png"));
-	cmt.setBounds(155,75,304,120);
+	cmt.setBounds(145,95,304,120);
 	down.add(cmt);
 	
-	firstcmt = new JTextArea("1µî¼Ò°¨:",1,15);
+	firstcmt = new JTextArea("1ë“±:",1,15);
 	firstcmt.setEditable(false);
 	firstcmt.setFont(inputFont);
-	firstcmt.setBounds(220, 90, 200, 200);
+	firstcmt.setBounds(215, 120, 200, 200);
 	firstcmt.setBorder(BorderFactory.createEmptyBorder());
 	down.add(firstcmt);
 	

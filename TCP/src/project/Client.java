@@ -24,8 +24,6 @@ public class Client {
 			socket = new Socket(ip, port);
 			System.out.println("[서버와 연결되었습니다.]");
 			
-//			gameFrame gf = new gameFrame(socket);
-			
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			while(in != null) {
 				for(int i = 0; i < 1; i++) {

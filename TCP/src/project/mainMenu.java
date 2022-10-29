@@ -4,6 +4,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,11 +21,18 @@ public class mainMenu extends JFrame implements ActionListener {
 	private String ip;
 	private String username;
 	private int port;
+	private Socket socket;
 	
 	public mainMenu(String ip, int port, String username) {
 		this.ip = ip;
 		this.port = port;
 		this.username = username;
+		
+		try {
+			socket = new Socket(ip, port);
+			System.out.println("[서버와 연결되었습니다.]");
+		} catch (IOException e) {
+		}
 		
 		setTitle("mainMenu");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // 프레임 닫으면 종료되게 설정
@@ -77,7 +88,7 @@ public class mainMenu extends JFrame implements ActionListener {
 		Object obj = e.getSource();
 		
 		if(obj == btnStart) {
-			System.out.println("게임을 시작합니다.");
+			gameFrame gf = new gameFrame(socket);
 		} else if(obj == btnRank) {
 			ranking rk = new ranking();
 		}
