@@ -27,10 +27,10 @@ class ServerThread extends Thread{
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			list.add(out);
 			
-//			if(list.size() == 2) {
-//				ServerRandomThread random = new ServerRandomThread();
-//				random.start();
-//			}
+			if(list.size() == 2) {
+				ServerRandomThread random = new ServerRandomThread();
+				random.start();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
