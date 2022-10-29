@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,14 +11,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class mainMenu extends JFrame implements ActionListener {
-	
-	public static void main(String[] args) {
-		mainMenu mf = new mainMenu();
-	}
 	private Font mainFont;
 	private JButton btnStart;
 	private JButton btnRank;
-	public mainMenu() {
+	private String ip;
+	private String username;
+	private int port;
+	
+	public mainMenu(String ip, int port, String username) {
+		this.ip = ip;
+		this.port = port;
+		this.username = username;
+		
 		setTitle("mainMenu");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // 프레임 닫으면 종료되게 설정
 		setSize(800, 600);

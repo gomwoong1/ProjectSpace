@@ -163,7 +163,7 @@ public class login extends JFrame implements ActionListener{
 			
 			if (!(state == 1)) {
 				this.dispose();
-				Client client = new Client(ip, port);
+				mainMenu mf = new mainMenu(ip, port, username);
 			}
 		}
 	}
