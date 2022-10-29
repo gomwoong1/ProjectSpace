@@ -5,21 +5,21 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-public class Client {
+public class Client extends Thread {
 	private int port;
 	private String ip;
 	private String btn_info;
 	private Socket socket = null;
+	private gameFrame gf;
 
-	public Client(Socket socket) {
+	public Client(Socket socket, gameFrame gf) {
 		this.socket = socket;
+		this.gf = gf;
 		this.start();
 	}
 	
-	private void start() {
+	public void start() {
 		BufferedReader in = null;
-		
-		gameFrame gf = new gameFrame(socket);
 		
 		try {
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));

@@ -45,6 +45,8 @@ public class gameFrame extends JFrame implements ActionListener{
 		setMain();
 		
 		setVisible(true);
+		
+//		Client client = new Client(socket, this);
 	}
 
 	private void setTop() {

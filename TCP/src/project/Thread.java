@@ -123,7 +123,6 @@ class SendThread extends Thread{
 			String btn_info = gf.getData();
 			out.println(btn_info);
 			out.flush();
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
