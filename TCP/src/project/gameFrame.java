@@ -31,6 +31,7 @@ public class gameFrame extends JFrame implements ActionListener{
 		setSize(800, 600);
 		setResizable(false);  //크기 조절 불가능하게 만듦
 		setLocationRelativeTo(null);   //화면 중앙에 프레임이 뜨도록 설정
+		setVisible(true);
 		
 		mainFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 22); // 폰트 설정
 		subFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 18);
@@ -49,7 +50,7 @@ public class gameFrame extends JFrame implements ActionListener{
 	private void setTop() {
 		JPanel top = new JPanel();
 		top.setPreferredSize(new Dimension(60, 100));
-		top.setBackground(Color.white);
+		top.setBackground(Color.WHITE);
 		top.setLayout(null);
 		add(top, BorderLayout.NORTH);
 		
@@ -70,7 +71,7 @@ public class gameFrame extends JFrame implements ActionListener{
 	private void setMain() {
 		JPanel main = new JPanel();
 		main.setLayout(null);
-		main.setBackground(Color.white);
+		main.setBackground(Color.WHITE);
 		add(main, BorderLayout.CENTER);
 		int x = 20, y = 25;
 		
@@ -186,6 +187,7 @@ public class gameFrame extends JFrame implements ActionListener{
 		row = Integer.parseInt(btn_info.substring(btn_info.indexOf(",")+1, btn_info.lastIndexOf(",")));
 		col = Integer.parseInt(btn_info.substring( btn_info.lastIndexOf(",")+1));
 		changeSeat(seatName, row, col);
+		System.out.println(btn_info);
 	}
 	
 	public void setData(String btn_info) { 

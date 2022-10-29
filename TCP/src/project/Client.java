@@ -26,7 +26,6 @@ public class Client {
 			while(in != null) {
 				for(int i = 0; i < 1; i++) {
 					btn_info = in.readLine();
-					System.out.println(btn_info);
 					gf.setSeat(btn_info);
 				}
 			}
