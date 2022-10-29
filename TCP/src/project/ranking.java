@@ -25,6 +25,7 @@ public class ranking extends JFrame{
 	private JTextArea firstrank;
 	private JTextArea secondrank;
 	private JTextArea thirdrank;
+	private JTextArea firstcmt;
 	
 public ranking() {
 	setTitle("Ranking");
@@ -91,6 +92,14 @@ public void setDown() {
 	JLabel cmt = new JLabel(new ImageIcon("image/cmt.png"));
 	cmt.setBounds(155,75,304,120);
 	down.add(cmt);
+	
+	firstcmt = new JTextArea("1µî¼Ò°¨:",1,15);
+	firstcmt.setEditable(false);
+	firstcmt.setFont(inputFont);
+	firstcmt.setBounds(220, 90, 200, 200);
+	firstcmt.setBorder(BorderFactory.createEmptyBorder());
+	down.add(firstcmt);
+	
 	
 	add(down, BorderLayout.SOUTH);
 	
