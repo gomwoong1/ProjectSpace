@@ -46,7 +46,8 @@ public class gameFrame extends JFrame implements ActionListener{
 		
 		setVisible(true);
 		
-//		Client client = new Client(socket, this);
+		receiveThread receive = new receiveThread(socket, this);
+//		receive.start();
 	}
 
 	private void setTop() {
@@ -189,7 +190,6 @@ public class gameFrame extends JFrame implements ActionListener{
 		row = Integer.parseInt(btn_info.substring(btn_info.indexOf(",")+1, btn_info.lastIndexOf(",")));
 		col = Integer.parseInt(btn_info.substring( btn_info.lastIndexOf(",")+1));
 		changeSeat(seatName, row, col);
-		System.out.println(btn_info);
 	}
 	
 	public void setData(String btn_info) { 
@@ -200,7 +200,7 @@ public class gameFrame extends JFrame implements ActionListener{
 		return jb_info;
 	}
 	
-	public void changeSeat(int name, int row, int col) {
+	synchronized public void changeSeat(int name, int row, int col) {
 		if(name == 0) {
 			seat[row][col].setBackground(seatSelColor);
 			seat[row][col].setEnabled(false);

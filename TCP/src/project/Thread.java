@@ -130,3 +130,33 @@ class SendThread extends Thread{
 		}
 	}
 }
+
+class receiveThread extends Thread{
+	private Socket socket;
+	private String btn_info;
+	private gameFrame gf;
+	
+	public receiveThread(Socket socekt, gameFrame gf) {
+		this.socket = socekt;
+		this.gf = gf;
+		this.start();
+	}
+	
+	@Override
+	public void start() {
+		BufferedReader in = null;
+		
+		try {
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			while(in != null) {
+				for(int i = 0; i < 1; i++) {
+					btn_info = in.readLine();
+					gf.setSeat(btn_info);
+				}
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}

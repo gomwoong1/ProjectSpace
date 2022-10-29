@@ -6,8 +6,6 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 public class Client extends Thread {
-	private int port;
-	private String ip;
 	private String btn_info;
 	private Socket socket = null;
 	private gameFrame gf;
@@ -15,9 +13,9 @@ public class Client extends Thread {
 	public Client(Socket socket, gameFrame gf) {
 		this.socket = socket;
 		this.gf = gf;
-		this.start();
 	}
 	
+	@Override
 	public void start() {
 		BufferedReader in = null;
 		
