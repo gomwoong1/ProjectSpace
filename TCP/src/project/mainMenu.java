@@ -1,8 +1,24 @@
 package project;
 
-import javax.swing.JFrame;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class mainMenu extends JFrame {
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class mainMenu extends JFrame implements ActionListener {
+	
+	public static void main(String[] args) {
+		mainMenu mf = new mainMenu();
+	}
+	private Font mainFont;
+	private JButton btnStart;
+	private JButton btnRank;
 	public mainMenu() {
 		setTitle("mainMenu");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // 프레임 닫으면 종료되게 설정
@@ -10,6 +26,49 @@ public class mainMenu extends JFrame {
 		setResizable(false);  //크기 조절 불가능하게 만듦
 		setLocationRelativeTo(null);   //화면 중앙에 프레임이 뜨도록 설정
 		
+		mainFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 50);
+		
+		setMain();
+		
 		setVisible(true);
+	}
+	private void setMain() {
+		JPanel main = new JPanel();
+		main.setLayout(null);
+		main.setBackground(Color.WHITE);
+
+		JLabel name1 = new JLabel("Catch Me");
+		name1.setFont(mainFont);
+		name1.setBounds(200, 110, 250, 60);
+		main.add(name1);
+		
+		JLabel name2 = new JLabel("If You Can");
+		name2.setFont(mainFont);
+		name2.setBounds(300, 170, 270, 60);
+		main.add(name2);
+		
+		JLabel run = new JLabel(new ImageIcon("image/run_img.png"));
+		run.setBounds(470, 90, 87, 89);
+		main.add(run);
+		
+		btnStart = new JButton(new ImageIcon("image/btnStart.png"));
+		btnStart.setBounds(300, 300, 192, 75);
+		btnStart.setBorderPainted(false);
+		btnStart.setContentAreaFilled(false);
+		btnStart.addActionListener(this);
+		main.add(btnStart);
+		
+		btnRank = new JButton(new ImageIcon("image/btnRank.png"));
+		btnRank.setBounds(305, 400, 192, 75);
+		btnRank.setBorderPainted(false);
+		btnRank.setContentAreaFilled(false);
+		btnRank.addActionListener(this);
+		main.add(btnRank);
+		
+		add(main);
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
 	}
 }

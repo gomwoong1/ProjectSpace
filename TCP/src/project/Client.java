@@ -6,37 +6,33 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 public class Client {
-	
-	public static void main(String[] args) {
-		Client client = new Client();
-		client.start();
-	}
-	
-	public Client() {
-		
-	}
-	
-	public Client(int port) {
-		
-	}
-
+	private int port;
+	private String ip;
 	private String btn_info;
 
+	public Client(String ip, int port) {
+		this.ip = ip;
+		this.port = port;
+		this.start();
+	}
+	
 	private void start() {
 		Socket socket = null;
 		BufferedReader in = null;
 		
 		try {
-			socket = new Socket("12312", 9005);
+			socket = new Socket(ip, port);
 			System.out.println("[서버와 연결되었습니다.]");
 			
-			gameFrame gf = new gameFrame(socket);
+			mainMenu mf = new mainMenu();
+//			gameFrame gf = new gameFrame(socket);
 			
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			while(in != null) {
 				for(int i = 0; i < 1; i++) {
 					btn_info = in.readLine();
-					gf.setSeat(btn_info);
+					System.out.println(btn_info);
+//					gf.setSeat(btn_info);
 				}
 			}
 			
