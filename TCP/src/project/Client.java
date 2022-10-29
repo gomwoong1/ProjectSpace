@@ -9,27 +9,25 @@ public class Client {
 	private int port;
 	private String ip;
 	private String btn_info;
+	private Socket socket = null;
 
-	public Client(String ip, int port) {
-		this.ip = ip;
-		this.port = port;
+	public Client(Socket socket) {
+		this.socket = socket;
 		this.start();
 	}
 	
 	private void start() {
-		Socket socket = null;
 		BufferedReader in = null;
 		
+		gameFrame gf = new gameFrame(socket);
+		
 		try {
-			socket = new Socket(ip, port);
-			System.out.println("[서버와 연결되었습니다.]");
-			
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			while(in != null) {
 				for(int i = 0; i < 1; i++) {
 					btn_info = in.readLine();
 					System.out.println(btn_info);
-//					gf.setSeat(btn_info);
+					gf.setSeat(btn_info);
 				}
 			}
 			

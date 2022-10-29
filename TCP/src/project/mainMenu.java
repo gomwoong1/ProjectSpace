@@ -43,8 +43,8 @@ public class mainMenu extends JFrame implements ActionListener {
 			setMain();
 			setVisible(true);
 		} catch (IOException e) {
-			this.dispose();
 			login loginForm = new login();
+			this.dispose();
 			JOptionPane.showMessageDialog(loginForm, 
 					"네트워크 정보를 확인해주세요.", "네트워크 오류", JOptionPane.ERROR_MESSAGE);
 		}
@@ -91,7 +91,7 @@ public class mainMenu extends JFrame implements ActionListener {
 		Object obj = e.getSource();
 		
 		if(obj == btnStart) {
-			gameFrame gf = new gameFrame(socket);
+			Client client = new Client(socket);
 		} else if(obj == btnRank) {
 			ranking rk = new ranking();
 		}

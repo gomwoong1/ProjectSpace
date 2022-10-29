@@ -99,7 +99,6 @@ public void setDown() {
 	firstcmt.setBorder(BorderFactory.createEmptyBorder());
 	down.add(firstcmt);
 	
-	
 	add(down, BorderLayout.SOUTH);
 	
 }
