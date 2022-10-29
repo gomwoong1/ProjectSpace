@@ -8,11 +8,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,6 +29,7 @@ public class login extends JFrame implements KeyListener, ActionListener{
 	private JTextField tfname;
 	private JTextField tfport;
 	private JTextField tfip;
+	private JButton btnLogin;
 	
 	public login() {
 		setTitle("Login");
@@ -83,29 +83,29 @@ public class login extends JFrame implements KeyListener, ActionListener{
 		
 		JLabel user = new JLabel("Username: ");
 		user.setFont(subFont);
-		user.setBounds(185, 340, 120, 30);
+		user.setBounds(170, 340, 120, 30);
 		right.add(user);
 		
 		JLabel port = new JLabel("Port: ");
 		port.setFont(subFont);
-		port.setBounds(185, 415, 120, 30);
+		port.setBounds(170, 415, 120, 30);
 		right.add(port);
 		
 		JLabel ip = new JLabel("IP Address: ");
 		ip.setFont(subFont);
-		ip.setBounds(290, 415, 120, 30);
+		ip.setBounds(275, 415, 120, 30);
 		right.add(ip);
 		
 		JLabel name_backImg = new JLabel(new ImageIcon("image/addtextField.png"));
-		name_backImg.setBounds(185, 375, 255, 30);
+		name_backImg.setBounds(170, 375, 255, 30);
 		right.add(name_backImg);
 		
 		JLabel port_backImg = new JLabel(new ImageIcon("image/portField.png"));
-		port_backImg.setBounds(185, 445, 90, 30);
+		port_backImg.setBounds(170, 445, 90, 30);
 		right.add(port_backImg);
 		
 		JLabel ip_backImg = new JLabel(new ImageIcon("image/ipField.png"));
-		ip_backImg.setBounds(290, 445, 150, 30);
+		ip_backImg.setBounds(275, 445, 150, 30);
 		right.add(ip_backImg);
 		
 		tfname = new JTextField("", 20);
@@ -113,7 +113,7 @@ public class login extends JFrame implements KeyListener, ActionListener{
 		tfname.addActionListener(this);
 		tfname.addKeyListener(this);
 		tfname.setFont(inputFont);
-		tfname.setBounds(193, 379, 240, 23);
+		tfname.setBounds(178, 379, 240, 23);
 		tfname.setBorder(BorderFactory.createEmptyBorder());
 //		tfname.addMouseListener(this);
 		right.add(tfname);
@@ -123,7 +123,7 @@ public class login extends JFrame implements KeyListener, ActionListener{
 		tfport.addActionListener(this);
 		tfport.addKeyListener(this);
 		tfport.setFont(inputFont);
-		tfport.setBounds(193, 449, 70, 23);
+		tfport.setBounds(178, 449, 70, 23);
 		tfport.setBorder(BorderFactory.createEmptyBorder());
 		right.add(tfport);
 		
@@ -132,9 +132,16 @@ public class login extends JFrame implements KeyListener, ActionListener{
 		tfip.addActionListener(this);
 		tfip.addKeyListener(this);
 		tfip.setFont(inputFont);
-		tfip.setBounds(295, 449, 138, 23);
+		tfip.setBounds(280, 449, 138, 23);
 		tfip.setBorder(BorderFactory.createEmptyBorder());
 		right.add(tfip);
+		
+		btnLogin = new JButton(new ImageIcon("image/login_btn.png"));
+		btnLogin.setBounds(450, 412, 62, 63);
+		btnLogin.setBorderPainted(false);
+		btnLogin.setContentAreaFilled(false);
+		btnLogin.addActionListener(this);
+		right.add(btnLogin);
 		
 		add(right, BorderLayout.EAST);
 	}
