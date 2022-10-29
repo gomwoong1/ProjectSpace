@@ -6,12 +6,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -21,7 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class login extends JFrame implements KeyListener, ActionListener{
+public class login extends JFrame implements ActionListener{
 
 	public static void main(String[] args) {
 		login lg = new login();
@@ -115,17 +112,14 @@ public class login extends JFrame implements KeyListener, ActionListener{
 		tfname = new JTextField("", 20);
 		tfname.setFocusTraversalKeysEnabled(false);
 		tfname.addActionListener(this);
-		tfname.addKeyListener(this);
 		tfname.setFont(inputFont);
 		tfname.setBounds(178, 379, 240, 23);
 		tfname.setBorder(BorderFactory.createEmptyBorder());
-//		tfname.addMouseListener(this);
 		right.add(tfname);
 		
 		tfport = new JTextField("", 20);
 		tfport.setFocusTraversalKeysEnabled(false);
 		tfport.addActionListener(this);
-		tfport.addKeyListener(this);
 		tfport.setFont(inputFont);
 		tfport.setBounds(178, 449, 70, 23);
 		tfport.setBorder(BorderFactory.createEmptyBorder());
@@ -134,7 +128,6 @@ public class login extends JFrame implements KeyListener, ActionListener{
 		tfip = new JTextField("", 20);
 		tfip.setFocusTraversalKeysEnabled(false);
 		tfip.addActionListener(this);
-		tfip.addKeyListener(this);
 		tfip.setFont(inputFont);
 		tfip.setBounds(280, 449, 138, 23);
 		tfip.setBorder(BorderFactory.createEmptyBorder());
@@ -150,50 +143,42 @@ public class login extends JFrame implements KeyListener, ActionListener{
 		add(right, BorderLayout.EAST);
 	}
 
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
+		int state = 0;
 		
 		if(obj == btnLogin) {
 			String username = tfname.getText();
 			String ip = tfip.getText(); 
 			int port = 0;
-			if(! tfport.getText().equals(""))
+			if(!(tfport.getText().equals("")))
 				port = Integer.parseInt(tfport.getText());
 			
 			if(username.equals("") || ip.equals("") || port == 0) {
 				JOptionPane.showMessageDialog(this, "정보를 모두 입력해주세요.", "입력 오류", JOptionPane.ERROR_MESSAGE);
+				state = 1;
 			} else
-				test(ip, port);
+				state = test(ip, port);
+			
+			if (!(state == 1)) {
+				this.dispose();
+				Client client = new Client(ip, port);
+			}
 		}
 	}
 	
-	public void test(String ip, int port) {
+	public int test(String ip, int port) {
+		Socket socket;
+		int state = 0;
+		
 		try {
-			Socket socket = new Socket(ip, port);
+			socket = new Socket(ip, port);
 		} catch (SocketException e) {
-			System.out.println("잘못된 정보");
+			JOptionPane.showMessageDialog(this, "IP 또는 Port가 잘못되었습니다.", "네트워크 오류", JOptionPane.ERROR_MESSAGE);
+			state = 1;
 		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		mainMenu mf = new mainMenu();
-		this.dispose();
+		} 
+		return state;
 	}
-
 }

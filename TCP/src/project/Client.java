@@ -6,28 +6,22 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 public class Client {
-	
-	public static void main(String[] args) {
-		Client client = new Client();
-		client.start();
-	}
-	
-	public Client() {
-		
-	}
-	
-	public Client(int port) {
-		
-	}
-
+	private int port;
+	private String ip;
 	private String btn_info;
 
+	public Client(String ip, int port) {
+		this.ip = ip;
+		this.port = port;
+		this.start();
+	}
+	
 	private void start() {
 		Socket socket = null;
 		BufferedReader in = null;
 		
 		try {
-			socket = new Socket("12312", 9005);
+			socket = new Socket(ip, port);
 			System.out.println("[서버와 연결되었습니다.]");
 			
 			gameFrame gf = new gameFrame(socket);
