@@ -8,12 +8,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.SocketException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -164,7 +168,32 @@ public class login extends JFrame implements KeyListener, ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		Object obj = e.getSource();
 		
+		if(obj == btnLogin) {
+			String username = tfname.getText();
+			String ip = tfip.getText(); 
+			int port = 0;
+			if(! tfport.getText().equals(""))
+				port = Integer.parseInt(tfport.getText());
+			
+			if(username.equals("") || ip.equals("") || port == 0) {
+				JOptionPane.showMessageDialog(this, "정보를 모두 입력해주세요.", "입력 오류", JOptionPane.ERROR_MESSAGE);
+			} else
+				test(ip, port);
+		}
+	}
+	
+	public void test(String ip, int port) {
+		try {
+			Socket socket = new Socket(ip, port);
+		} catch (SocketException e) {
+			System.out.println("잘못된 정보");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		mainMenu mf = new mainMenu();
+		this.dispose();
 	}
 
 }

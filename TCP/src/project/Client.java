@@ -11,6 +11,14 @@ public class Client {
 		Client client = new Client();
 		client.start();
 	}
+	
+	public Client() {
+		
+	}
+	
+	public Client(int port) {
+		
+	}
 
 	private String btn_info;
 
@@ -19,7 +27,7 @@ public class Client {
 		BufferedReader in = null;
 		
 		try {
-			socket = new Socket("localhost", 9005);
+			socket = new Socket("12312", 9005);
 			System.out.println("[서버와 연결되었습니다.]");
 			
 			gameFrame gf = new gameFrame(socket);
