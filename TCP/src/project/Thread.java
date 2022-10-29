@@ -26,6 +26,11 @@ class ServerThread extends Thread{
 			out = new PrintWriter(socket.getOutputStream());
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			list.add(out);
+			
+			if(list.size() == 2) {
+				ServerRandomThread random = new ServerRandomThread();
+				random.start();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -66,10 +71,10 @@ class ServerThread extends Thread{
 }
 
 class ServerRandomThread extends Thread{
-	private List<PrintWriter> list;
-
+	PrintWriter out = null;
+	Socket socket;
+	
 	public ServerRandomThread() {
-		list = ServerThread.getList();
 	}
 	
 	public void run() {
@@ -79,8 +84,8 @@ class ServerRandomThread extends Thread{
 			for(int i = 0; i < 3; i++) {
 				for(int j = 0; j < 3; j++) {
 					Random random = new Random();
-					row = random.nextInt(11);
-					col = random.nextInt(19);
+					row = random.nextInt(18);
+					col = random.nextInt(10);
 					
 					String str = (i + "," + row + "," + col);
 					sendRandom(str);
@@ -94,7 +99,7 @@ class ServerRandomThread extends Thread{
 	}
 	
 	private void sendRandom (String str) {
-		for (PrintWriter out: list) {
+		for (PrintWriter out: ServerThread.list) {
 			out.println(str);
 			out.flush();
 		}

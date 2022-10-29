@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.Socket;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -43,9 +44,6 @@ public class gameFrame extends JFrame implements ActionListener{
 
 		setTop();
 		setMain();
-		
-		ServerRandomThread random = new ServerRandomThread();
-		random.start();
 		
 		setVisible(true);
 	}
@@ -189,7 +187,6 @@ public class gameFrame extends JFrame implements ActionListener{
 		seatName = Integer.parseInt(btn_info.substring(0, btn_info.indexOf(",")));
 		row = Integer.parseInt(btn_info.substring(btn_info.indexOf(",")+1, btn_info.lastIndexOf(",")));
 		col = Integer.parseInt(btn_info.substring( btn_info.lastIndexOf(",")+1));
-		System.out.println("도착 정보: " + seatName + "+" + row + "+" + col);
 		changeSeat(seatName, row, col);
 	}
 	
@@ -204,10 +201,13 @@ public class gameFrame extends JFrame implements ActionListener{
 	public void changeSeat(int name, int row, int col) {
 		if(name == 0) {
 			seat[row][col].setBackground(seatSelColor);
+			seat[row][col].setEnabled(false);
 		}if(name == 1) {
 			seat2[row][col].setBackground(seatSelColor);
+			seat2[row][col].setEnabled(false);
 		}if(name == 2) {
 			seat3[row][col].setBackground(seatSelColor);
+			seat3[row][col].setEnabled(false);
 		}
 	}
 }
