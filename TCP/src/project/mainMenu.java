@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class mainMenu extends JFrame implements ActionListener {
@@ -27,24 +28,26 @@ public class mainMenu extends JFrame implements ActionListener {
 		this.ip = ip;
 		this.port = port;
 		this.username = username;
+		mainFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 50);
 		
 		try {
 			socket = new Socket(ip, port);
 			System.out.println("[서버와 연결되었습니다.]");
+			
+			setTitle("mainMenu");
+			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // 프레임 닫으면 종료되게 설정
+			setSize(800, 600);
+			setResizable(false);  //크기 조절 불가능하게 만듦
+			setLocationRelativeTo(null);   //화면 중앙에 프레임이 뜨도록 설정
+			
+			setMain();
+			setVisible(true);
 		} catch (IOException e) {
+			this.dispose();
+			login loginForm = new login();
+			JOptionPane.showMessageDialog(loginForm, 
+					"네트워크 정보를 확인해주세요.", "네트워크 오류", JOptionPane.ERROR_MESSAGE);
 		}
-		
-		setTitle("mainMenu");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // 프레임 닫으면 종료되게 설정
-		setSize(800, 600);
-		setResizable(false);  //크기 조절 불가능하게 만듦
-		setLocationRelativeTo(null);   //화면 중앙에 프레임이 뜨도록 설정
-		
-		mainFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 50);
-		
-		setMain();
-		
-		setVisible(true);
 	}
 	private void setMain() {
 		JPanel main = new JPanel();

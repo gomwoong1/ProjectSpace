@@ -92,7 +92,7 @@ public void setDown() {
 	cmt.setBounds(145,95,304,120);
 	down.add(cmt);
 	
-	firstcmt = new JTextArea("1등:",1,15);
+	firstcmt = new JTextArea("1등의 한마디:",1,15);
 	firstcmt.setEditable(false);
 	firstcmt.setFont(inputFont);
 	firstcmt.setBounds(215, 120, 200, 200);

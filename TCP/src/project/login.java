@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -31,6 +32,7 @@ public class login extends JFrame implements ActionListener{
 	private JTextField tfport;
 	private JTextField tfip;
 	private JButton btnLogin;
+	private Socket socket;
 	
 	public login() {
 		setTitle("Login");
@@ -146,7 +148,6 @@ public class login extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
-		int state = 0;
 		
 		if(obj == btnLogin) {
 			String username = tfname.getText();
@@ -156,29 +157,12 @@ public class login extends JFrame implements ActionListener{
 				port = Integer.parseInt(tfport.getText());
 			
 			if(username.equals("") || ip.equals("") || port == 0) {
-				JOptionPane.showMessageDialog(this, "정보를 모두 입력해주세요.", "입력 오류", JOptionPane.ERROR_MESSAGE);
-				state = 1;
-			} else
-				state = test(ip, port);
-			
-			if (!(state == 1)) {
+				JOptionPane.showMessageDialog(this, 
+						"정보를 모두 입력해주세요.", "입력 오류", JOptionPane.ERROR_MESSAGE);
+			} else {
 				this.dispose();
 				mainMenu mf = new mainMenu(ip, port, username);
 			}
 		}
-	}
-	
-	public int test(String ip, int port) {
-		Socket socket;
-		int state = 0;
-		
-		try {
-			socket = new Socket(ip, port);
-		} catch (SocketException e) {
-			JOptionPane.showMessageDialog(this, "IP 또는 Port가 잘못되었습니다.", "네트워크 오류", JOptionPane.ERROR_MESSAGE);
-			state = 1;
-		} catch (IOException e) {
-		} 
-		return state;
 	}
 }
