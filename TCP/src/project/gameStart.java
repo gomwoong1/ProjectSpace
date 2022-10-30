@@ -16,10 +16,13 @@ public class gameStart extends JFrame{
 	private int cd_val;
 	private gameStart gs = this;
 	private Socket socket;
+	private String username;
 	static String sign;
 	
-	public gameStart(Socket socekt) {
+	
+	public gameStart(Socket socekt, String username) {
 		this.socket = socekt;
+		this.username = username;
 		
 		receiveThread receive = new receiveThread(socekt, this);
 		receive.startThread();
@@ -92,7 +95,7 @@ public class gameStart extends JFrame{
 	}
 	
 	public void callProgram() {
-		gameFrame gf = new gameFrame(socket);
+		gameFrame gf = new gameFrame(socket, username);
 		gf.setLocationRelativeTo(this);
 		gs.dispose();
 	}

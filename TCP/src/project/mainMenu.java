@@ -17,9 +17,9 @@ public class mainMenu extends JFrame implements ActionListener {
 	private Font mainFont;
 	private JButton btnStart;
 	private JButton btnRank;
-	private String ip;
-	private String username;
-	private int port;
+	static String ip;
+	static String username;
+	static int port;
 	private Socket socket;
 	
 	public mainMenu() {
@@ -93,7 +93,7 @@ public class mainMenu extends JFrame implements ActionListener {
 		
 		if(obj == btnStart) {
 			this.dispose();
-			gameStart ready = new gameStart(socket);
+			gameStart ready = new gameStart(socket, username);
 			ready.setLocationRelativeTo(this);
 		} else if(obj == btnRank) {
 			ranking rk = new ranking(this);

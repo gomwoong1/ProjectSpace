@@ -28,11 +28,14 @@ public class gameFrame extends JFrame implements ActionListener{
 	private Font info_Font;
 	private JButton[][] seat, seat2, seat3;
 	private gameFrame gf = this;
-	private int clock_val = 30;
+	private int clock_val = 3;
 	private JLabel clock;
+	private int score = 0;
+	private String username;
 	
-	public gameFrame(Socket socket) {
+	public gameFrame(Socket socket, String username) {
 		this.socket = socket;
+		this.username = username;
 		
 		setTitle("Ticket Game");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // 프레임 닫으면 종료되게 설정
@@ -201,12 +204,19 @@ public class gameFrame extends JFrame implements ActionListener{
 				}
 				else {
 					timer.cancel();
-					gf.dispose();
+					callProgram();
 				}
 			}
+
 		};
 		
 		timer.schedule(task, 0, 1000);
+	}
+	
+	private void callProgram() {
+		resultFrame rf = new resultFrame(username);
+		rf.setLocationRelativeTo(this);
+		gf.dispose();
 	}
 	
 	@Override
@@ -215,6 +225,7 @@ public class gameFrame extends JFrame implements ActionListener{
 		JButton jb = (JButton) obj; // 구조체를 jbutton으로 변환화여 jb 생성
 		jb.setBackground(seatSelColor);  // 눌렀을때 색 변경
 		jb.setEnabled(false); // 이후 변경 안되게 지정
+		score++;
 		
 		setData(jb.getText()); // 스트링으로 정보 만듬
 		Thread sendThread = new SendThread(socket, this); // 전송
