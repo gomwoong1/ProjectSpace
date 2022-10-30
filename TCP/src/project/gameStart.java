@@ -79,8 +79,7 @@ public class gameStart extends JFrame{
 				}
 				else {
 					timer.cancel();
-					gs.dispose();
-					//여기에 게임 프레임 호출
+					callProgram();
 				}
 			}
 		};
@@ -90,5 +89,11 @@ public class gameStart extends JFrame{
 	
 	public void setString(String str) {
 		sign = str;
+	}
+	
+	public void callProgram() {
+		gameFrame gf = new gameFrame(socket);
+		gf.setLocationRelativeTo(this);
+		gs.dispose();
 	}
 }

@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -27,9 +28,12 @@ public class gameFrame extends JFrame implements ActionListener{
 	private Font info_Font;
 	private JButton[][] seat, seat2, seat3;
 	private gameFrame gf = this;
+	private int clock_val = 30;
+	private JLabel clock;
 	
 	public gameFrame(Socket socket) {
 		this.socket = socket;
+		
 		setTitle("Ticket Game");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // 프레임 닫으면 종료되게 설정
 		setSize(800, 600);
@@ -49,21 +53,11 @@ public class gameFrame extends JFrame implements ActionListener{
 		setVisible(true);
 		
 		setTimer();
+		
 		receiveThread receive = new receiveThread(socket, this);
 		receive.startThread();
 	}
 
-	private void setTimer() {
-		Timer timer = new Timer();
-		TimerTask task = new TimerTask() {
-			public void run() {
-				gf.dispose();
-				timer.cancel();
-			}
-		};
-		
-		timer.schedule(task, 10000);
-	}
 
 	private void setTop() {
 		JPanel top = new JPanel();
@@ -76,6 +70,15 @@ public class gameFrame extends JFrame implements ActionListener{
 		stageForm.setOpaque(true); 
 		stageForm.setBorder(new LineBorder(Color.BLACK, 25, true));
 		stageForm.setBounds(215, 20, 350, 45);
+		
+		JLabel timer = new JLabel(new ImageIcon("image/timer.png"));
+		timer.setBounds(25, 15, 67, 71);
+		top.add(timer);
+		
+		clock = new JLabel(Integer.toString(clock_val));
+		clock.setBounds(110, -20, 150, 150);
+		clock.setFont(subFont);
+		top.add(clock);
 		
 		JLabel stage = new JLabel("S T A G E");
 		stage.setBounds(340, 22, 350, 45);
@@ -187,6 +190,25 @@ public class gameFrame extends JFrame implements ActionListener{
 		}
 	}
 
+	private void setTimer() {
+		Timer timer = new Timer();
+		
+		TimerTask task = new TimerTask() {
+			public void run() {
+				if(clock_val > 0) {
+					clock.setText(Integer.toString(clock_val));
+					clock_val--;
+				}
+				else {
+					timer.cancel();
+					gf.dispose();
+				}
+			}
+		};
+		
+		timer.schedule(task, 0, 1000);
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource(); // 정보 받아서 구조체로 변경

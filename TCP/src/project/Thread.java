@@ -69,13 +69,11 @@ class ServerThread extends Thread{
 		for (PrintWriter out: list) {
 			out.println(s);
 			out.flush();
-			System.out.println("보낸 값: " + s);
 		}
 	}
 	
 	public synchronized void add() {
 		state += 1;
-		System.out.println("state값: " + state);
 	}
 }
 
