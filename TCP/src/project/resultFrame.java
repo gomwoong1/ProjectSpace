@@ -16,7 +16,7 @@ public class resultFrame extends JFrame implements ActionListener {
 	private Socket socket;
 	private String username; 
 	private String yourname; 
-	static public String data = "hi";
+	private String data = "hi";
 	private int my_score;
 	private int your_score;
 	private String recv_username = "loser"; 
@@ -27,7 +27,11 @@ public class resultFrame extends JFrame implements ActionListener {
 	private Color loseColor;
 	private JButton btnExit;
 	
-	public synchronized void setData(String data) {
+	public void setData(String data) {
+		changeData(data);
+	}
+	
+	public void changeData(String data) {
 		this.data = data;
 	}
 	
