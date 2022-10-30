@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.SwingWorker;
 
@@ -48,7 +50,18 @@ class ServerThread extends Thread{
 					if(state == 2) {
 						sendAll("start");
 						state = 0;
+						
+						Timer timer = new Timer();
+						TimerTask task = new TimerTask() {
+							public void run() {
+								ServerRandomThread random = new ServerRandomThread();
+								random.start();
+							}
+//							timer.cancel();
+						};
+						timer.schedule(task, 8000);
 					}
+						
 				}
 			}
 		} catch (IOException e) {

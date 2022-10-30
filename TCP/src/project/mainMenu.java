@@ -23,7 +23,15 @@ public class mainMenu extends JFrame implements ActionListener {
 	private Socket socket;
 	
 	public mainMenu() {
+		mainFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 50);
+		setTitle("mainMenu");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // 프레임 닫으면 종료되게 설정
+		setSize(800, 600);
+		setResizable(false);  //크기 조절 불가능하게 만듦
 		
+		setMain();
+		btnStart.setEnabled(false);
+		setVisible(true);
 	}
 	
 	public mainMenu(String ip, int port, String username) {

@@ -19,7 +19,6 @@ public class gameStart extends JFrame{
 	private String username;
 	static String sign;
 	
-	
 	public gameStart(Socket socekt, String username) {
 		this.socket = socekt;
 		this.username = username;
