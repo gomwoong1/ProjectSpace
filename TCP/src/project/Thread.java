@@ -28,11 +28,6 @@ class ServerThread extends Thread{
 			out = new PrintWriter(socket.getOutputStream());
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			list.add(out);
-			
-			if(list.size() == 2) {
-				ServerRandomThread random = new ServerRandomThread();
-				random.start();
-			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -65,10 +60,6 @@ class ServerThread extends Thread{
 			out.println(s);
 			out.flush();
 		}
-	}
-
-	public static List<PrintWriter> getList() {
-		return list;
 	}
 }
 
@@ -133,7 +124,6 @@ class SendThread extends Thread{
 	}
 }
 
-
 class receiveThread extends Thread{
 	static Socket socket;
 	static gameFrame gf;
@@ -160,15 +150,12 @@ class receiveThread extends Thread{
 							gf.setSeat(btn_info);
 						}
 					}
-					
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				
 				return null;
 			}
 		};
-		
 		sw.execute();
     }
 }

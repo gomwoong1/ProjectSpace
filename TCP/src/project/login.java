@@ -160,8 +160,9 @@ public class login extends JFrame implements ActionListener{
 				JOptionPane.showMessageDialog(this, 
 						"정보를 모두 입력해주세요.", "입력 오류", JOptionPane.ERROR_MESSAGE);
 			} else {
-				this.dispose();
 				mainMenu mf = new mainMenu(ip, port, username);
+				mf.setLocationRelativeTo(this);
+				this.dispose();
 			}
 		}
 	}

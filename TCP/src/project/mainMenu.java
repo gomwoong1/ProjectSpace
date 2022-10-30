@@ -6,8 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.Socket;
-import java.net.UnknownHostException;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,6 +22,10 @@ public class mainMenu extends JFrame implements ActionListener {
 	private int port;
 	private Socket socket;
 	
+	public mainMenu() {
+		
+	}
+	
 	public mainMenu(String ip, int port, String username) {
 		this.ip = ip;
 		this.port = port;
@@ -38,7 +40,6 @@ public class mainMenu extends JFrame implements ActionListener {
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // 프레임 닫으면 종료되게 설정
 			setSize(800, 600);
 			setResizable(false);  //크기 조절 불가능하게 만듦
-			setLocationRelativeTo(null);   //화면 중앙에 프레임이 뜨도록 설정
 			
 			setMain();
 			setVisible(true);
@@ -91,10 +92,12 @@ public class mainMenu extends JFrame implements ActionListener {
 		Object obj = e.getSource();
 		
 		if(obj == btnStart) {
-			this.dispose();
 			gameFrame gf = new gameFrame(socket);
+			gf.setLocationRelativeTo(this);
+			this.dispose();
 		} else if(obj == btnRank) {
-			ranking rk = new ranking();
+			ranking rk = new ranking(this);
+			rk.setLocationRelativeTo(this);
 		}
 	}
 }
