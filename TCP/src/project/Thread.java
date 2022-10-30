@@ -21,9 +21,6 @@ class ServerThread extends Thread{
 	BufferedReader in = null;
 	PrintWriter out = null;
 	
-	public ServerThread() {
-		
-	}
 	// 클라이언트 소켓의 입출력 버퍼를 저장하는 생성자라고 보면 됨.
 	public ServerThread(Socket socket) {
 		this.socket = socket;
@@ -41,8 +38,17 @@ class ServerThread extends Thread{
 		try {
 			while(in != null) {
 				for(int i = 0; i < 1; i++) {
-					String btn_info = in.readLine();
-					sendAll(btn_info);
+					String data = in.readLine();
+					
+					if (data.equals("enter")) 
+						add();
+					else 
+						sendAll(data);
+					
+					if(state == 2) {
+						sendAll("start");
+						state = 0;
+					}
 				}
 			}
 		} catch (IOException e) {
@@ -63,12 +69,13 @@ class ServerThread extends Thread{
 		for (PrintWriter out: list) {
 			out.println(s);
 			out.flush();
+			System.out.println("보낸 값: " + s);
 		}
 	}
 	
-	public int getListSize() {
-		state = list.size();
-		return state;
+	public synchronized void add() {
+		state += 1;
+		System.out.println("state값: " + state);
 	}
 }
 
@@ -111,10 +118,19 @@ class ServerRandomThread extends Thread{
 class SendThread extends Thread{
 	Socket socket = null;
 	private gameFrame gf;
+	private gameStart gs;
+	private int flag;
 	
 	public SendThread(Socket socket, gameFrame gf) {
 		this.socket = socket;
 		this.gf = gf;
+		flag = 1;
+	}
+	
+	public SendThread(Socket socket, gameStart gs) {
+		this.socket = socket;
+		this.gs = gs;
+		flag = 2;
 	}
 	
 	@Override
@@ -122,9 +138,15 @@ class SendThread extends Thread{
 		try {
 			PrintStream out = new PrintStream(socket.getOutputStream());
 			
-			String btn_info = gf.getData();
-			out.println(btn_info);
-			out.flush();
+			if(flag == 1) {
+				String btn_info = gf.getData();
+				out.println(btn_info);
+				out.flush();
+			} else if(flag == 2) {
+				String client_flag = "enter";
+				out.println(client_flag);
+				out.flush();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -136,10 +158,19 @@ class SendThread extends Thread{
 class receiveThread extends Thread{
 	static Socket socket;
 	static gameFrame gf;
+	static gameStart gs;
+	static int flag;
 	
 	public receiveThread(Socket socekt, gameFrame gf) {
 		this.socket = socekt;
 		this.gf = gf;
+		flag = 1;
+	}
+	
+	public receiveThread(Socket socekt, gameStart gs) {
+		this.socket = socekt;
+		this.gs = gs;
+		flag = 2;
 	}
 	
 	public static void startThread()
@@ -149,15 +180,22 @@ class receiveThread extends Thread{
 			@Override
 			protected Object doInBackground() throws Exception {
 				BufferedReader in = null;
-				String btn_info;
+				String data;
 				
 				try {
 					in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-					while(in != null) {
-						for(int i = 0; i < 1; i++) {
-							btn_info = in.readLine();
-							gf.setSeat(btn_info);
+					
+					if(flag == 1) {
+						while(in != null) {
+							for(int i = 0; i < 1; i++) {
+								data = in.readLine();
+								gf.setSeat(data);
+							}
 						}
+					}
+					else if(flag == 2) {
+						data = in.readLine();
+						gs.setString(data);
 					}
 				} catch (IOException e) {
 					e.printStackTrace();

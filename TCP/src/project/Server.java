@@ -23,12 +23,6 @@ public class Server {
 				
 				ServerThread serverThread = new ServerThread(socket);
 				serverThread.start();
-				
-//				gameStart gs = new gameStart();
-//				System.out.println("변경 전: " + gs.state);
-//				gs.state = serverThread.list.size();
-//				System.out.println("변경 후: " + gs.state);
-				
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

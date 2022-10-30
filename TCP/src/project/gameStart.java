@@ -2,6 +2,7 @@ package project;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.net.Socket;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -14,10 +15,18 @@ public class gameStart extends JFrame{
 	private JLabel count;
 	private int cd_val;
 	private gameStart gs = this;
-	static int state;
-
-	public gameStart(int state) {
-		this.state += state;
+	private Socket socket;
+	static String sign;
+	
+	public gameStart(Socket socekt) {
+		this.socket = socekt;
+		
+		receiveThread receive = new receiveThread(socekt, this);
+		receive.startThread();
+		
+		Thread sendThread = new SendThread(socket, this); // 전송
+		sendThread.start();
+		
 		mainFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 70);
 		
 		setTitle("get Reday");
@@ -29,18 +38,20 @@ public class gameStart extends JFrame{
 		
 		setVisible(true);
 		
-		ServerThread ser = new ServerThread();
-		state = ser.getListSize();
-		System.out.println("접속 클라이언트 수 : " + this.state);
-		
-//		while(state != 2) {
-//			//리스트 두 개 될 때까지 잡아둠.
-//			System.out.println("test");
-//		}
-		
-		countDown();
+		while(true) {
+			try {
+			if (sign.equals(null)) {
+			}
+			else if(sign.equals("start"))
+				break;
+			} catch (NullPointerException e) {
+				continue;
+			}
+			
+		}
+			countDown();
 	}
-
+	
 	private void setMain() {
 		JPanel mainFrame = new JPanel();
 		mainFrame.setBackground(Color.white);
@@ -74,6 +85,10 @@ public class gameStart extends JFrame{
 			}
 		};
 		
-		timer.schedule(task, 1000, 1000);
+		timer.schedule(task, 2500, 1000);
+	}
+	
+	public void setString(String str) {
+		sign = str;
 	}
 }
