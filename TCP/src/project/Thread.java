@@ -44,9 +44,10 @@ class ServerThread extends Thread{
 					
 					if (data.equals("enter")) 
 						add();
-					else 
+					else {
 						sendAll(data);
-					
+						System.out.println("서버에서 받은 상대점수: " + data);
+					}
 					if(state == 2) {
 						sendAll("start");
 						state = 0;
@@ -102,7 +103,7 @@ class ServerRandomThread extends Thread{
 		
 		while(true) {
 			for(int i = 0; i < 3; i++) {
-				for(int j = 0; j < 3; j++) {
+				for(int j = 0; j < 7; j++) {
 					Random random = new Random();
 					row = random.nextInt(18);
 					col = random.nextInt(10);
@@ -130,7 +131,9 @@ class SendThread extends Thread{
 	Socket socket = null;
 	private gameFrame gf;
 	private gameStart gs;
-	private int flag;
+	private resultFrame rf;
+	static private int flag;
+	static private String msg;
 	
 	public SendThread(Socket socket, gameFrame gf) {
 		this.socket = socket;
@@ -142,6 +145,13 @@ class SendThread extends Thread{
 		this.socket = socket;
 		this.gs = gs;
 		flag = 2;
+	}
+	
+	public SendThread(Socket socket, resultFrame rf, String msg) {
+		this.socket = socket;
+		this.rf = rf;
+		this.msg = msg;
+		flag = 3;
 	}
 	
 	@Override
@@ -157,6 +167,10 @@ class SendThread extends Thread{
 				String client_flag = "enter";
 				out.println(client_flag);
 				out.flush();
+			} else if(flag == 3) {
+				System.out.println("보내는 상대 점수: " + msg);
+				out.println(msg);
+				out.flush(); 
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -170,7 +184,9 @@ class receiveThread extends Thread{
 	static Socket socket;
 	static gameFrame gf;
 	static gameStart gs;
+	static resultFrame rf;
 	static int flag;
+	static String data;
 	
 	public receiveThread(Socket socekt, gameFrame gf) {
 		this.socket = socekt;
@@ -184,6 +200,12 @@ class receiveThread extends Thread{
 		flag = 2;
 	}
 	
+	public receiveThread(Socket socekt, resultFrame rf) {
+		this.socket = socekt;
+		this.rf = rf;
+		flag = 3;
+	}
+	
 	public static void startThread()
     {
 		SwingWorker sw = new SwingWorker() {
@@ -191,7 +213,6 @@ class receiveThread extends Thread{
 			@Override
 			protected Object doInBackground() throws Exception {
 				BufferedReader in = null;
-				String data;
 				
 				try {
 					in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -207,6 +228,11 @@ class receiveThread extends Thread{
 					else if(flag == 2) {
 						data = in.readLine();
 						gs.setString(data);
+					}
+					else if(flag == 3) {
+						data = in.readLine();
+						System.out.println("다른 클라이언트에서 받은 점수: " + data);
+						rf.setData(data);
 					}
 				} catch (IOException e) {
 					e.printStackTrace();

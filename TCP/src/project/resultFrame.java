@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.Socket;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -12,16 +13,47 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class resultFrame extends JFrame implements ActionListener {
+	private Socket socket;
 	private String username; 
+	private String yourname; 
+	static public String data = "hi";
+	private int my_score;
+	private int your_score;
 	private String recv_username = "loser"; 
 	private Font nameFont;
 	private Font scoreFont;
+
 	private Color winColor;
 	private Color loseColor;
 	private JButton btnExit;
 	
-	public resultFrame(String useranme) {
+	public synchronized void setData(String data) {
+		this.data = data;
+	}
+	
+	public resultFrame(Socket socket, String useranme, int score) {
+		this.socket = socket;
 		this.username = useranme;
+		my_score = score;
+		
+		receiveThread receive = new receiveThread(socket, this);
+		receive.startThread();
+		
+		Thread sendThread = new SendThread(socket, this, Integer.toString(my_score)); // 전송
+		sendThread.start();
+		
+		System.out.println("최종적으로 받은 상대점수: " + data);
+//		your_score = Integer.parseInt(data);
+		
+//		Thread sendThread2 = new SendThread(socket, this, username); // 전송
+//		sendThread.start();
+//		
+//		receiveThread receive2 = new receiveThread(socket, this);
+//		receive.startThread();
+//		System.out.println("상대이름: " + data);
+//		yourname = data;
+		
+//		System.out.println("상대 이름: " + yourname + " ,상대 점수: " + your_score);
 		
 		setTitle("result");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // 프레임 닫으면 종료되게 설정

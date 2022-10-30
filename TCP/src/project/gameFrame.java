@@ -28,7 +28,7 @@ public class gameFrame extends JFrame implements ActionListener{
 	private Font info_Font;
 	private JButton[][] seat, seat2, seat3;
 	private gameFrame gf = this;
-	private int clock_val = 3;
+	private int clock_val = 2;
 	private JLabel clock;
 	private int score = 0;
 	private String username;
@@ -214,8 +214,9 @@ public class gameFrame extends JFrame implements ActionListener{
 	}
 	
 	private void callProgram() {
-		resultFrame rf = new resultFrame(username);
+		resultFrame rf = new resultFrame(socket, username, score);
 		rf.setLocationRelativeTo(this);
+		System.out.println(username + "의 점수: " + score);
 		gf.dispose();
 	}
 	

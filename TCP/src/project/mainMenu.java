@@ -44,6 +44,8 @@ public class mainMenu extends JFrame implements ActionListener {
 			socket = new Socket(ip, port);
 			System.out.println("[서버와 연결되었습니다.]");
 			
+			
+			
 			setTitle("mainMenu");
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // 프레임 닫으면 종료되게 설정
 			setSize(800, 600);
