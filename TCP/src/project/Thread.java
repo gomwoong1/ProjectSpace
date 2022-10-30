@@ -20,6 +20,9 @@ class ServerThread extends Thread{
 	BufferedReader in = null;
 	PrintWriter out = null;
 	
+	public ServerThread() {
+		
+	}
 	// 클라이언트 소켓의 입출력 버퍼를 저장하는 생성자라고 보면 됨.
 	public ServerThread(Socket socket) {
 		this.socket = socket;
