@@ -7,6 +7,9 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.Socket;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,6 +26,7 @@ public class gameFrame extends JFrame implements ActionListener{
 	private Socket socket;
 	private Font info_Font;
 	private JButton[][] seat, seat2, seat3;
+	private gameFrame gf = this;
 	
 	public gameFrame(Socket socket) {
 		this.socket = socket;
@@ -44,8 +48,21 @@ public class gameFrame extends JFrame implements ActionListener{
 		
 		setVisible(true);
 		
+		setTimer();
 		receiveThread receive = new receiveThread(socket, this);
 		receive.startThread();
+	}
+
+	private void setTimer() {
+		Timer timer = new Timer();
+		TimerTask task = new TimerTask() {
+			public void run() {
+				gf.dispose();
+				timer.cancel();
+			}
+		};
+		
+		timer.schedule(task, 10000);
 	}
 
 	private void setTop() {

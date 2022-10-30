@@ -92,8 +92,10 @@ public class mainMenu extends JFrame implements ActionListener {
 		Object obj = e.getSource();
 		
 		if(obj == btnStart) {
-			gameFrame gf = new gameFrame(socket);
-			gf.setLocationRelativeTo(this);
+//			gameFrame gf = new gameFrame(socket);
+//			gf.setLocationRelativeTo(this);
+			gameStart ready = new gameStart(1);
+			ready.setLocationRelativeTo(this);
 			this.dispose();
 		} else if(obj == btnRank) {
 			ranking rk = new ranking(this);

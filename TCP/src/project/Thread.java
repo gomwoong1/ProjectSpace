@@ -16,6 +16,7 @@ import javax.swing.SwingWorker;
 // 서버 - 클라이언트가 접속할 때마다 새로운 스레드 생성함
 class ServerThread extends Thread{
 	static List<PrintWriter> list = Collections.synchronizedList(new ArrayList<PrintWriter>());
+	static int state;
 	Socket socket = null;
 	BufferedReader in = null;
 	PrintWriter out = null;
@@ -63,6 +64,11 @@ class ServerThread extends Thread{
 			out.println(s);
 			out.flush();
 		}
+	}
+	
+	public int getListSize() {
+		state = list.size();
+		return state;
 	}
 }
 
