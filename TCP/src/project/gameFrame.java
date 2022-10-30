@@ -44,6 +44,8 @@ public class gameFrame extends JFrame implements ActionListener{
 		
 		setVisible(true);
 		
+		
+		
 		receiveThread receive = new receiveThread(socket, this);
 		receive.startThread();
 	}

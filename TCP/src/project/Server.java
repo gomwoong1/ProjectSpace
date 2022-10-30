@@ -23,6 +23,11 @@ public class Server {
 				
 				ServerThread serverThread = new ServerThread(socket);
 				serverThread.start();
+				
+				if(serverThread.list.size() == 2) {
+					ServerRandomThread random = new ServerRandomThread();
+					random.start();
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
