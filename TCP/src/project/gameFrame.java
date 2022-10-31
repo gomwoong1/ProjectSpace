@@ -28,7 +28,7 @@ public class gameFrame extends JFrame implements ActionListener{
 	private Font info_Font;
 	private JButton[][] seat, seat2, seat3;
 	private gameFrame gf = this;
-	private int clock_val = 2;
+	private int clock_val = 5;
 	private JLabel clock;
 	private int score = 0;
 	private String username;
