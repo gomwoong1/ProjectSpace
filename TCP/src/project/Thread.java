@@ -44,10 +44,9 @@ class ServerThread extends Thread{
 					
 					if (data.equals("enter")) 
 						add();
-					else {
+					else 
 						sendAll(data);
-						System.out.println("서버에서 받은 상대점수: " + data);
-					}
+					
 					if(state == 2) {
 						sendAll("start");
 						state = 0;
@@ -58,7 +57,6 @@ class ServerThread extends Thread{
 								ServerRandomThread random = new ServerRandomThread();
 								random.start();
 							}
-//							timer.cancel();
 						};
 						timer.schedule(task, 8000);
 					}
@@ -168,7 +166,6 @@ class SendThread extends Thread{
 				out.println(client_flag);
 				out.flush();
 			} else if(flag == 3) {
-				System.out.println("보내는 상대 점수: " + msg);
 				out.println(msg);
 				out.flush(); 
 			}
@@ -231,8 +228,6 @@ class receiveThread extends Thread{
 					}
 					else if(flag == 3) {
 						data = in.readLine();
-						System.out.println("다른 클라이언트에서 받은 점수: " + data);
-						rf.setData(data);
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -242,4 +237,8 @@ class receiveThread extends Thread{
 		};
 		sw.execute();
     }
+	
+	public String getString(){
+		return data;
+	}	
 }

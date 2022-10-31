@@ -16,10 +16,10 @@ public class resultFrame extends JFrame implements ActionListener {
 	private Socket socket;
 	private String username; 
 	private String yourname; 
-	private String data = "hi";
+	private String data;
 	private int my_score;
 	private int your_score;
-	private String recv_username = "loser"; 
+	private String recv_username; 
 	private Font nameFont;
 	private Font scoreFont;
 
@@ -28,10 +28,6 @@ public class resultFrame extends JFrame implements ActionListener {
 	private JButton btnExit;
 	
 	public void setData(String data) {
-		changeData(data);
-	}
-	
-	public void changeData(String data) {
 		this.data = data;
 	}
 	
@@ -40,11 +36,19 @@ public class resultFrame extends JFrame implements ActionListener {
 		this.username = useranme;
 		my_score = score;
 		
+		Thread sendThread = new SendThread(socket, this, Integer.toString(my_score)); // 전송
+		sendThread.start();
+		
 		receiveThread receive = new receiveThread(socket, this);
 		receive.startThread();
 		
-		Thread sendThread = new SendThread(socket, this, Integer.toString(my_score)); // 전송
-		sendThread.start();
+		try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+		
+		data = receive.getString();
 		
 		System.out.println("최종적으로 받은 상대점수: " + data);
 //		your_score = Integer.parseInt(data);
