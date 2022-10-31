@@ -64,7 +64,7 @@ public class resultFrame extends JFrame implements ActionListener {
 		
 //		System.out.println("상대 이름: " + yourname + " ,상대 점수: " + your_score);
 		
-		setTitle("result!!!");
+		setTitle("result");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // 프레임 닫으면 종료되게 설정
 		setSize(800, 600);
 		setResizable(false);  //크기 조절 불가능하게 만듦
