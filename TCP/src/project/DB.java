@@ -15,7 +15,9 @@ public class DB {
 	
 	public static void main(String[] args) {
 		DB db = new DB();
-		db.sel();
+//		db.sel();
+		db.inst("gomwoong", 50);
+		db.inst("pinkippo", 40);
 	}
 	
 	public DB() {
@@ -52,7 +54,6 @@ public class DB {
 			try {
 				rs.close();
 				stmt.close();
-				conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -61,14 +62,14 @@ public class DB {
 	
 	public void inst(String username, int score) {
 		try {
-			String sql = "insert into rankdb (name, score) values ('" + username + "'," + score + ");";
+			String sql = "insert into rankdb (name, score) values ('" + username + "'," + score + ")";
 			pstmt = conn.prepareStatement(sql);
+			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			try {
 				pstmt.close();
-				conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
