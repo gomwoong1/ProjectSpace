@@ -10,11 +10,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class gameStart extends JFrame{
+	private Socket socket;
 	private Font mainFont;
 	private JLabel count;
 	private int cd_val;
 	private gameStart gs = this;
-	private Socket socket;
 	private String username;
 	static String sign;
 	

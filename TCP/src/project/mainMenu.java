@@ -14,13 +14,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class mainMenu extends JFrame implements ActionListener {
-	private Font mainFont;
-	private JButton btnStart;
-	private JButton btnRank;
-	static String ip;
-	static String username;
-	static int port;
 	private Socket socket;
+	private Font mainFont;
+	private JButton btnStart, btnRank;
+	static String ip, username;
+	static int port;
 	
 	public mainMenu() {
 		mainFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 50);

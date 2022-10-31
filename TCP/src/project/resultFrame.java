@@ -13,28 +13,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class resultFrame extends JFrame implements ActionListener {
-	private Socket socket;
-	private String username; 
-	private String yourname; 
-	private String data;
-	private int my_score;
-	private int your_score;
-	private String recv_username; 
-	private Font nameFont;
-	private Font scoreFont;
-	private Color winColor;
-	private Color loseColor;
+	private String username, recv_username; 
+	private Font nameFont, scoreFont;
+	private Color winColor, loseColor;
 	private JButton btnExit;
+	private JLabel winner, loser, win_score, lose_score;
 	
-	public resultFrame(Socket socket, String useranme, int score) {
-		this.socket = socket;
-		this.username = useranme;
-		my_score = score;
+	public resultFrame() {
 		
 		setTitle("result");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // 프레임 닫으면 종료되게 설정
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(800, 600);
-		setResizable(false);  //크기 조절 불가능하게 만듦
+		setResizable(false);
 		
 		nameFont = new Font("ROKAF SLAB SERIF MEDIUM", 0, 25);
 		scoreFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 120);
@@ -42,6 +32,28 @@ public class resultFrame extends JFrame implements ActionListener {
 		loseColor = new Color(255, 75, 75);
 		
 		setMain();
+		
+		String[] tempArr = new String[2];
+		String winnerName = null, loserName = null;
+		int max = 0, min = 999;
+		
+		DB db = new DB();
+		tempArr = db.gameResult();
+		
+		for(int i = 0; i < 2; i++) {
+			if (max < Integer.parseInt(tempArr[i].substring(tempArr[i].lastIndexOf(",")+1))) {
+				winner.setText(tempArr[i].substring(0, tempArr[i].indexOf(",")));
+				max = Integer.parseInt(tempArr[i].substring(tempArr[i].lastIndexOf(",")+1));
+			}
+			
+			if (min > Integer.parseInt(tempArr[i].substring(tempArr[i].lastIndexOf(",")+1))) {
+				loser.setText(tempArr[i].substring(0, tempArr[i].indexOf(",")));
+				min = Integer.parseInt(tempArr[i].substring(tempArr[i].lastIndexOf(",")+1));
+			}
+			
+		}
+		win_score.setText(Integer.toString(max));
+		lose_score.setText(Integer.toString(min));
 		
 		setVisible(true);
 	}
@@ -51,25 +63,25 @@ public class resultFrame extends JFrame implements ActionListener {
 		mainFrame.setBackground(Color.white);
 		mainFrame.setLayout(null);
 		
-		JLabel winner = new JLabel(username);
+		winner = new JLabel();
 		winner.setBounds(115, 140, 150, 150);
 		winner.setFont(nameFont);
 		winner.setHorizontalAlignment(JLabel.CENTER);
 		mainFrame.add(winner);
 		
-		JLabel loser = new JLabel(recv_username);
+		loser = new JLabel();
 		loser.setBounds(520, 140, 150, 150);
 		loser.setFont(nameFont);
 		loser.setHorizontalAlignment(JLabel.CENTER);
 		mainFrame.add(loser);
 		
-		JLabel win_score = new JLabel("50");
+		win_score = new JLabel();
 		win_score.setBounds(120, 300, 170, 170);
 		win_score.setFont(scoreFont);
 		win_score.setForeground(winColor);
 		mainFrame.add(win_score);
 		
-		JLabel lose_score = new JLabel("25");
+		lose_score = new JLabel();
 		lose_score.setBounds(520, 300, 170, 170);
 		lose_score.setFont(scoreFont);
 		lose_score.setForeground(loseColor);

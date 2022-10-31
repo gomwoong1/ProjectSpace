@@ -129,8 +129,7 @@ class SendThread extends Thread{
 	private gameFrame gf;
 	private gameStart gs;
 	static private int flag;
-	static private String msg;
-	static private String pid;
+	static private String msg, pid;
 	
 	public SendThread(Socket socket, gameFrame gf) {
 		this.socket = socket;

@@ -21,12 +21,8 @@ public class login extends JFrame implements ActionListener{
 		login lg = new login();
 	}
 
-	private Font mainFont;
-	private Font subFont;
-	private Font inputFont;
-	private JTextField tfname;
-	private JTextField tfport;
-	private JTextField tfip;
+	private Font mainFont, subFont, inputFont;
+	private JTextField tfname, tfport, tfip;
 	private JButton btnLogin;
 	
 	public login() {

@@ -17,20 +17,14 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 public class gameFrame extends JFrame implements ActionListener{
-	private Font mainFont;
-	private Font subFont;
-	private Font subFont2;
-	private Color seatColor;
-	private Color seatSelColor;
-	private String jb_info;
 	private Socket socket;
-	private Font info_Font;
+	private Font mainFont, subFont, subFont2, info_Font;
+	private Color seatColor, seatSelColor;
+	private String jb_info, username;
 	private JButton[][] seat, seat2, seat3;
 	private gameFrame gf = this;
-	private int clock_val = 5;
+	private int clock_val = 5, score = 0;
 	private JLabel clock;
-	private int score = 0;
-	private String username;
 	
 	public gameFrame(Socket socket, String username) {
 		this.socket = socket;
@@ -203,6 +197,8 @@ public class gameFrame extends JFrame implements ActionListener{
 				}
 				else {
 					timer.cancel();
+					DB db = new DB();
+					db.resultInsert(username, score);
 					callProgram();
 				}
 			}
@@ -211,7 +207,7 @@ public class gameFrame extends JFrame implements ActionListener{
 	}
 	
 	private void callProgram() {
-		resultFrame rf = new resultFrame(socket, username, score);
+		resultFrame rf = new resultFrame();
 		rf.setLocationRelativeTo(this);
 		gf.dispose();
 	}
@@ -229,7 +225,7 @@ public class gameFrame extends JFrame implements ActionListener{
 		sendThread.start();
 	}
 	
-	public void setSeat(String btn_info) {   // ??? 이거는 모르겠음
+	public void setSeat(String btn_info) {
 		int seatName, row, col;
 		seatName = Integer.parseInt(btn_info.substring(0, btn_info.indexOf(",")));
 		row = Integer.parseInt(btn_info.substring(btn_info.indexOf(",")+1, btn_info.lastIndexOf(",")));
