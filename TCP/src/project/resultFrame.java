@@ -22,7 +22,7 @@ public class resultFrame extends JFrame implements ActionListener {
 	private String recv_username; 
 	private Font nameFont;
 	private Font scoreFont;
-	static long pid;
+//	static long pid;
 
 	private Color winColor;
 	private Color loseColor;
@@ -37,12 +37,9 @@ public class resultFrame extends JFrame implements ActionListener {
 		this.username = useranme;
 		my_score = score;
 		
-		pid = ProcessHandle.current().pid();
+		long pid = ProcessHandle.current().pid();
 		Thread sendThread = new SendThread(socket, this, Long.toString(pid)); // 전송
 		sendThread.start();
-		
-		receiveThread receive = new receiveThread(socket, this);
-		receive.startThread();
 		
 		try {
             Thread.sleep(100);
@@ -50,7 +47,15 @@ public class resultFrame extends JFrame implements ActionListener {
             e.printStackTrace();
         }
 		
+		receiveThread receive = new receiveThread(socket, this);
+		receive.startThread();
+		
 		data = receive.getString();
+		
+		if (data.equals(Long.toString(pid))) {
+//			resultFrame2 rf2 = new resultFrame2(null, useranme, score);
+			System.out.println("너가 다른 프레임으로 가라");
+		}
 		
 		System.out.println("최종적으로 받은 상대점수: " + data);
 //		your_score = Integer.parseInt(data);
