@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.net.Socket;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -207,10 +206,7 @@ public class gameFrame extends JFrame implements ActionListener{
 					callProgram();
 				}
 			}
-
-
 		};
-		
 		timer.schedule(task, 0, 1000);
 	}
 	

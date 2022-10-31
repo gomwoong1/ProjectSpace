@@ -6,10 +6,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.Socket;
-import java.net.SocketException;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -32,7 +28,6 @@ public class login extends JFrame implements ActionListener{
 	private JTextField tfport;
 	private JTextField tfip;
 	private JButton btnLogin;
-	private Socket socket;
 	
 	public login() {
 		setTitle("Login");

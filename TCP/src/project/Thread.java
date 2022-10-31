@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import javax.swing.SwingWorker;
 
 // 서버 - 클라이언트가 접속할 때마다 새로운 스레드 생성함
