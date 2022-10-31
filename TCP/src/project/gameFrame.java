@@ -23,7 +23,7 @@ public class gameFrame extends JFrame implements ActionListener{
 	private String jb_info, username;
 	private JButton[][] seat, seat2, seat3;
 	private gameFrame gf = this;
-	private int clock_val = 5, score = 0;
+	private int clock_val = 30, score = 0;
 	private JLabel clock;
 	
 	public gameFrame(Socket socket, String username) {

@@ -102,7 +102,7 @@ public class login extends JFrame implements ActionListener{
 		ip_backImg.setBounds(275, 445, 150, 30);
 		right.add(ip_backImg);
 		
-		tfname = new JTextField("123", 20);
+		tfname = new JTextField("", 20);
 		tfname.setFocusTraversalKeysEnabled(false);
 		tfname.addActionListener(this);
 		tfname.setFont(inputFont);
@@ -110,7 +110,7 @@ public class login extends JFrame implements ActionListener{
 		tfname.setBorder(BorderFactory.createEmptyBorder());
 		right.add(tfname);
 		
-		tfport = new JTextField("9005", 20);
+		tfport = new JTextField("", 20);
 		tfport.setFocusTraversalKeysEnabled(false);
 		tfport.addActionListener(this);
 		tfport.setFont(inputFont);
@@ -118,7 +118,7 @@ public class login extends JFrame implements ActionListener{
 		tfport.setBorder(BorderFactory.createEmptyBorder());
 		right.add(tfport);
 		
-		tfip = new JTextField("localhost", 20);
+		tfip = new JTextField("", 20);
 		tfip.setFocusTraversalKeysEnabled(false);
 		tfip.addActionListener(this);
 		tfip.setFont(inputFont);
