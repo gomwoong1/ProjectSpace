@@ -16,8 +16,13 @@ public class DB {
 	public static void main(String[] args) {
 		DB db = new DB();
 //		db.sel();
-		db.inst("gomwoong", 50);
-		db.inst("pinkippo", 40);
+//		db.inst("gomwoong", 50);
+//		db.inst("pinkippo", 40);
+//		db.inst("choi", 60);
+//		db.inst("gomwoong", 70);
+//		db.inst("hello", 50);
+//		db.inst("world", 55);
+		db.rank();
 	}
 	
 	public DB() {
@@ -70,6 +75,38 @@ public class DB {
 		} finally {
 			try {
 				pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void rank() {
+		try {
+			String user, score;
+			String[] rankArr = new String[3];
+			String sql = "select name, score from rankdb order by score desc limit 3";
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			
+			int i = 0;
+			while(rs.next()){
+                user = rs.getString(1);
+                score = rs.getString(2);
+                
+               rankArr[i] = user + "," + score;
+               i++;
+            }
+			for(i = 0; i < 3; i++) {
+				System.out.println((i+1) + "등: " + rankArr[i]);
+			}
+			System.out.println();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				stmt.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
