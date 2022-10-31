@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Label;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -21,28 +22,28 @@ import javax.xml.stream.events.Comment;
 
 public class ranking extends JFrame {
 
-	private Font mainFont;
-	private Font subFont;
-	private Font inputFont;
-	private JTextArea firstrank;
-	private JTextArea secondrank;
-	private JTextArea thirdrank;
-	private JTextArea firstcmt;
-	private mainMenu mf;
+	private Font mainFont, inputFont;
+	private JLabel firstrank, secondrank, thirdrank, firstcmt;
+	private String[] rankResult;
 	
-	public ranking(mainMenu mf) {
-		this.mf = mf;
+	public ranking() {
 		
 		setTitle("Ranking");
 		setSize(500,600);
 		setResizable(false);
 		
-		mainFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 50);
-		subFont = new Font("ROKAF SLAB SERIF MEDIUM", 0, 19);
+		mainFont = new Font("ROKAF SLAB SERIF MEDIUM", Font.BOLD, 25);
 		inputFont = new Font("ROKAF SLAB SERIF MEDIUM", 0, 14);
 		
 		setUp();
 		setDown();
+		
+		DB db = new DB();
+		rankResult = db.rank();
+		
+		firstrank.setText(rankResult[0]);
+		secondrank.setText(rankResult[1]);
+		thirdrank.setText(rankResult[2]);
 		
 		setVisible(true);
 	}
@@ -57,25 +58,22 @@ public class ranking extends JFrame {
 		step.setBounds(50,30,388,300);
 		up.add(step);
 		
-		firstrank = new JTextArea("1등:",1,15);
-		firstrank.setEditable(false);
+		firstrank = new JLabel();
 		firstrank.setFont(inputFont);
-		firstrank.setBounds(175, 150, 50, 20);
-		firstrank.setBorder(BorderFactory.createEmptyBorder());
+		firstrank.setBounds(195, 115, 100, 50);
+		firstrank.setHorizontalAlignment(JLabel.CENTER);
 		up.add(firstrank);
 		
-		secondrank = new JTextArea("2등:",1,15);
-		secondrank.setEditable(false);
+		secondrank = new JLabel();
 		secondrank.setFont(inputFont);
-		secondrank.setBounds(55, 220, 50, 20);
-		secondrank.setBorder(BorderFactory.createEmptyBorder());
+		secondrank.setBounds(55, 185, 100, 50);
+		secondrank.setHorizontalAlignment(JLabel.CENTER);
 		up.add(secondrank);
 		
-		thirdrank = new JTextArea("3등:",1,15);
-		thirdrank.setEditable(false);
+		thirdrank = new JLabel();
 		thirdrank.setFont(inputFont);
-		thirdrank.setBounds(325, 220, 50, 20);
-		thirdrank.setBorder(BorderFactory.createEmptyBorder());
+		thirdrank.setBounds(325, 185, 100, 50);
+		thirdrank.setHorizontalAlignment(JLabel.CENTER);
 		up.add(thirdrank);
 		
 		add(up, BorderLayout.NORTH);
@@ -96,11 +94,10 @@ public class ranking extends JFrame {
 		cmt.setBounds(145,95,304,120);
 		down.add(cmt);
 		
-		firstcmt = new JTextArea("1등의 한마디:",1,15);
-		firstcmt.setEditable(false);
-		firstcmt.setFont(inputFont);
-		firstcmt.setBounds(215, 120, 200, 200);
-		firstcmt.setBorder(BorderFactory.createEmptyBorder());
+		firstcmt = new JLabel("명예의 전당");
+		firstcmt.setFont(mainFont);
+		firstcmt.setBounds(215, 110, 200, 100);
+		firstcmt.setHorizontalAlignment(JLabel.CENTER);
 		down.add(firstcmt);
 		
 		add(down, BorderLayout.SOUTH);

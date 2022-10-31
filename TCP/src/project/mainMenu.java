@@ -104,7 +104,7 @@ public class mainMenu extends JFrame implements ActionListener {
 			gameStart ready = new gameStart(socket, username);
 			ready.setLocationRelativeTo(this);
 		} else if(obj == btnRank) {
-			ranking rk = new ranking(this);
+			ranking rk = new ranking();
 			rk.setLocationRelativeTo(this);
 		}
 	}

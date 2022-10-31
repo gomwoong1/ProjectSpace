@@ -13,6 +13,7 @@ public class DB {
 	private ResultSet rs = null;
 	private PreparedStatement pstmt = null;
 	private String[] resultArr;
+	private String[] rankArr;
 	
 //	public static void main(String[] args) {
 //		DB db = new DB();
@@ -110,20 +111,19 @@ public class DB {
 		}
 	}
 	
-	public void rank() {
+	public String[] rank() {
 		try {
 			String user, score;
-			String[] rankArr = new String[3];
+			rankArr = new String[3];
 			String sql = "select name, score from rankdb order by score desc limit 3";
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 			
 			int i = 0;
 			while(rs.next()){
-				user = rs.getString(1);
+                user = rs.getString(1);
                 score = rs.getString(2);
-                
-                rankArr[i] = user + "," + score;
+                rankArr[i] = "<html><body><center>" + score + "<p>" + user + "</center></body></html>";
                 i++;
             }
 			System.out.println();
@@ -137,5 +137,6 @@ public class DB {
 				e.printStackTrace();
 			}
 		}
+		return rankArr;
 	}
 }
