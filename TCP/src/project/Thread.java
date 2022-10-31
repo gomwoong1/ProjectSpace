@@ -129,9 +129,9 @@ class SendThread extends Thread{
 	Socket socket = null;
 	private gameFrame gf;
 	private gameStart gs;
-	private resultFrame rf;
 	static private int flag;
 	static private String msg;
+	static private String pid;
 	
 	public SendThread(Socket socket, gameFrame gf) {
 		this.socket = socket;
@@ -145,10 +145,10 @@ class SendThread extends Thread{
 		flag = 2;
 	}
 	
-	public SendThread(Socket socket, resultFrame rf, String msg) {
+	public SendThread(Socket socket, gameFrame gf, String pid) {
 		this.socket = socket;
-		this.rf = rf;
-		this.msg = msg;
+		this.gf = gf;
+		this.pid = pid;
 		flag = 3;
 	}
 	
@@ -166,7 +166,7 @@ class SendThread extends Thread{
 				out.println(client_flag);
 				out.flush();
 			} else if(flag == 3) {
-				out.println(msg);
+				out.println(pid);
 				out.flush(); 
 			}
 		} catch (IOException e) {
@@ -200,6 +200,12 @@ class receiveThread extends Thread{
 	public receiveThread(Socket socekt, resultFrame rf) {
 		this.socket = socekt;
 		this.rf = rf;
+		flag = 3;
+	}
+	
+	public receiveThread(Socket socekt, gameFrame gf, int val) {
+		this.socket = socekt;
+		this.gf = gf;
 		flag = 3;
 	}
 	

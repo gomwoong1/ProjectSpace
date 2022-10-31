@@ -204,19 +204,45 @@ public class gameFrame extends JFrame implements ActionListener{
 				}
 				else {
 					timer.cancel();
-					callProgram();
+					divide();
 				}
 			}
+
 
 		};
 		
 		timer.schedule(task, 0, 1000);
 	}
 	
+	private void divide() {
+		String data;
+		long pid = ProcessHandle.current().pid();
+		Thread sendThread = new SendThread(socket, this, Long.toString(pid)); // 전송
+		sendThread.start();
+		
+		try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+		
+		receiveThread receive = new receiveThread(socket, this, 1);
+		receive.startThread();
+		
+		data = receive.getString();
+		
+		if (data.equals(Long.toString(pid))) {
+			callProgram(); 
+		} else { //pid값 다른 애가 다른 코드로 튕겨냄
+			resultFrame2 rf2 = new resultFrame2(socket, username, score);
+			rf2.setLocationRelativeTo(this);
+			gf.dispose();
+		}
+	}
+	
 	private void callProgram() {
 		resultFrame rf = new resultFrame(socket, username, score);
 		rf.setLocationRelativeTo(this);
-		System.out.println(username + "의 점수: " + score);
 		gf.dispose();
 	}
 	

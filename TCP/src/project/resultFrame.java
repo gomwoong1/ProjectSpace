@@ -22,42 +22,36 @@ public class resultFrame extends JFrame implements ActionListener {
 	private String recv_username; 
 	private Font nameFont;
 	private Font scoreFont;
-//	static long pid;
-
 	private Color winColor;
 	private Color loseColor;
 	private JButton btnExit;
-	
-	public void setData(String data) {
-		this.data = data;
-	}
 	
 	public resultFrame(Socket socket, String useranme, int score) {
 		this.socket = socket;
 		this.username = useranme;
 		my_score = score;
 		
-		long pid = ProcessHandle.current().pid();
-		Thread sendThread = new SendThread(socket, this, Long.toString(pid)); // 전송
-		sendThread.start();
+//		long pid = ProcessHandle.current().pid();
+//		Thread sendThread = new SendThread(socket, this, Long.toString(pid)); // 전송
+//		sendThread.start();
 		
-		try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//		try {
+//            Thread.sleep(100);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//		
+//		receiveThread receive = new receiveThread(socket, this);
+//		receive.startThread();
 		
-		receiveThread receive = new receiveThread(socket, this);
-		receive.startThread();
-		
-		data = receive.getString();
-		
-		if (data.equals(Long.toString(pid))) {
-//			resultFrame2 rf2 = new resultFrame2(null, useranme, score);
-			System.out.println("너가 다른 프레임으로 가라");
-		}
-		
-		System.out.println("최종적으로 받은 상대점수: " + data);
+//		data = receive.getString();
+//		
+//		if (data.equals(Long.toString(pid))) {
+////			resultFrame2 rf2 = new resultFrame2(null, useranme, score);
+//			System.out.println("너가 다른 프레임으로 가라");
+//		}
+//		
+//		System.out.println("최종적으로 받은 상대점수: " + data);
 //		your_score = Integer.parseInt(data);
 		
 //		Thread sendThread2 = new SendThread(socket, this, username); // 전송
@@ -70,7 +64,7 @@ public class resultFrame extends JFrame implements ActionListener {
 		
 //		System.out.println("상대 이름: " + yourname + " ,상대 점수: " + your_score);
 		
-		setTitle("result");
+		setTitle("result!!!");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // 프레임 닫으면 종료되게 설정
 		setSize(800, 600);
 		setResizable(false);  //크기 조절 불가능하게 만듦
