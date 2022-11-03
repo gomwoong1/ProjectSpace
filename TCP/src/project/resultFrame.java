@@ -61,7 +61,7 @@ public class resultFrame extends JFrame implements ActionListener {
 			loser.setText(loserName);
 		} else {
 			try {
-				Thread.sleep(300);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
