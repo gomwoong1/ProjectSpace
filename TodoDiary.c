@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
-// 년,월,일 데이터 저장 구조체 (전역)
+// 년,월,일 데이터 저장 구조체
 typedef struct{
     int year;
     int month;
@@ -12,13 +13,14 @@ typedef struct{
 void printWelcome();
 void printInfo();
 MYTIME getTime();
-MYTIME TM;
+MYTIME TODAY, SELDATE;
 
 int main() {
-    TM = getTime();
+    TODAY = getTime();
     printWelcome();
-    printf("오늘 날짜는 %d년 %d월 %d일 입니다.", TM.year, TM.month, TM.day);
+
     
+
     return 0;
 }
 
@@ -26,15 +28,29 @@ int main() {
 void printWelcome(){
     system("clear");
     printf("-------- Welcome To TodoDiary --------\n\n");
+    printf("오늘은 %d년 %d월 %d일 입니다.\n", TODAY.year, TODAY.month, TODAY.day);
 }
 
 // 도움말 출력 함수
 void printInfo(){
     system("clear");
     printf("-------- 도움말 --------\n\n");
-    printf("사용중 날짜를 변경하려면 \n");
-    printf("\n\n");
-    printf("제작: 201945018 컴퓨터시스템과 2학년김지웅");
+    printf("\'TodoDiary\'는 Todo list와 다이어리를 결합한 프로그램입니다.\n\n");
+    printf("기록: 기록은 오늘 날짜만 가능합니다.\n");
+    printf("      할 일을 먼저 생성한 뒤, 할 일을 선택하고 시작하면 타이어가 자동 실행됩니다.\n");
+    printf("      이 후 할 일 기록을 종료하면 자동으로 진행시간이 저장되고, 메모를 기록할 수 있습니다.\n\n");
+    printf("조회: 일자를 지정하면 기록한 내용을 열람할 수 있습니다. \n");
+    printf("      조회된 기록은 할 일 목록, 각 할 일의 소요시간 및 메모가 표시됩니다.\n\n");
+    printf("제작: 201945018 컴퓨터시스템과 2학년 김지웅\n\n");
+    printf("-------- 명령어 --------\n");
+    printf("기록조회: 입력한 날짜로 기록을 조회합니다.\n");
+    printf("          명령어 형식: \'기록조회: 2022-11-21\'\n\n");
+    printf("기록하기: 기록을 시작합니다.\n");
+    printf("          명령어 형식: \'기록하기'\n\n");
+    printf("할 일 생성: 오늘의 할 일 목록에 할 일을 추가합니다.\n");
+    printf("            명령어 형식: \'할일: 공부하기\'\n\n");
+    printf("메모 수정: 기록된 할 일의 번호를 입력하고 메모를 수정합니다.\n");
+    printf("          명령어 형식: \'메모수정: 1\'\n\n");   
 }
 
 // 오늘 날짜를 받아오는 함수
@@ -42,13 +58,11 @@ MYTIME getTime(){
     struct tm* t;
     time_t base = time(NULL);
 
-    MYTIME time;
-
     t=localtime(&base);
     
-    time.year = t-> tm_year + 1900;
-    time.month = t -> tm_mon + 1;
-    time.day = t -> tm_mday;
+    SELDATE.year = t-> tm_year + 1900;
+    SELDATE.month = t -> tm_mon + 1;
+    SELDATE.day = t -> tm_mday;
 
-    return time;
+    return SELDATE;
 }
