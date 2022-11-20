@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#define CMDSIZE 100
 
 // 년,월,일 데이터 저장 구조체
 typedef struct{
@@ -19,7 +20,21 @@ int main() {
     TODAY = getTime();
     printWelcome();
 
-    
+    while(1){
+        char cmd[CMDSIZE];
+        printf("명령어 입력 >> ");
+        fgets(cmd, CMDSIZE, stdin);
+
+        if( strcmp(cmd, "도움말\n") == 0 )
+            printInfo();
+        else if( strcmp(cmd, "종료\n") == 0 ) {
+            system("clear");
+            printf("프로그램을 종료합니다.\n");
+            break;
+        }
+        else
+            printf("잘못된 명령어입니다. 도움이 필요하면 \'도움말\'을 입력하세요.\n\n");
+    }
 
     return 0;
 }
@@ -45,12 +60,14 @@ void printInfo(){
     printf("-------- 명령어 --------\n");
     printf("기록조회: 입력한 날짜로 기록을 조회합니다.\n");
     printf("          명령어 형식: \'기록조회: 2022-11-21\'\n\n");
-    printf("기록하기: 기록을 시작합니다.\n");
-    printf("          명령어 형식: \'기록하기'\n\n");
+    printf("기록하기: 할 일의 번호를 입력하고 기록을 시작합니다.\n");
+    printf("          명령어 형식: \'기록하기: 1'\n\n");
     printf("할 일 생성: 오늘의 할 일 목록에 할 일을 추가합니다.\n");
     printf("            명령어 형식: \'할일: 공부하기\'\n\n");
     printf("메모 수정: 기록된 할 일의 번호를 입력하고 메모를 수정합니다.\n");
     printf("          명령어 형식: \'메모수정: 1\'\n\n");   
+    printf("종료하기: 프로그램을 종료합니다.\n");
+    printf("          명령어 형식: \'종료\'\n\n");
 }
 
 // 오늘 날짜를 받아오는 함수
