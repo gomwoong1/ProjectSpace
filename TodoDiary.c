@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include "/usr/include/mysql/mysql.h"
 #define CMDSIZE 100
 
 // 년,월,일 데이터 저장 구조체
