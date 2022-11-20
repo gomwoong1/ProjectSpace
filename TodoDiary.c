@@ -17,25 +17,49 @@ void printInfo();
 MYTIME getTime();
 MYTIME TODAY, SELDATE;
 
+MYSQL *conn;
+MYSQL_RES *res;
+MYSQL_ROW row;
+char *server = "localhost";               
+char *user = "todo";
+char *password = "2022iot";
+char *database = "iot";
+
 int main() {
     TODAY = getTime();
     printWelcome();
 
-    while(1){
-        char cmd[CMDSIZE];
-        printf("명령어 입력 >> ");
-        fgets(cmd, CMDSIZE, stdin);
+    conn = mysql_init(NULL);
 
-        if( strcmp(cmd, "도움말\n") == 0 )
-            printInfo();
-        else if( strcmp(cmd, "종료\n") == 0 ) {
-            system("clear");
-            printf("프로그램을 종료합니다.\n");
-            break;
-        }
-        else
-            printf("잘못된 명령어입니다. 도움이 필요하면 \'도움말\'을 입력하세요.\n\n");
+    if (!mysql_real_connect(conn, server, user, password, NULL, 0, NULL, 0)) {
+        fprintf(stderr, "%s\n", mysql_error(conn));   
+        exit(1);   
     }
+
+    printf("연결 성공\n");
+
+    if(mysql_select_db(conn, database) != 0){
+        mysql_close(conn);
+        printf("DB 선택 실패.\n");
+        exit(1);
+    }
+    printf("DB 선택 성공.\n");
+
+    // while(1){
+    //     char cmd[CMDSIZE];
+    //     printf("명령어 입력 >> ");
+    //     fgets(cmd, CMDSIZE, stdin);  
+
+    //     if( strcmp(cmd, "도움말\n") == 0 )
+    //         printInfo();
+    //     else if( strcmp(cmd, "종료\n") == 0 ) {
+    //         system("clear");
+    //         printf("프로그램을 종료합니다.\n");
+    //         break;
+    //     }
+    //     else
+    //         printf("잘못된 명령어입니다. 도움이 필요하면 \'도움말\'을 입력하세요.\n\n");
+    // }
 
     return 0;
 }
