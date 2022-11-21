@@ -16,7 +16,8 @@ void printWelcome();
 void printInfo();
 MYTIME getTime();
 void connDB();
-void selectQuery();
+void selectQuery(char *);
+char* makeSql(char *);
 
 MYTIME TODAY, SELDATE;
 MYSQL *conn;
@@ -27,8 +28,6 @@ int main() {
     TODAY = getTime();
     printWelcome();
 
-    // connDB();
-    // selectQuery("select * from list");
 
     while(1){
         char cmd[CMDSIZE];
@@ -47,7 +46,11 @@ int main() {
                 i++;
             }
 
-            
+            if( strcmp(strArr[0], "기록조회\n") ) {
+                connDB();
+                char *sql = makeSql(strArr[1]);
+                selectQuery(sql);
+            }
 
         }
         else
@@ -85,7 +88,7 @@ void printInfo(){
     printf("조회: 일자를 지정하면 기록한 내용을 열람할 수 있습니다. \n");
     printf("      조회된 기록은 할 일 목록, 각 할 일의 소요시간 및 메모가 표시됩니다.\n\n");
     printf("제작: 201945018 컴퓨터시스템과 2학년 김지웅\n\n");
-    printf("-------- 명령어 --------\n");
+    printf("-------- 명령어 --------\n\n");
     printf("기록조회: 입력한 날짜로 기록을 조회합니다.\n");
     printf("          명령어 형식: \'기록조회:2022-11-21\'\n\n");
     printf("기록하기: 할 일의 번호를 입력하고 기록을 시작합니다.\n");
@@ -150,4 +153,14 @@ void selectQuery(char *query){
     }
 
     mysql_close(conn);
+}
+
+char* makeSql(char *value){
+    static char str[100] = "select * from list where date='";
+
+    strcat(str, value);
+    str[strlen(str)-1] = '\0';
+    strcat(str,"'");
+
+    return str;
 }
