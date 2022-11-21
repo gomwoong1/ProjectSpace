@@ -52,6 +52,7 @@ int main() {
                 selectQuery(sql);
             }
 
+
         }
         else
         {
@@ -74,7 +75,7 @@ int main() {
 void printWelcome(){
     system("clear");
     printf("-------- Welcome To TodoDiary --------\n\n");
-    printf("오늘은 %d년 %d월 %d일 입니다.\n", TODAY.year, TODAY.month, TODAY.day);
+    printf("오늘은 %d년 %d월 %d일 입니다.\n\n", TODAY.year, TODAY.month, TODAY.day);
 }
 
 // 도움말 출력 함수
@@ -140,6 +141,7 @@ void connDB(){
 }
 
 void selectQuery(char *query){
+    int count = 0;
     // 쿼리문 질의. 성공시 false 반환.
     if (mysql_query(conn, query))
         printf("Query Error!\n");
@@ -148,13 +150,20 @@ void selectQuery(char *query){
     res = mysql_store_result(conn);
 
     // 가져온 레코드 출력
-    while( (row=mysql_fetch_row(res))!=NULL){
-        printf("%s %s %s\n", row[0], row[1], row[2]); 
-    }
+    printf("+--------+--------------+------------+\n");
+    printf("|  번호　|     날짜     |  경과시간  |\n");
+    printf("+--------+--------------+------------+\n");
 
+    while( (row=mysql_fetch_row(res))!=NULL){
+        count++;
+        printf("|%8s|%14s|%12s|\n", row[0], row[1], row[2]);
+    }
+    printf("+--------+--------------+------------+\n\n");
+    printf("총 %d개의 할 일이 조회되었습니다.\n\n", count);
     mysql_close(conn);
 }
 
+// 쿼리 문자열 만들어주는 함수
 char* makeSql(char *value){
     static char str[100] = "select * from list where date='";
 
