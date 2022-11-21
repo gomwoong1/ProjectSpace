@@ -204,8 +204,16 @@ void makeSql(char * sql, char *value, int flag){
         res = mysql_store_result(conn);
         while((row=mysql_fetch_row(res))!=NULL){
             strcpy(max, row[0]);
-
         }
-        // strcpy(sql, "insert into list ");
+        strcpy(sql, "insert into list(number, todo, date) values(");
+        strcat(sql, max);
+        strcat(sql,",'");
+        strcat(sql, value);
+        sql[strlen(sql)-1] = '\0';
+        strcat(sql, "',");
+        strcat(sql, nowDate);
+        strcat(sql, ")");
+
+        printf("SQL Test: %s\n", sql);
     }
 }
