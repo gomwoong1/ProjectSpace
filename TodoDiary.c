@@ -17,17 +17,17 @@ void printInfo();
 MYTIME getTime();
 void connDB();
 void selectQuery(char *);
-char* makeSql(char *);
+void makeSql(char *, char *, int);
 
 MYTIME TODAY, SELDATE;
 MYSQL *conn;
 MYSQL_RES *res;
 MYSQL_ROW row;
 
+// 메인함수
 int main() {
     TODAY = getTime();
     printWelcome();
-
 
     while(1){
         char cmd[CMDSIZE];
@@ -45,14 +45,24 @@ int main() {
                 temp = strtok(NULL, " ");
                 i++;
             }
+            printf("Arr[0]: %s, Arr[1]: %s", strArr[0], strArr[1]);
+            if( strcmp(strArr[0], "기록조회") == 0) {
+                char sql[100];
+                system("clear");
+                printf("조회일자: %s\n", strArr[1]);
 
-            if( strcmp(strArr[0], "기록조회\n") ) {
                 connDB();
-                char *sql = makeSql(strArr[1]);
+                makeSql(sql, strArr[1], 1);
                 selectQuery(sql);
             }
-
-
+            else if (strcmp(strArr[0], "추가") == 0) {
+                char sql[100];
+                system("clear");
+                printf("할 일이 추가되었습니다.\n");
+                
+                // conn();
+                // makeSql(sql, strArr[1], 2);
+            }
         }
         else
         {
@@ -95,7 +105,7 @@ void printInfo(){
     printf("기록하기: 할 일의 번호를 입력하고 기록을 시작합니다.\n");
     printf("          명령어 형식: \'기록하기:1'\n\n");
     printf("할 일 생성: 오늘의 할 일 목록에 할 일을 추가합니다.\n");
-    printf("            명령어 형식: \'할일:공부하기\'\n\n");
+    printf("            명령어 형식: \'추가:공부하기\'\n\n");
     printf("메모 수정: 기록된 할 일의 번호를 입력하고 메모를 수정합니다.\n");
     printf("          명령어 형식: \'메모수정:1\'\n\n");   
     printf("종료하기: 프로그램을 종료합니다.\n");
@@ -143,33 +153,38 @@ void connDB(){
 void selectQuery(char *query){
     int count = 0;
     // 쿼리문 질의. 성공시 false 반환.
-    if (mysql_query(conn, query))
+    if (mysql_query(conn, query)) {
         printf("Query Error!\n");
-
-    // 쿼리문 결과 res에 저장
-    res = mysql_store_result(conn);
-
-    // 가져온 레코드 출력
-    printf("+--------+--------------+------------+\n");
-    printf("|  번호　|     날짜     |  경과시간  |\n");
-    printf("+--------+--------------+------------+\n");
-
-    while( (row=mysql_fetch_row(res))!=NULL){
-        count++;
-        printf("|%8s|%14s|%12s|\n", row[0], row[1], row[2]);
     }
-    printf("+--------+--------------+------------+\n\n");
-    printf("총 %d개의 할 일이 조회되었습니다.\n\n", count);
+    else {
+        // 쿼리문 결과 res에 저장
+        res = mysql_store_result(conn);
+
+        // 가져온 레코드 출력
+        printf("+--------+--------------+------------+----------------------------------------------------------------------------------+\n");
+        printf("|  번호　|     날짜     |  경과시간  |  메모                                                                            |\n");
+        printf("+--------+--------------+------------+----------------------------------------------------------------------------------+\n");
+
+        while( (row=mysql_fetch_row(res))!=NULL){
+            count++;
+            printf("|%8s|%14s|%12s|%-82s|\n", row[0], row[1], row[2], row[3]);
+        }
+        printf("+--------+--------------+------------+----------------------------------------------------------------------------------+\n\n");
+        printf("총 %d개의 할 일이 조회되었습니다.\n\n", count);
+
+    }
     mysql_close(conn);
 }
 
 // 쿼리 문자열 만들어주는 함수
-char* makeSql(char *value){
-    static char str[100] = "select * from list where date='";
-
-    strcat(str, value);
-    str[strlen(str)-1] = '\0';
-    strcat(str,"'");
-
-    return str;
+void makeSql(char * sql, char *value, int flag){
+    if( flag == 1){
+        strcpy(sql, "select * from list where date='");
+        strcat(sql, value);
+        sql[strlen(sql)-1] = '\0';
+        strcat(sql,"'");
+    }
+    else if (flag == 2){
+        
+    }
 }
