@@ -161,15 +161,15 @@ void selectQuery(char *query){
         res = mysql_store_result(conn);
 
         // 가져온 레코드 출력
-        printf("+--------+--------------+------------+----------------------------------------------------------------------------------+\n");
-        printf("|  번호　|     날짜     |  경과시간  |  메모                                                                            |\n");
-        printf("+--------+--------------+------------+----------------------------------------------------------------------------------+\n");
+        printf("+--------+---------------------+--------------+------------+---------------------------------------------------+\n");
+        printf("|  번호　|        할 일        |     날짜     |  경과시간  |  메모                                             |\n");
+        printf("+--------+---------------------+--------------+------------+---------------------------------------------------+\n");
 
         while( (row=mysql_fetch_row(res))!=NULL){
             count++;
-            printf("|%8s|%14s|%12s|%-82s|\n", row[0], row[1], row[2], row[3]);
+            printf("| %-7s| %-20s| %-13s| %-11s| %-50s|\n", row[0], row[1], row[2], row[3], row[4]);
         }
-        printf("+--------+--------------+------------+----------------------------------------------------------------------------------+\n\n");
+        printf("+--------+---------------------+--------------+------------+---------------------------------------------------+\n\n");
         printf("총 %d개의 할 일이 조회되었습니다.\n\n", count);
 
     }
@@ -185,7 +185,7 @@ void makeSql(char * sql, char *value, int flag){
         strcat(sql,"'");
     }
     else if (flag == 2){
-        char sql[100] = "select count(number) from list where date=";
+        char sql[100] = "select count(number)+1 from list where date=";
         char nowDate[30]="'", year[5], month[5], day[5];
         char max[5];
         sprintf(year, "%d", TODAY.year);
@@ -204,7 +204,8 @@ void makeSql(char * sql, char *value, int flag){
         res = mysql_store_result(conn);
         while((row=mysql_fetch_row(res))!=NULL){
             strcpy(max, row[0]);
+
         }
-        printf("max값: %s", max);
+        // strcpy(sql, "insert into list ");
     }
 }
