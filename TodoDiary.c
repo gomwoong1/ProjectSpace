@@ -14,7 +14,6 @@ typedef struct{
 
 void printWelcome();
 void printInfo();
-// MYTIME getTime();
 void getTime();
 void connDB();
 void selectQuery(char *);
@@ -123,7 +122,6 @@ void getTime(){
     TODAY.year = t-> tm_year + 1900;
     TODAY.month = t -> tm_mon + 1;
     TODAY.day = t -> tm_mday;
-
 }
 
 void connDB(){
@@ -185,35 +183,20 @@ void makeSql(char * sql, char *value, int flag){
         strcat(sql,"'");
     }
     else if (flag == 2){
-        char sql[100] = "select count(number)+1 from list where date=";
-        char nowDate[30]="'", year[5], month[5], day[5];
-        char max[5];
-        sprintf(year, "%d", TODAY.year);
-        sprintf(month, "%d", TODAY.month);
-        sprintf(day, "%d", TODAY.day);
+        char sql[255], temp[20];
+        strcpy(temp, value);
+        temp[strlen(temp)-1] = '\0';
         
-        strcat(nowDate, year);
-        strcat(nowDate, "-");
-        strcat(nowDate, month);
-        strcat(nowDate, "-");
-        strcat(nowDate, day);
-        strcat(nowDate, "'");
-        strcat(sql, nowDate);
+        // sprintf("저장공간", 포매팅 형식, 값들);
+        sprintf(sql, "select count(number)+1 from list where date='%d-%d-%d'", TODAY.year, TODAY.month, TODAY.day);
 
         mysql_query(conn, sql);
         res = mysql_store_result(conn);
         while((row=mysql_fetch_row(res))!=NULL){
-            strcpy(max, row[0]);
+            sprintf(sql, "insert into list(number, todo, date) values(%s,'%s','%d-%d-%d')", row[0], temp, TODAY.year, TODAY.month, TODAY.day);
         }
-        strcpy(sql, "insert into list(number, todo, date) values(");
-        strcat(sql, max);
-        strcat(sql,",'");
-        strcat(sql, value);
-        sql[strlen(sql)-1] = '\0';
-        strcat(sql, "',");
-        strcat(sql, nowDate);
-        strcat(sql, ")");
 
-        printf("SQL Test: %s\n", sql);
+        printf("TEST: %s", sql);
+        // printf("SQL Test: %s\n", sql);
     }
 }
