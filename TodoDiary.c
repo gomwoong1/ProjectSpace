@@ -14,19 +14,20 @@ typedef struct{
 
 void printWelcome();
 void printInfo();
-MYTIME getTime();
+// MYTIME getTime();
+void getTime();
 void connDB();
 void selectQuery(char *);
 void makeSql(char *, char *, int);
 
-MYTIME TODAY, SELDATE;
+MYTIME TODAY;
 MYSQL *conn;
 MYSQL_RES *res;
 MYSQL_ROW row;
 
 // 메인함수
 int main() {
-    TODAY = getTime();
+    getTime();
     printWelcome();
 
     while(1){
@@ -45,7 +46,7 @@ int main() {
                 temp = strtok(NULL, " ");
                 i++;
             }
-            printf("Arr[0]: %s, Arr[1]: %s", strArr[0], strArr[1]);
+            
             if( strcmp(strArr[0], "기록조회") == 0) {
                 char sql[100];
                 system("clear");
@@ -60,8 +61,8 @@ int main() {
                 system("clear");
                 printf("할 일이 추가되었습니다.\n");
                 
-                // conn();
-                // makeSql(sql, strArr[1], 2);
+                connDB();
+                makeSql(sql, strArr[1], 2);
             }
         }
         else
@@ -113,17 +114,16 @@ void printInfo(){
 }
 
 // 오늘 날짜를 받아오는 함수
-MYTIME getTime(){
+void getTime(){
     struct tm* t;
     time_t base = time(NULL);
 
     t=localtime(&base);
     
-    SELDATE.year = t-> tm_year + 1900;
-    SELDATE.month = t -> tm_mon + 1;
-    SELDATE.day = t -> tm_mday;
+    TODAY.year = t-> tm_year + 1900;
+    TODAY.month = t -> tm_mon + 1;
+    TODAY.day = t -> tm_mday;
 
-    return SELDATE;
 }
 
 void connDB(){
@@ -178,13 +178,33 @@ void selectQuery(char *query){
 
 // 쿼리 문자열 만들어주는 함수
 void makeSql(char * sql, char *value, int flag){
-    if( flag == 1){
+    if(flag == 1){
         strcpy(sql, "select * from list where date='");
         strcat(sql, value);
         sql[strlen(sql)-1] = '\0';
         strcat(sql,"'");
     }
     else if (flag == 2){
+        char sql[100] = "select count(number) from list where date=";
+        char nowDate[30]="'", year[5], month[5], day[5];
+        char max[5];
+        sprintf(year, "%d", TODAY.year);
+        sprintf(month, "%d", TODAY.month);
+        sprintf(day, "%d", TODAY.day);
         
+        strcat(nowDate, year);
+        strcat(nowDate, "-");
+        strcat(nowDate, month);
+        strcat(nowDate, "-");
+        strcat(nowDate, day);
+        strcat(nowDate, "'");
+        strcat(sql, nowDate);
+
+        mysql_query(conn, sql);
+        res = mysql_store_result(conn);
+        while((row=mysql_fetch_row(res))!=NULL){
+            strcpy(max, row[0]);
+        }
+        printf("max값: %s", max);
     }
 }
