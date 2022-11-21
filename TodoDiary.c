@@ -15,35 +15,20 @@ typedef struct{
 void printWelcome();
 void printInfo();
 MYTIME getTime();
-MYTIME TODAY, SELDATE;
+void connDB();
+void selectQuery();
 
+MYTIME TODAY, SELDATE;
 MYSQL *conn;
 MYSQL_RES *res;
 MYSQL_ROW row;
-char *server = "localhost";               
-char *user = "todo";
-char *password = "2022iot";
-char *database = "iot";
 
 int main() {
     TODAY = getTime();
     printWelcome();
 
-    conn = mysql_init(NULL);
-
-    if (!mysql_real_connect(conn, server, user, password, NULL, 0, NULL, 0)) {
-        fprintf(stderr, "%s\n", mysql_error(conn));   
-        exit(1);   
-    }
-
-    printf("연결 성공\n");
-
-    if(mysql_select_db(conn, database) != 0){
-        mysql_close(conn);
-        printf("DB 선택 실패.\n");
-        exit(1);
-    }
-    printf("DB 선택 성공.\n");
+    connDB();
+    selectQuery("select * from list");
 
     // while(1){
     //     char cmd[CMDSIZE];
@@ -107,4 +92,44 @@ MYTIME getTime(){
     SELDATE.day = t -> tm_mday;
 
     return SELDATE;
+}
+
+void connDB(){
+    char *server = "localhost";               
+    char *user = "todo";
+    char *password = "2022iot";
+    char *database = "iot";
+
+    // 연결 객체 초기화
+    conn = mysql_init(NULL);
+
+    // Mysql 연결
+    if (!mysql_real_connect(conn, server, user, password, NULL, 0, NULL, 0)) {
+        printf("DB 연결 에러! 에러코드: ");
+        fprintf(stderr, "%s\n", mysql_error(conn));
+        exit(1);   
+    }
+
+    // Database 연결
+    if(mysql_select_db(conn, database) != 0){
+        mysql_close(conn);
+        printf("DB가 없습니다. 프로그램을 종료합니다.\n");
+        exit(1);
+    }
+}
+
+void selectQuery(char *query){
+    // 쿼리문 질의. 성공시 false 반환.
+    if (mysql_query(conn, query))
+        printf("Query Error!\n");
+
+    // 쿼리문 결과 res에 저장
+    res = mysql_store_result(conn);
+
+    // 가져온 레코드 출력
+    while( (row=mysql_fetch_row(res))!=NULL){
+        printf("%s %s %s\n", row[0], row[1], row[2]); 
+    }
+
+    mysql_close(conn);
 }

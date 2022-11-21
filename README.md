@@ -16,7 +16,7 @@ PW: 2022iot
 - 우분투에 mysql server 설치
 sudo apt-get install mysql-server
 
-에러가 있다먄 mysql 리스타트
+에러가 있다면 mysql 리스타트
 sudo service mysql restart
 
 * 우분투에 설치한 것과 윈도우에 설치한 것은 서로 다름.
