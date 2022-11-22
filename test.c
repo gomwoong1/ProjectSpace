@@ -2,9 +2,16 @@
 #include <termio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <pthread.h>
+
+
+char str[100];
+int d;
+void* cntStr(void *);
+void gotoxy(int, int);
 
 int getch(void){
-    
+    // include termio.h
     int ch;
 
     struct termios old;
@@ -27,11 +34,10 @@ int getch(void){
 }
 
 int main(int argc, char* argv[]){
+    pthread_t cntStrTh;
     char a[5];
-    char str[100];
-    int d;
-    int cnt = 0;
 
+    pthread_create(&cntStrTh, NULL, cntStr,NULL);
 	while (1){
 		d = getch();
         sprintf(a, "%c", d);
@@ -47,12 +53,24 @@ int main(int argc, char* argv[]){
             system("clear");
             printf("%s", str);
         }
-        cnt = strlen(str);
 	}
+    pthread_join(cntStrTh, NULL);
+
     str[strlen(str)-1] = '\0';
     printf("입력된 문자열: %s\n", str);
-    printf("문자열 길이: %d\n", cnt);
 
 	return 0;
 }
 
+void* cntStr(void* arg) {
+    // include pthread.h 
+    // include ncurses.h
+
+    int cnt = 0;
+
+    while(d != 10){
+        cnt = strlen(str);
+        printf("%d / 50", cnt);
+    }
+    pthread_exit(NULL);
+}
