@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <termio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int getch(void){
     
@@ -26,21 +27,32 @@ int getch(void){
 }
 
 int main(int argc, char* argv[]){
-    char a;
+    char a[5];
     char str[100];
-     d;
+    int d;
+    int cnt = 0;
 
 	while (1){
 		d = getch();
-        a = (char) d;
-        // sprintf(str,"%d", d);
+        sprintf(a, "%c", d);
+        strcat(str, a);
 
-		printf("입력된 키 값: %c\n", a);
+		printf("%s", a);
         
         if (d == 10)
             break;
 
+        if (d == 127){
+            str[strlen(str)-2] = '\0';
+            system("clear");
+            printf("%s", str);
+        }
+        cnt = strlen(str);
 	}
+    str[strlen(str)-1] = '\0';
+    printf("입력된 문자열: %s\n", str);
+    printf("문자열 길이: %d\n", cnt);
+
 	return 0;
 }
 
