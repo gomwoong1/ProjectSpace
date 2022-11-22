@@ -19,6 +19,7 @@ void connDB();
 void selectQuery(char *);
 void insertQuery(char *);
 void printList();
+void updateMemo(char *);
 
 MYTIME TODAY;
 MYSQL *conn;
@@ -45,13 +46,14 @@ int main() {
                 temp = strtok(NULL, "\0");
             }
             
-            if( strcmp(strArr[0], "기록조회") == 0)
+            if(strcmp(strArr[0], "기록조회") == 0)
                 selectQuery(strArr[1]);
             
             else if (strcmp(strArr[0], "추가") == 0)
                 insertQuery(strArr[1]);
             
-        }
+            else if (strcmp(strArr[0], "메모수정") == 0)
+                updateMemo();
         else
         {
             if( strcmp(cmd, "도움말\n") == 0 )
@@ -117,7 +119,7 @@ void getTime(){
 }
 
 void connDB(){
-    char *server = "localhost";               
+    char *server = "localhost";
     char *user = "todo";
     char *password = "2022iot";
     char *database = "iot";
@@ -203,4 +205,12 @@ void printList(){
     char today[20];
     sprintf(today, "%d-%d-%d ", TODAY.year, TODAY.month, TODAY.day);
     selectQuery(today);
+}
+
+void updateMemo(char *number){
+    char sql[255];
+    number[strlen(number)-1] = '\0';
+
+    system("clear");
+    printf("최대 50자");
 }
