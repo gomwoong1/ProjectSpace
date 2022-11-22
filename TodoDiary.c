@@ -3,6 +3,8 @@
 #include <time.h>
 #include <string.h>
 #include "/usr/include/mysql/mysql.h"
+#include <termio.h>
+#include <pthread.h>
 #define CMDSIZE 100
 
 // 년,월,일 데이터 저장 구조체
@@ -20,11 +22,16 @@ void selectQuery(char *);
 void insertQuery(char *);
 void printList();
 void updateMemo(char *);
+int getAscii();
+void* cntStr(void *);
+void checkChar();
 
 MYTIME TODAY;
 MYSQL *conn;
 MYSQL_RES *res;
 MYSQL_ROW row;
+char str[100];
+int d, flag = 0;
 
 // 메인함수
 int main() {
@@ -53,7 +60,8 @@ int main() {
                 insertQuery(strArr[1]);
             
             else if (strcmp(strArr[0], "메모수정") == 0)
-                updateMemo();
+                updateMemo(strArr[1]);
+        }
         else
         {
             if( strcmp(cmd, "도움말\n") == 0 )
@@ -201,16 +209,110 @@ void insertQuery(char *value){
     mysql_close(conn);
 }
 
+// 오늘의 할 일 리스트 출력하는 함수
 void printList(){
     char today[20];
     sprintf(today, "%d-%d-%d ", TODAY.year, TODAY.month, TODAY.day);
     selectQuery(today);
 }
 
+// 메모 수정해주는 함수
 void updateMemo(char *number){
     char sql[255];
-    number[strlen(number)-1] = '\0';
+    // number[strlen(number)-1] = '\0';
 
+    connDB();
+    sprintf(sql, "select memo from list where number=%s", number);
+    mysql_query(conn, sql);
+    res = mysql_store_result(conn);
+
+    // select memo 먼저 데이터 가져오는데 만약 공백이 아니라면 가져옴
+    // 가져온 데이터 str에 저장
+
+    // checkChar();
+
+    //이 함수 끝나기 전에 str 초기화
+    mysql_close(conn);
+}
+
+// 메모 작성에 활용.
+// 버퍼에 문자 입력받지 않고 문자를 확인함 
+// getch() >> 리눅스에선 사용 불가능하기 때문에 사용자함수 작성
+int getAscii(){
+    // include termio.h
+    int ch;
+
+    struct termios old;
+    struct termios new;
+
+    tcgetattr(0, &old);
+    new = old;
+
+    new.c_lflag &= ~(ICANON|ECHO);
+    new.c_cc[VMIN] = 1;
+    new.c_cc[VTIME] = 0;
+
+    tcsetattr(0, TCSAFLUSH, &new);
+
+    ch=getchar();
+
+    tcsetattr(0, TCSAFLUSH, &old);
+
+    return ch;
+}
+
+// 문자 하나씩 받으면서 글자수세는 함수
+void checkChar(){
+    pthread_t cntStrTh;
+    char a[5];
     system("clear");
-    printf("최대 50자");
+    printf("메모를 수정해주세요.\n\n");
+
+
+    pthread_create(&cntStrTh, NULL, cntStr,NULL);
+	while (1){
+        d = getAscii();
+        sprintf(a, "%c", d);
+        strcat(str, a);
+
+        printf ("\x1b[%d;%dH", 3,1);
+		printf("%s", str);
+        flag = 1;
+
+        if (d == 10){
+            flag = 2;
+            break;
+        }
+
+        if (d == 127){
+            str[strlen(str)-2] = '\0';
+            system("clear");
+            printf ("\x1b[%d;%dH", 4,1);
+            printf("%s", str);
+            flag = 1;
+        }
+
+        d = 0;
+	}
+    pthread_join(cntStrTh, NULL);
+
+    str[strlen(str)-1] = '\0';
+    // printf("입력된 문자열: %s\n", str);
+}
+
+// 글자수 실시간으로 출력해주는 함수 (쓰레드)
+void* cntStr(void* arg) {
+    // include pthread.h 
+    int cnt = 0;
+
+    while(! (flag == 2)){
+        if (flag){
+            cnt = strlen(str);
+            printf ("\x1b[%d;%dH", 2,1);
+            printf("%d / 50\n", cnt);
+            flag = 0;
+        }
+    }   
+
+    pthread_exit(NULL);
 }
