@@ -18,6 +18,7 @@ void getTime();
 void connDB();
 void selectQuery(char *);
 void insertQuery(char *);
+void printList();
 
 MYTIME TODAY;
 MYSQL *conn;
@@ -38,33 +39,25 @@ int main() {
         {
             char *temp = strtok(cmd, ":"); // 명령어 종류와 명령어 값 분리
             char *strArr[2];
-            int i = 0;
             
-            while (temp != NULL) {
-                strArr[i] = temp;
-                temp = strtok(NULL, " ");
-                i++;
+            for (int cnt=0; cnt < 2; cnt++) {
+                strArr[cnt] = temp;
+                temp = strtok(NULL, "\0");
             }
             
-            if( strcmp(strArr[0], "기록조회") == 0) {
-                system("clear");
-                printf("조회일자: %s\n", strArr[1]);
-
-                connDB();
+            if( strcmp(strArr[0], "기록조회") == 0)
                 selectQuery(strArr[1]);
-            }
-            else if (strcmp(strArr[0], "추가") == 0) {
-                system("clear");
-                printf("할 일이 추가되었습니다.\n");
-                
-                connDB();
+            
+            else if (strcmp(strArr[0], "추가") == 0)
                 insertQuery(strArr[1]);
-            }
+            
         }
         else
         {
             if( strcmp(cmd, "도움말\n") == 0 )
                 printInfo();
+            else if ( strcmp(cmd, "목록\n") == 0 )
+                printList();
             else if( strcmp(cmd, "종료\n") == 0 ) {
                 system("clear");
                 printf("프로그램을 종료합니다.\n");
@@ -101,6 +94,8 @@ void printInfo(){
     printf("          명령어 형식: \'기록조회:2022-11-21\'\n\n");
     printf("기록하기: 할 일의 번호를 입력하고 기록을 시작합니다.\n");
     printf("          명령어 형식: \'기록하기:1'\n\n");
+    printf("목록보기: 오늘 할 일의 목록을 확인합니다.\n");
+    printf("          명령어 형식: \'목록'\n\n");
     printf("할 일 생성: 오늘의 할 일 목록에 할 일을 추가합니다.\n");
     printf("            명령어 형식: \'추가:공부하기\'\n\n");
     printf("메모 수정: 기록된 할 일의 번호를 입력하고 메모를 수정합니다.\n");
@@ -145,11 +140,14 @@ void connDB(){
     }
 }
 
+// select query 생성 및 질의 함수
 void selectQuery(char *value){
     int count = 0;
     char sql[255];
     value[strlen(value)-1] = '\0';
     sprintf(sql, "select * from list where date='%s'", value);
+
+    connDB();
 
     // 쿼리문 질의. 성공시 false 반환.
     if (mysql_query(conn, sql)) {
@@ -159,7 +157,9 @@ void selectQuery(char *value){
         // 쿼리문 결과 res에 저장
         res = mysql_store_result(conn);
 
+        system("clear");
         // 가져온 레코드 출력
+        printf("조회일자: %s\n", value);
         printf("+--------+---------------------+--------------+------------+---------------------------------------------------+\n");
         printf("|  번호　|        할 일        |     날짜     |  경과시간  |  메모                                             |\n");
         printf("+--------+---------------------+--------------+------------+---------------------------------------------------+\n");
@@ -175,19 +175,32 @@ void selectQuery(char *value){
     mysql_close(conn);
 }
 
-// 쿼리 문자열 만들어주는 함수
+// insert query 생성 및 질의 함수
 void insertQuery(char *value){
     char sql[255];
     value[strlen(value)-1] = '\0';
+
+    system("clear");
+    printf("할 일이 추가되었습니다.\n");
+    connDB();
 
     // sprintf("저장공간", 포매팅 형식, 값들);
     sprintf(sql, "select count(number)+1 from list where date='%d-%d-%d'", TODAY.year, TODAY.month, TODAY.day);
     mysql_query(conn, sql);
     res = mysql_store_result(conn);
-    
+
     while((row=mysql_fetch_row(res))!=NULL){
         sprintf(sql, "insert into list(number, todo, date) values(%s,'%s','%d-%d-%d')", row[0], value, TODAY.year, TODAY.month, TODAY.day);
     }
+    
+    if(mysql_query(conn, sql))
+        printf("Query Error!\n");
 
-    printf("TEST: %s", sql);
+    mysql_close(conn);
+}
+
+void printList(){
+    char today[20];
+    sprintf(today, "%d-%d-%d ", TODAY.year, TODAY.month, TODAY.day);
+    selectQuery(today);
 }
