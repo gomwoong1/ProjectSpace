@@ -226,11 +226,16 @@ void updateMemo(char *number){
     mysql_query(conn, sql);
     res = mysql_store_result(conn);
 
-    // select memo 먼저 데이터 가져오는데 만약 공백이 아니라면 가져옴
-    // 가져온 데이터 str에 저장
+    while( (row=mysql_fetch_row(res))!=NULL){
+        sprintf(str, "%s", row[0]);
+    }
 
-    // checkChar();
+    printf("%s의 메모내역:%s.", number, str);
 
+    checkChar();
+
+    //update sql
+    
     //이 함수 끝나기 전에 str 초기화
     mysql_close(conn);
 }
