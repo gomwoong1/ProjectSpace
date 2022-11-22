@@ -5,7 +5,7 @@
 #include <pthread.h>
 
 char str[100];
-int d, flag = 0;
+int flag = 0;
 void* cntStr(void *);
 
 int getAscii(void){
@@ -38,7 +38,7 @@ int main(int argc, char* argv[]){
 
     pthread_create(&cntStrTh, NULL, cntStr,NULL);
 	while (1){
-		d = getAscii();
+		int d = getAscii();
         sprintf(a, "%c", d);
         strcat(str, a);
 
@@ -54,10 +54,9 @@ int main(int argc, char* argv[]){
         if (d == 127){
             str[strlen(str)-2] = '\0';
             system("clear");
-            // \x1b는 ESC를 의미하고 [%dA는 커서를 n만큼 위로 올림을 의미
             printf ("\x1b[%d;%dH", 1,1);
             printf("%s", str);
-            flag = 1;
+            flag = 2;
         }
 	}
     pthread_join(cntStrTh, NULL);

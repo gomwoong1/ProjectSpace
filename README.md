@@ -34,3 +34,16 @@ sudo apt-get install libmysqlclient-dev
 
 컴파일 할 때 뒤에 붙여쓰기
 gcc -o TodoDiary TodoDiary.c -lmysqlclient
+
+
+----------------------------------------
+새롭게 배우고 있는 점
+
+- 콘솔 커서 조작법 (Escape Sequence Cursor move)
+'ESC' == \x1b
+
+예) printf("\x1b[%dA", 1);  -->  커서 위치를 한 줄 위로.
+
+- 큰 힘 들이지 않고 문자열로 변환해주는 함수 
+include <stdlib.h>
+sprintf(buf, "포맷팅", 변수 등);
