@@ -4,13 +4,11 @@
 #include <string.h>
 #include <pthread.h>
 
-
 char str[100];
-int d;
+int d, flag = 0;
 void* cntStr(void *);
-void gotoxy(int, int);
 
-int getch(void){
+int getAscii(void){
     // include termio.h
     int ch;
 
@@ -36,22 +34,30 @@ int getch(void){
 int main(int argc, char* argv[]){
     pthread_t cntStrTh;
     char a[5];
+    system("clear");
 
     pthread_create(&cntStrTh, NULL, cntStr,NULL);
 	while (1){
-		d = getch();
+		d = getAscii();
         sprintf(a, "%c", d);
         strcat(str, a);
 
-		printf("%s", a);
-        
-        if (d == 10)
+        printf ("\x1b[%d;%dH", 1,1);
+		printf("%s", str);
+        flag = 1;
+
+        if (d == 10){
+            flag = 2;
             break;
+        }
 
         if (d == 127){
             str[strlen(str)-2] = '\0';
             system("clear");
+            // \x1b는 ESC를 의미하고 [%dA는 커서를 n만큼 위로 올림을 의미
+            printf ("\x1b[%d;%dH", 1,1);
             printf("%s", str);
+            flag = 1;
         }
 	}
     pthread_join(cntStrTh, NULL);
@@ -64,13 +70,16 @@ int main(int argc, char* argv[]){
 
 void* cntStr(void* arg) {
     // include pthread.h 
-    // include ncurses.h
-
     int cnt = 0;
 
-    while(d != 10){
-        cnt = strlen(str);
-        printf("%d / 50", cnt);
-    }
+    while(! (flag == 2)){
+        if (flag){
+            cnt = strlen(str);
+            printf ("\x1b[%d;%dH", 2,1);
+            printf("%d / 50\n", cnt);
+            flag = 0;
+        }
+    }   
+
     pthread_exit(NULL);
 }
