@@ -17,7 +17,7 @@ void printInfo();
 void getTime();
 void connDB();
 void selectQuery(char *);
-void makeSql(char *, char *, int);
+void insertQuery(char *);
 
 MYTIME TODAY;
 MYSQL *conn;
@@ -47,21 +47,18 @@ int main() {
             }
             
             if( strcmp(strArr[0], "기록조회") == 0) {
-                char sql[100];
                 system("clear");
                 printf("조회일자: %s\n", strArr[1]);
 
                 connDB();
-                makeSql(sql, strArr[1], 1);
-                selectQuery(sql);
+                selectQuery(strArr[1]);
             }
             else if (strcmp(strArr[0], "추가") == 0) {
-                char sql[100];
                 system("clear");
                 printf("할 일이 추가되었습니다.\n");
                 
                 connDB();
-                makeSql(sql, strArr[1], 2);
+                insertQuery(strArr[1]);
             }
         }
         else
@@ -148,10 +145,14 @@ void connDB(){
     }
 }
 
-void selectQuery(char *query){
+void selectQuery(char *value){
     int count = 0;
+    char sql[255];
+    value[strlen(value)-1] = '\0';
+    sprintf(sql, "select * from list where date='%s'", value);
+
     // 쿼리문 질의. 성공시 false 반환.
-    if (mysql_query(conn, query)) {
+    if (mysql_query(conn, sql)) {
         printf("Query Error!\n");
     }
     else {
@@ -175,28 +176,18 @@ void selectQuery(char *query){
 }
 
 // 쿼리 문자열 만들어주는 함수
-void makeSql(char * sql, char *value, int flag){
-    if(flag == 1){
-        strcpy(sql, "select * from list where date='");
-        strcat(sql, value);
-        sql[strlen(sql)-1] = '\0';
-        strcat(sql,"'");
-    }
-    else if (flag == 2){
-        char sql[255], temp[20];
-        strcpy(temp, value);
-        temp[strlen(temp)-1] = '\0';
-        
-        // sprintf("저장공간", 포매팅 형식, 값들);
-        sprintf(sql, "select count(number)+1 from list where date='%d-%d-%d'", TODAY.year, TODAY.month, TODAY.day);
+void insertQuery(char *value){
+    char sql[255];
+    value[strlen(value)-1] = '\0';
 
-        mysql_query(conn, sql);
-        res = mysql_store_result(conn);
-        while((row=mysql_fetch_row(res))!=NULL){
-            sprintf(sql, "insert into list(number, todo, date) values(%s,'%s','%d-%d-%d')", row[0], temp, TODAY.year, TODAY.month, TODAY.day);
-        }
-
-        printf("TEST: %s", sql);
-        // printf("SQL Test: %s\n", sql);
+    // sprintf("저장공간", 포매팅 형식, 값들);
+    sprintf(sql, "select count(number)+1 from list where date='%d-%d-%d'", TODAY.year, TODAY.month, TODAY.day);
+    mysql_query(conn, sql);
+    res = mysql_store_result(conn);
+    
+    while((row=mysql_fetch_row(res))!=NULL){
+        sprintf(sql, "insert into list(number, todo, date) values(%s,'%s','%d-%d-%d')", row[0], value, TODAY.year, TODAY.month, TODAY.day);
     }
+
+    printf("TEST: %s", sql);
 }
