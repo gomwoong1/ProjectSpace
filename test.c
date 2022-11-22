@@ -5,7 +5,7 @@
 #include <pthread.h>
 
 char str[100];
-int flag = 0;
+int d, flag = 0;
 void* cntStr(void *);
 
 int getAscii(void){
@@ -38,7 +38,7 @@ int main(int argc, char* argv[]){
 
     pthread_create(&cntStrTh, NULL, cntStr,NULL);
 	while (1){
-		int d = getAscii();
+        d = getAscii();
         sprintf(a, "%c", d);
         strcat(str, a);
 
@@ -52,12 +52,15 @@ int main(int argc, char* argv[]){
         }
 
         if (d == 127){
+            // strncpy(str, str, strlen(str)-2);
             str[strlen(str)-2] = '\0';
             system("clear");
             printf ("\x1b[%d;%dH", 1,1);
             printf("%s", str);
-            flag = 2;
+            flag = 1;
         }
+
+        d = 0;
 	}
     pthread_join(cntStrTh, NULL);
 
