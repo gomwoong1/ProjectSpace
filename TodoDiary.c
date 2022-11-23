@@ -347,5 +347,5 @@ void* cntStr(void* arg) {
 }
 
 void startRecord(char *number){
-
+    
 }
