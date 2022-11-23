@@ -19,7 +19,7 @@ int main(){
 }
 
 void* timer(){ 
-    int hour = 0, min = 59, sec = 0;
+    int hour, min, sec = 0;
 
     system("clear");
     printf("00:00:00\n");
