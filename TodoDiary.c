@@ -25,6 +25,7 @@ void updateMemo(char *, char *);
 int getAscii();
 void* cntStr(void *);
 void checkChar();
+void startRecord(char *);
 
 MYTIME TODAY;
 MYSQL *conn;
@@ -70,6 +71,12 @@ int main() {
 
                 updateMemo(tempArr[0], tempArr[1]);
             }
+
+            else if(strcmp(strArr[0], "기록하기") == 0)
+                startRecord(strArr[1]);
+
+            else
+                printf("잘못된 명령어입니다. 도움이 필요하면 \'도움말\'을 입력하세요.\n\n");
         }
         else
         {
@@ -337,4 +344,8 @@ void* cntStr(void* arg) {
     } while(!(flag==2));
     system("clear");
     pthread_exit(NULL);
+}
+
+void startRecord(char *number){
+
 }
