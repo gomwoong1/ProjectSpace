@@ -30,7 +30,6 @@ MYTIME TODAY;
 MYSQL *conn;
 MYSQL_RES *res;
 MYSQL_ROW row;
-pthread_mutex_t mutex;
 char str[100];
 int d, flag = 1;
 
@@ -38,7 +37,6 @@ int d, flag = 1;
 int main() {
     getTime();
     printWelcome();
-    pthread_mutex_init(&mutex, NULL);
 
     while(1){
         char cmd[CMDSIZE];
@@ -299,14 +297,11 @@ void checkChar(){
         printf ("\x1b[%d;%dH", 3,1);
 		printf("%s\n", str);
         
-        pthread_mutex_lock(&mutex);
         flag = 1;
-        pthread_mutex_unlock(&mutex);
 
         if (d == 10){
-            pthread_mutex_lock(&mutex);
             flag = 2;
-            pthread_mutex_unlock(&mutex);
+            pthread_cancel(cntStrTh);
             break;
         }
 
@@ -316,9 +311,7 @@ void checkChar(){
             printf("-----메모 수정-----\n\n");
             printf ("\x1b[%d;%dH", 3,1);
             printf("%s", str);
-            pthread_mutex_lock(&mutex);
             flag = 1;
-            pthread_mutex_unlock(&mutex);
         }
 
         d = 0;
@@ -338,9 +331,7 @@ void* cntStr(void* arg) {
             cnt = strlen(str);
             printf ("\x1b[%d;%dH", 4,1);
             printf("%d / 50\n", cnt);
-            pthread_mutex_lock(&mutex);
             flag = 0;
-            pthread_mutex_unlock(&mutex);
         }
     } while(! (flag == 2));
     printf("쓰레드가 끝났을까요?");
