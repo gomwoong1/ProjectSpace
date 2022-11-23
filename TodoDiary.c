@@ -30,6 +30,7 @@ MYTIME TODAY;
 MYSQL *conn;
 MYSQL_RES *res;
 MYSQL_ROW row;
+pthread_mutex_t mutex;
 char str[100];
 int d, flag = 1;
 
@@ -37,6 +38,7 @@ int d, flag = 1;
 int main() {
     getTime();
     printWelcome();
+    pthread_mutex_init(&mutex, NULL);
 
     while(1){
         char cmd[CMDSIZE];
@@ -241,10 +243,15 @@ void updateMemo(char *date, char *number){
 
     checkChar();
 
-    //update sql
+    sprintf(sql, "update list set memo='%s' where date='%s' and number=%s", str, date, number);
+    if(mysql_query(conn, sql))
+        printf("Query Error!\n");
     
-    //이 함수 끝나기 전에 str 초기화
+    sprintf(date, "%s\n", date);
     mysql_close(conn);
+    
+    selectQuery(date);
+    //이 함수 끝나기 전에 str 초기화
 }
 
 // 메모 작성에 활용.
@@ -291,10 +298,15 @@ void checkChar(){
 
         printf ("\x1b[%d;%dH", 3,1);
 		printf("%s\n", str);
+        
+        pthread_mutex_lock(&mutex);
         flag = 1;
+        pthread_mutex_unlock(&mutex);
 
         if (d == 10){
+            pthread_mutex_lock(&mutex);
             flag = 2;
+            pthread_mutex_unlock(&mutex);
             break;
         }
 
@@ -304,11 +316,14 @@ void checkChar(){
             printf("-----메모 수정-----\n\n");
             printf ("\x1b[%d;%dH", 3,1);
             printf("%s", str);
+            pthread_mutex_lock(&mutex);
             flag = 1;
+            pthread_mutex_unlock(&mutex);
         }
 
         d = 0;
 	}
+    printf("쓰레드가 끝나기를 기다리는중");
     pthread_join(cntStrTh, NULL);
 
     str[strlen(str)-1] = '\0';
@@ -318,14 +333,16 @@ void checkChar(){
 void* cntStr(void* arg) {
     int cnt = 0;
 
-    while(! (flag == 2)){
+    do{
         if (flag){
             cnt = strlen(str);
             printf ("\x1b[%d;%dH", 4,1);
             printf("%d / 50\n", cnt);
+            pthread_mutex_lock(&mutex);
             flag = 0;
+            pthread_mutex_unlock(&mutex);
         }
-    }   
-
+    } while(! (flag == 2));
+    printf("쓰레드가 끝났을까요?");
     pthread_exit(NULL);
 }
