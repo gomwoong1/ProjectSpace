@@ -21,7 +21,7 @@ void connDB();
 void selectQuery(char *);
 void insertQuery(char *);
 void printList();
-void updateMemo(char *);
+void updateMemo(char *, char *);
 int getAscii();
 void* cntStr(void *);
 void checkChar();
@@ -31,7 +31,7 @@ MYSQL *conn;
 MYSQL_RES *res;
 MYSQL_ROW row;
 char str[100];
-int d, flag = 0;
+int d, flag = 1;
 
 // 메인함수
 int main() {
@@ -59,8 +59,17 @@ int main() {
             else if (strcmp(strArr[0], "추가") == 0)
                 insertQuery(strArr[1]);
             
-            else if (strcmp(strArr[0], "메모수정") == 0)
-                updateMemo(strArr[1]);
+            else if (strcmp(strArr[0], "메모수정") == 0){
+                char *tempVal = strtok(strArr[1], ",");
+                char *tempArr[2];
+
+                for (int cnt=0; cnt < 2; cnt++) {
+                tempArr[cnt] = tempVal;
+                tempVal = strtok(NULL, "\0");
+                }
+
+                updateMemo(tempArr[0], tempArr[1]);
+            }
         }
         else
         {
@@ -108,8 +117,8 @@ void printInfo(){
     printf("          명령어 형식: \'목록'\n\n");
     printf("할 일 생성: 오늘의 할 일 목록에 할 일을 추가합니다.\n");
     printf("            명령어 형식: \'추가:공부하기\'\n\n");
-    printf("메모 수정: 기록된 할 일의 번호를 입력하고 메모를 수정합니다.\n");
-    printf("          명령어 형식: \'메모수정:1\'\n\n");   
+    printf("메모 수정: 기록된 할 일의 날짜, 번호를 입력하고 메모를 수정합니다.\n");
+    printf("          명령어 형식: \'메모수정:2022-11-21,1\'\n\n");   
     printf("종료하기: 프로그램을 종료합니다.\n");
     printf("          명령어 형식: \'종료\'\n\n");
 }
@@ -217,20 +226,18 @@ void printList(){
 }
 
 // 메모 수정해주는 함수
-void updateMemo(char *number){
+void updateMemo(char *date, char *number){
     char sql[255];
-    // number[strlen(number)-1] = '\0';
+    number[strlen(number)-1] = '\0';
 
     connDB();
-    sprintf(sql, "select memo from list where number=%s", number);
+    sprintf(sql, "select memo from list where date='%s' and number=%s", date, number);
     mysql_query(conn, sql);
     res = mysql_store_result(conn);
 
-    while( (row=mysql_fetch_row(res))!=NULL){
+    while((row=mysql_fetch_row(res))!=NULL){
         sprintf(str, "%s", row[0]);
     }
-
-    printf("%s의 메모내역:%s.", number, str);
 
     checkChar();
 
@@ -271,8 +278,10 @@ void checkChar(){
     pthread_t cntStrTh;
     char a[5];
     system("clear");
-    printf("메모를 수정해주세요.\n\n");
+    printf("-----메모 수정-----\n\n");
 
+    printf ("\x1b[%d;%dH", 3,1);
+    printf("%s\n", str);
 
     pthread_create(&cntStrTh, NULL, cntStr,NULL);
 	while (1){
@@ -281,7 +290,7 @@ void checkChar(){
         strcat(str, a);
 
         printf ("\x1b[%d;%dH", 3,1);
-		printf("%s", str);
+		printf("%s\n", str);
         flag = 1;
 
         if (d == 10){
@@ -292,7 +301,8 @@ void checkChar(){
         if (d == 127){
             str[strlen(str)-2] = '\0';
             system("clear");
-            printf ("\x1b[%d;%dH", 4,1);
+            printf("-----메모 수정-----\n\n");
+            printf ("\x1b[%d;%dH", 3,1);
             printf("%s", str);
             flag = 1;
         }
@@ -302,18 +312,16 @@ void checkChar(){
     pthread_join(cntStrTh, NULL);
 
     str[strlen(str)-1] = '\0';
-    // printf("입력된 문자열: %s\n", str);
 }
 
 // 글자수 실시간으로 출력해주는 함수 (쓰레드)
 void* cntStr(void* arg) {
-    // include pthread.h 
     int cnt = 0;
 
     while(! (flag == 2)){
         if (flag){
             cnt = strlen(str);
-            printf ("\x1b[%d;%dH", 2,1);
+            printf ("\x1b[%d;%dH", 4,1);
             printf("%d / 50\n", cnt);
             flag = 0;
         }
