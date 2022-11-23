@@ -301,7 +301,7 @@ void checkChar(){
 
         if (d == 10){
             flag = 2;
-            pthread_cancel(cntStrTh);
+            // pthread_cancel(cntStrTh);
             break;
         }
 
@@ -316,7 +316,7 @@ void checkChar(){
 
         d = 0;
 	}
-    printf("쓰레드가 끝나기를 기다리는중");
+
     pthread_join(cntStrTh, NULL);
 
     str[strlen(str)-1] = '\0';
@@ -325,15 +325,16 @@ void checkChar(){
 // 글자수 실시간으로 출력해주는 함수 (쓰레드)
 void* cntStr(void* arg) {
     int cnt = 0;
-
+    flag = 1;
+    
     do{
-        if (flag){
+        if (flag == 1){
             cnt = strlen(str);
             printf ("\x1b[%d;%dH", 4,1);
             printf("%d / 50\n", cnt);
             flag = 0;
         }
-    } while(! (flag == 2));
-    printf("쓰레드가 끝났을까요?");
+    } while(!(flag==2));
+    system("clear");
     pthread_exit(NULL);
 }
