@@ -198,9 +198,9 @@ void selectQuery(char *value){
 void insertQuery(char *value){
     char sql[255];
     value[strlen(value)-1] = '\0';
+    char today[30];
 
     system("clear");
-    printf("할 일이 추가되었습니다.\n");
     connDB();
 
     // sprintf("저장공간", 포매팅 형식, 값들);
@@ -215,7 +215,8 @@ void insertQuery(char *value){
     if(mysql_query(conn, sql))
         printf("Query Error!\n");
 
-    mysql_close(conn);
+    sprintf(today, "%d-%d-%d\n", TODAY.year, TODAY.month, TODAY.day);
+    selectQuery(today);
 }
 
 // 오늘의 할 일 리스트 출력하는 함수
@@ -301,7 +302,6 @@ void checkChar(){
 
         if (d == 10){
             flag = 2;
-            // pthread_cancel(cntStrTh);
             break;
         }
 
@@ -326,7 +326,7 @@ void checkChar(){
 void* cntStr(void* arg) {
     int cnt = 0;
     flag = 1;
-    
+
     do{
         if (flag == 1){
             cnt = strlen(str);
