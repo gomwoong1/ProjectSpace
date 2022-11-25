@@ -8,11 +8,19 @@
 // 아니면 새로 시작할건지 묻는 여부도
 
 void* timer();
+char msg[100];
 
 int main(){
     pthread_t thread;
 
     pthread_create(&thread, NULL, timer, NULL);
+
+    while(1){
+        printf("입력해주세요: ");
+        fgets(msg, 100, stdin);
+        printf("입력한 메시지: %s\n\n", msg);
+    }
+
     pthread_join(thread, NULL);
 
     return 0;
