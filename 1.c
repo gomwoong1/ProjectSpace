@@ -97,3 +97,15 @@ void setCount(int cnt){
 	PORTC = DOT_number[cnt%10]; // 출력
 	_delay_ms(5);
 }
+
+void setNumber(int num){
+    PORTB = 0xfd;
+    PORTC = FND_number[num/10]; // 출력
+	_delay_ms(5);
+
+    PORTB = 0xfe;
+    PORTC = FND_number[num/10]; // 출력
+	_delay_ms(5);
+}
+
+void setNumber(int);
