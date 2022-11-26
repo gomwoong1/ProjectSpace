@@ -50,7 +50,7 @@ int main(void)
 	PORTF = 0x0f;
 	
 	int count = 20;
-	int num = 0;
+	int number = 0;
 	int state = 0;
 	int VAL;
 	
@@ -64,7 +64,7 @@ int main(void)
 			
 			if (VAL == 0x06)
 				state = 1;
-				
+            
 			if(state && VAL != 0x06){
 				count--;
 				state = 0;		
@@ -97,15 +97,3 @@ void setCount(int cnt){
 	PORTC = DOT_number[cnt%10]; // 출력
 	_delay_ms(5);
 }
-
-void setNumber(int num){
-    PORTB = 0xfd;
-    PORTC = FND_number[num/10]; // 출력
-	_delay_ms(5);
-
-    PORTB = 0xfe;
-    PORTC = FND_number[num/10]; // 출력
-	_delay_ms(5);
-}
-
-void setNumber(int);
