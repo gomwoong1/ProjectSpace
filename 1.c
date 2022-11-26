@@ -38,19 +38,15 @@ char DOT_number[10] = {
 
 int main(void)
 {
-	DDRA = 0x0f; // 0~3 OUTPUT, LED + 4~5
     DDRF = 0xf0; // 0~3 INPUT, BUTTON 
 	DDRB = 0x0f; // 0~3 OUTPUT, FND(POWER)
 	DDRC = 0xff; // OUTPUT, FND(NUMBER)
-	
-	PORTA = 0x0f; // LED OFF
 	
 	// BUTTON PULL_UP저항, F0~3에 한해 누르면 0, 안누르면 1인 상태
 	// 즉, 0b00001111(2) 또는 0x0f(16) 상태가 되는 것
 	PORTF = 0x0f;
 	
 	int count = 20;
-	int number = 0;
 	int state = 0;
 	int VAL;
 	
@@ -64,27 +60,14 @@ int main(void)
 			
 			if (VAL == 0x06)
 				state = 1;
-            
+				
 			if(state && VAL != 0x06){
 				count--;
-				state = 0;		
+				state = 0;
 			}
 		}
-		return 0;
-		//PORTA = 0xf9;
-		//count--;
-		//PORTA = 0xff;
-				
-		//if (VAL == )
 		
-		//PORTB = 0xfd; // 십의 자리 세그먼트 선택
-		//PORTC = FND_number[2]; // 출력
-		//_delay_ms(5);
-				
-		//PORTB = 0xfe; // 일의 자리 세그먼트 선택
-		//PORTC = FND_number[0]; // 출력
-		//_delay_ms(5);
-
+		return 0;
 	}
 }
 
