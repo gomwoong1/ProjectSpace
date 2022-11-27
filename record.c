@@ -47,7 +47,7 @@ int main(){
         sprintf(a, "%c", d);
         strcat(msg, a);
         printf("\x1b[%d;%ldH", 2,strlen(msg));
-        printf("%c", a);
+        printf("%s", a);
 
         if (d == 127){
             msg[strlen(msg)-2] = '\0';
