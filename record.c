@@ -46,8 +46,13 @@ int main(){
         d = getAscii();
         sprintf(a, "%c", d);
         strcat(msg, a);
-        printf ("\x1b[%d;%dH", 2,strlen(msg));
-		printf("%s", msg);
+        printf("\x1b[%d;%ldH", 2,strlen(msg));
+        printf("%c", a);
+
+        if (d == 127){
+            msg[strlen(msg)-2] = '\0';
+            printf("\x1b[%d;%ldH", 2,strlen(msg));
+        }
     }
 
     pthread_join(thread, NULL);
