@@ -3,6 +3,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <string.h>
+#include <termio.h>
 
 // 타이핑 계속 받아서 기록조회, 일시정지 기능 쓸 수 있게.
 // 기록 시작할 때 받아온 타임값이 00:00:00이 아니라면 지속해서 기록할건지
@@ -10,19 +11,46 @@
 
 void* timer();
 char msg[100];
+int d = 0;
+
+int getAscii(void){
+    // include termio.h
+    int ch;
+
+    struct termios old;
+    struct termios new;
+
+    tcgetattr(0, &old);
+    new = old;
+
+    new.c_lflag &= ~(ICANON|ECHO);
+    new.c_cc[VMIN] = 1;
+    new.c_cc[VTIME] = 0;
+
+    tcsetattr(0, TCSAFLUSH, &new);
+
+    ch=getchar();
+
+    tcsetattr(0, TCSAFLUSH, &old);
+
+    return ch;
+}
 
 int main(){
+    char a[5];
     pthread_t thread;
 
-    //pthread_create(&thread, NULL, timer, NULL);
+    pthread_create(&thread, NULL, timer, NULL);
 
     while(1){
-        printf("입력해주세요: ");
-        fgets(msg, 100, stdin);
-        printf("입력한 메시지: %s\n\n", msg);
+        d = getAscii();
+        sprintf(a, "%c", d);
+        strcat(msg, a);
+        printf ("\x1b[%d;%dH", 2,strlen(msg));
+		printf("%s", msg);
     }
 
-    //pthread_join(thread, NULL);
+    pthread_join(thread, NULL);
 
     return 0;
 }
