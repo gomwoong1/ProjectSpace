@@ -48,6 +48,7 @@ void* timer(){
             
         printf("\x1b[%d;%dH", 1,1);
         printf("%02d:%02d:%02d\n", hour, min, sec);
+        printf("\x1b[%d;%dH", 2, strlen(msg));
     }
     pthread_exit(NULL);
 }
