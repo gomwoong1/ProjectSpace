@@ -310,7 +310,7 @@ void checkChar(){
         if (d == 10){
             flag = 2;
             break;
-        }
+        } 
 
         if (d == 127){
             str[strlen(str)-2] = '\0';
