@@ -38,6 +38,7 @@ int getAscii(void){
 
 int main(){
     char a[5];
+    char input[100];
     pthread_t thread;
 
     pthread_create(&thread, NULL, timer, NULL);
@@ -52,6 +53,13 @@ int main(){
         if (d == 127){
             msg[strlen(msg)-2] = '\0';
             printf("\x1b[%d;%ldH", 2,strlen(msg));
+        }
+
+        if (d == 32){
+            strcpy(input, msg);
+            strcpy(msg,"");
+            printf("\x1b[%d;%dH", 2,1);
+            printf("%s", msg);
         }
     }
 
