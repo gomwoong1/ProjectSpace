@@ -55,11 +55,12 @@ int main(){
             printf("\x1b[%d;%ldH", 2,strlen(msg));
         }
 
-        if (d == 32){
+        if (d == 10){
             strcpy(input, msg);
-            strcpy(msg,"");
-            printf("\x1b[%d;%dH", 2,1);
-            printf("%s", msg);
+            strcpy(msg, "");
+            system("clear");
+            printf("\x1b[%d;%ldH", 2,strlen(msg));
+            //printf("%s", msg);
         }
     }
 
