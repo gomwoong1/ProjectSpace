@@ -11,7 +11,7 @@
 
 void* timer();
 char msg[100];
-int d = 0;
+int d, hour, min, sec = 0;
 
 int getAscii(void){
     // include termio.h
@@ -53,17 +53,19 @@ int main(){
         if (d == 127){
             msg[strlen(msg)-2] = '\0';
             system("clear");
-            printf("\x1b[%d;%ldH", 2, 1);
+            printf("\x1b[%d;%dH", 1,1);
+            printf("%02d:%02d:%02d\n", hour, min, sec);
+            printf("\x1b[%d;%dH", 2, 1);
             printf("%s",msg);
-            printf("\x1b[%d;%ldH", 2,strlen(msg));
         }
 
         if (d == 10){
             strcpy(input, msg);
             strcpy(msg, "");
             system("clear");
+            printf("\x1b[%d;%dH", 1,1);
+            printf("%02d:%02d:%02d\n", hour, min, sec);
             printf("\x1b[%d;%ldH", 2,strlen(msg));
-            //printf("%s", msg);
         }
     }
 
@@ -73,7 +75,7 @@ int main(){
 }
 
 void* timer(){ 
-    int hour, min, sec = 0;
+    
 
     system("clear");
     printf("00:00:00\n");
