@@ -5,7 +5,13 @@
 #include "/usr/include/mysql/mysql.h"
 #include <termio.h>
 #include <pthread.h>
+#include <unistd.h> 
+#include <arpa/inet.h>
+#include <sys/socket.h>
+
 #define CMDSIZE 100
+#define BUF_SIZE 100
+#define NAME_SIZE 20
 
 // 년,월,일 데이터 저장 구조체
 typedef struct{
@@ -26,16 +32,37 @@ int getAscii();
 void* cntStr(void *);
 void checkChar();
 void startRecord(char *);
+// 소켓 통신용 함수
+void connServer(char *, char*);
+void error_handling(char * msg);
+void * send_msg(void * arg);
+void * recv_msg(void * arg);
 
+struct sockaddr_in serv_addr;
 MYTIME TODAY;
 MYSQL *conn;
 MYSQL_RES *res;
 MYSQL_ROW row;
 char str[100];
-int d, flag = 1;
+int sock, d, flag = 1;
+pthread_t snd_thread, rcv_thread;
+void * thread_return;
 
 // 메인함수
-int main() {
+int main(int argc, char *argv[]) {
+
+	if(argc!=3) {
+		printf("Usage : %s <IP> <port>\n", argv[0]);
+		exit(1);
+	}
+
+	connServer(argv[1], argv[2]);
+	
+	pthread_create(&snd_thread, NULL, send_msg, (void*)&sock);
+	pthread_create(&rcv_thread, NULL, recv_msg, (void*)&sock);
+	pthread_join(snd_thread, &thread_return);
+	pthread_join(rcv_thread, &thread_return);
+    
     getTime();
     printWelcome();
 
@@ -348,4 +375,54 @@ void* cntStr(void* arg) {
 
 void startRecord(char *number){
     
+}
+
+void error_handling(char *msg)
+{
+	fputs(msg, stderr);
+	fputc('\n', stderr);
+	exit(1);
+}
+
+void connServer(char *ip, char *port){
+    sock=socket(PF_INET, SOCK_STREAM, 0);
+	
+	memset(&serv_addr, 0, sizeof(serv_addr));
+	serv_addr.sin_family=AF_INET;
+	serv_addr.sin_addr.s_addr=inet_addr(ip);
+	serv_addr.sin_port=htons(atoi(port));
+	
+	if(connect(sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr))==-1)
+		error_handling("connect() error");
+}
+
+void * send_msg(void * arg)
+{
+	int sock=*((int*)arg);
+	while(1) 
+	{
+		fgets(msg, BUF_SIZE, stdin);
+		if(!strcmp(msg,"q\n")||!strcmp(msg,"Q\n")) 
+		{
+			close(sock);
+			exit(0);
+		}
+		write(sock, msg, strlen(msg));
+	}
+	return NULL;
+}
+	
+void * recv_msg(void * arg)
+{
+	int sock=*((int*)arg);
+	int str_len;
+	while(1)
+	{
+		str_len=read(sock, msg, BUF_SIZE);
+		if(str_len==-1) 
+			return (void*)-1;
+		name_msg[str_len]=0;
+		fputs(msg, stdout);
+	}
+	return NULL;
 }
