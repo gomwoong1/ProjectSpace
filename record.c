@@ -52,6 +52,9 @@ int main(){
 
         if (d == 127){
             msg[strlen(msg)-2] = '\0';
+            system("clear");
+            printf("\x1b[%d;%ldH", 2, 1);
+            printf("%s",msg);
             printf("\x1b[%d;%ldH", 2,strlen(msg));
         }
 
