@@ -5,17 +5,19 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <pthread.h>
-	
+#include <termio.h>
+
 #define BUF_SIZE 100
 #define NAME_SIZE 20
-	
+
 void * send_msg(void * arg);
 void * recv_msg(void * arg);
 void error_handling(char * msg);
-	
+int getAscii();
+
 char name[NAME_SIZE]="[DEFAULT]";
 char msg[BUF_SIZE];
-	
+
 int main(int argc, char *argv[])
 {
 	int sock;
@@ -23,9 +25,9 @@ int main(int argc, char *argv[])
 	pthread_t snd_thread, rcv_thread;
 	void * thread_return;
 	if(argc!=4) {
-		printf("Usage : %s <IP> <port> <name>\n", argv[0]);
+		printf("argument Error! %s <IP> <port> <name>\n", argv[0]);
 		exit(1);
-	 }
+	}
 	
 	sprintf(name, "[%s]", argv[3]);
 	sock=socket(PF_INET, SOCK_STREAM, 0);
@@ -34,7 +36,7 @@ int main(int argc, char *argv[])
 	serv_addr.sin_family=AF_INET;
 	serv_addr.sin_addr.s_addr=inet_addr(argv[1]);
 	serv_addr.sin_port=htons(atoi(argv[2]));
-	  
+	
 	if(connect(sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr))==-1)
 		error_handling("connect() error");
 	
@@ -45,26 +47,25 @@ int main(int argc, char *argv[])
 	close(sock);  
 	return 0;
 }
-	
-void * send_msg(void * arg)   // send thread main
+
+void * send_msg(void * arg)
 {
 	int sock=*((int*)arg);
-	char name_msg[NAME_SIZE+BUF_SIZE];
+	char name_msg[NAME_SIZE+BUF_SIZE], temp[5], temp2[10];
+    int ASCII_int = 0;
 	while(1) 
 	{
-		fgets(msg, BUF_SIZE, stdin);
-		if(!strcmp(msg,"q\n")||!strcmp(msg,"Q\n")) 
-		{
-			close(sock);
-			exit(0);
-		}
-		sprintf(name_msg,"%s %s", name, msg);
-		write(sock, name_msg, strlen(name_msg));
+		ASCII_int = getAscii();
+        sprintf(temp, "%c", ASCII_int);
+        system("clear");
+
+		sprintf(temp2,"%s\n", temp);
+		write(sock, temp2, strlen(temp2));
 	}
 	return NULL;
 }
-	
-void * recv_msg(void * arg)   // read thread main
+
+void * recv_msg(void * arg)
 {
 	int sock=*((int*)arg);
 	char name_msg[NAME_SIZE+BUF_SIZE];
@@ -75,14 +76,38 @@ void * recv_msg(void * arg)   // read thread main
 		if(str_len==-1) 
 			return (void*)-1;
 		name_msg[str_len]=0;
+        system("clear");
 		fputs(name_msg, stdout);
 	}
 	return NULL;
 }
-	
+
 void error_handling(char *msg)
 {
 	fputs(msg, stderr);
 	fputc('\n', stderr);
 	exit(1);
+}
+
+int getAscii(){
+    // include termio.h
+    int ch;
+
+    struct termios old;
+    struct termios new;
+
+    tcgetattr(0, &old);
+    new = old;
+
+    new.c_lflag &= ~(ICANON|ECHO);
+    new.c_cc[VMIN] = 1;
+    new.c_cc[VTIME] = 0;
+
+    tcsetattr(0, TCSAFLUSH, &new);
+
+    ch=getchar();
+
+    tcsetattr(0, TCSAFLUSH, &old);
+
+    return ch;
 }

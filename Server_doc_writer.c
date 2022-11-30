@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 	int clnt_adr_sz;
 	pthread_t t_id;
 	if(argc!=2) {
-		printf("Usage : %s <port>\n", argv[0]);
+		printf("argument Error! %s <Port>\n", argv[0]);
 		exit(1);
 	}
 
@@ -58,18 +58,21 @@ int main(int argc, char *argv[])
 	close(serv_sock);
 	return 0;
 }
-	
+
 void * handle_clnt(void * arg)
 {
 	int clnt_sock=*((int*)arg);
 	int str_len=0, i;
-	char msg[BUF_SIZE];
+	char msg[BUF_SIZE], text[1000];
 	
-	while((str_len=read(clnt_sock, msg, sizeof(msg)))!=0)
-		send_msg(msg, str_len);
-	
+	while((str_len=read(clnt_sock, msg, sizeof(msg)))!=0){
+        msg[strlen(msg)-1] = '\0';
+		strcat(text, msg);
+        send_msg(text, str_len);
+        printf("%s", text);
+    }
 	pthread_mutex_lock(&mutx);
-	for(i=0; i<clnt_cnt; i++)   // remove disconnected client
+	for(i=0; i<clnt_cnt; i++)
 	{
 		if(clnt_sock==clnt_socks[i])
 		{
@@ -83,7 +86,8 @@ void * handle_clnt(void * arg)
 	close(clnt_sock);
 	return NULL;
 }
-void send_msg(char * msg, int len)   // send to all
+
+void send_msg(char * msg, int len)
 {
 	int i;
 	pthread_mutex_lock(&mutx);
@@ -91,6 +95,7 @@ void send_msg(char * msg, int len)   // send to all
 		write(clnt_socks[i], msg, len);
 	pthread_mutex_unlock(&mutx);
 }
+
 void error_handling(char * msg)
 {
 	fputs(msg, stderr);
