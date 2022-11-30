@@ -55,7 +55,7 @@ int main(){
             system("clear");
             printf("\x1b[%d;%dH", 1,1);
             printf("%02d:%02d:%02d\n", hour, min, sec);
-            printf("\x1b[%d;%dH", 2, 1);
+            printf("\x1b[%d;%dH", 2,1);
             printf("%s",msg);
         }
 
@@ -75,8 +75,6 @@ int main(){
 }
 
 void* timer(){ 
-    
-
     system("clear");
     printf("00:00:00\n");
 
