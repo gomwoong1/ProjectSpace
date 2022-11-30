@@ -91,7 +91,7 @@ void* timer(){
                 min = 0;
             }
         }
-            
+
         printf("\x1b[%d;%dH", 1,1);
         printf("%02d:%02d:%02d\n", hour, min, sec);
         printf("\x1b[%d;%ldH", 2, strlen(msg));
