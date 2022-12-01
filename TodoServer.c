@@ -12,6 +12,10 @@
 
 void error_handling(char * msg);
 void connDB();
+void selectQuery(char *);
+void insertQuery(char *);
+void printList();
+void updateMemo(char *, char *);
 
 pthread_mutex_t mutx;
 char msg[BUF_SIZE];
@@ -87,4 +91,98 @@ void connDB(){
         printf("DB가 없습니다. 프로그램을 종료합니다.\n");
         exit(1);
     }
+}
+
+// select query 생성 및 질의 함수
+void selectQuery(char *value){
+    int count = 0;
+    char sql[255];
+    value[strlen(value)-1] = '\0';
+    sprintf(sql, "select * from list where date='%s'", value);
+
+    connDB();
+
+    // 쿼리문 질의. 성공시 false 반환.
+    if (mysql_query(conn, sql)) {
+        printf("Query Error!\n");
+    }
+    else {
+        // 쿼리문 결과 res에 저장
+        res = mysql_store_result(conn);
+
+        system("clear");
+        // 가져온 레코드 출력
+        printf("조회일자: %s\n", value);
+        printf("+--------+---------------------+--------------+------------+---------------------------------------------------+\n");
+        printf("|  번호　|        할 일        |     날짜     |  경과시간  |  메모                                             |\n");
+        printf("+--------+---------------------+--------------+------------+---------------------------------------------------+\n");
+
+        while( (row=mysql_fetch_row(res))!=NULL){
+            count++;
+            printf("| %-7s| %-20s| %-13s| %-11s| %-50s|\n", row[0], row[1], row[2], row[3], row[4]);
+        }
+        printf("+--------+---------------------+--------------+------------+---------------------------------------------------+\n\n");
+        printf("총 %d개의 할 일이 조회되었습니다.\n\n", count);
+
+    }
+    mysql_close(conn);
+}
+
+// insert query 생성 및 질의 함수
+void insertQuery(char *value){
+    char sql[255];
+    value[strlen(value)-1] = '\0';
+    char today[30];
+
+    system("clear");
+    connDB();
+
+    // sprintf("저장공간", 포매팅 형식, 값들);
+    sprintf(sql, "select count(number)+1 from list where date='%d-%d-%d'", TODAY.year, TODAY.month, TODAY.day);
+    mysql_query(conn, sql);
+    res = mysql_store_result(conn);
+
+    while((row=mysql_fetch_row(res))!=NULL){
+        sprintf(sql, "insert into list(number, todo, date) values(%s,'%s','%d-%d-%d')", row[0], value, TODAY.year, TODAY.month, TODAY.day);
+    }
+    
+    if(mysql_query(conn, sql))
+        printf("Query Error!\n");
+
+    sprintf(today, "%d-%d-%d\n", TODAY.year, TODAY.month, TODAY.day);
+    selectQuery(today);
+}
+
+// 오늘의 할 일 리스트 출력하는 함수
+void printList(){
+    char today[20];
+    sprintf(today, "%d-%d-%d ", TODAY.year, TODAY.month, TODAY.day);
+    selectQuery(today);
+}
+
+// 메모 수정해주는 함수
+void updateMemo(char *date, char *number){
+    char sql[255];
+    number[strlen(number)-1] = '\0';
+
+    connDB();
+    sprintf(sql, "select memo from list where date='%s' and number=%s", date, number);
+    mysql_query(conn, sql);
+    res = mysql_store_result(conn);
+
+    while((row=mysql_fetch_row(res))!=NULL){
+        sprintf(str, "%s", row[0]);
+    }
+
+    checkChar();
+
+    sprintf(sql, "update list set memo='%s' where date='%s' and number=%s", str, date, number);
+    if(mysql_query(conn, sql))
+        printf("Query Error!\n");
+    
+    sprintf(date, "%s\n", date);
+    mysql_close(conn);
+    
+    selectQuery(date);
+    //이 함수 끝나기 전에 str 초기화
 }
