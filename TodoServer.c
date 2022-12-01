@@ -43,8 +43,10 @@ int main(int argc, char *argv[])
 	
 	while(1)
 	{
-		while((str_len=read(clnt_sock, msg, BUF_SIZE))!=0)
+		while((str_len=read(clnt_sock, msg, BUF_SIZE))!=0){
+			printf("받아온 값: %s", msg);
 			write(clnt_sock, msg, str_len);
+		}
 	}
 	close(serv_sock);
 	return 0;

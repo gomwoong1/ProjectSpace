@@ -35,8 +35,8 @@ void startRecord(char *);
 // 소켓 통신용 함수
 void connServer(char *, char*);
 void error_handling(char * msg);
-void * send_msg(void * arg);
-void * recv_msg(void * arg);
+//void * send_msg(void * arg);
+//void * recv_msg(void * arg);
 
 struct sockaddr_in serv_addr;
 MYTIME TODAY;
@@ -58,10 +58,10 @@ int main(int argc, char *argv[]) {
 
 	connServer(argv[1], argv[2]);
 	
-	pthread_create(&snd_thread, NULL, send_msg, (void*)&sock);
-	pthread_create(&rcv_thread, NULL, recv_msg, (void*)&sock);
-	pthread_join(snd_thread, &thread_return);
-	pthread_join(rcv_thread, &thread_return);
+	// pthread_create(&snd_thread, NULL, send_msg, (void*)&sock);
+	// pthread_create(&rcv_thread, NULL, recv_msg, (void*)&sock);
+	// pthread_join(snd_thread, &thread_return);
+	// pthread_join(rcv_thread, &thread_return);
     
     getTime();
     printWelcome();
@@ -71,56 +71,60 @@ int main(int argc, char *argv[]) {
         printf("명령어 입력 >> ");
         fgets(cmd, CMDSIZE, stdin);  
 
-        if(strchr(cmd, ':'))   //명령어중 ':'이 있는지 없는지 확인
-        {
-            char *temp = strtok(cmd, ":"); // 명령어 종류와 명령어 값 분리
-            char *strArr[2];
-            
-            for (int cnt=0; cnt < 2; cnt++) {
-                strArr[cnt] = temp;
-                temp = strtok(NULL, "\0");
-            }
-            
-            if(strcmp(strArr[0], "기록조회") == 0)
-                selectQuery(strArr[1]);
-            
-            else if (strcmp(strArr[0], "추가") == 0)
-                insertQuery(strArr[1]);
-            
-            else if (strcmp(strArr[0], "메모수정") == 0){
-                char *tempVal = strtok(strArr[1], ",");
-                char *tempArr[2];
+        write(sock, cmd, BUF_SIZE);
+        read(sock, cmd, BUF_SIZE);
 
-                for (int cnt=0; cnt < 2; cnt++) {
-                tempArr[cnt] = tempVal;
-                tempVal = strtok(NULL, "\0");
-                }
+        printf("받아온 값: %s", cmd);
+    //     if(strchr(cmd, ':'))   //명령어중 ':'이 있는지 없는지 확인
+    //     {
+    //         char *temp = strtok(cmd, ":"); // 명령어 종류와 명령어 값 분리
+    //         char *strArr[2];
+            
+    //         for (int cnt=0; cnt < 2; cnt++) {
+    //             strArr[cnt] = temp;
+    //             temp = strtok(NULL, "\0");
+    //         }
+            
+    //         if(strcmp(strArr[0], "기록조회") == 0)
+    //             selectQuery(strArr[1]);
+            
+    //         else if (strcmp(strArr[0], "추가") == 0)
+    //             insertQuery(strArr[1]);
+            
+    //         else if (strcmp(strArr[0], "메모수정") == 0){
+    //             char *tempVal = strtok(strArr[1], ",");
+    //             char *tempArr[2];
 
-                updateMemo(tempArr[0], tempArr[1]);
-            }
+    //             for (int cnt=0; cnt < 2; cnt++) {
+    //             tempArr[cnt] = tempVal;
+    //             tempVal = strtok(NULL, "\0");
+    //             }
 
-            else if(strcmp(strArr[0], "기록하기") == 0)
-                startRecord(strArr[1]);
+    //             updateMemo(tempArr[0], tempArr[1]);
+    //         }
 
-            else
-                printf("잘못된 명령어입니다. 도움이 필요하면 \'도움말\'을 입력하세요.\n\n");
-        }
-        else
-        {
-            if( strcmp(cmd, "도움말\n") == 0 )
-                printInfo();
-            else if ( strcmp(cmd, "목록\n") == 0 )
-                printList();
-            else if( strcmp(cmd, "종료\n") == 0 ) {
-                system("clear");
-                printf("프로그램을 종료합니다.\n");
-                break;
-            }
-            else
-                printf("잘못된 명령어입니다. 도움이 필요하면 \'도움말\'을 입력하세요.\n\n");
-        }
+    //         else if(strcmp(strArr[0], "기록하기") == 0)
+    //             startRecord(strArr[1]);
+
+    //         else
+    //             printf("잘못된 명령어입니다. 도움이 필요하면 \'도움말\'을 입력하세요.\n\n");
+    //     }
+    //     else
+    //     {
+    //         if( strcmp(cmd, "도움말\n") == 0 )
+    //             printInfo();
+    //         else if ( strcmp(cmd, "목록\n") == 0 )
+    //             printList();
+    //         else if( strcmp(cmd, "종료\n") == 0 ) {
+    //             system("clear");
+    //             printf("프로그램을 종료합니다.\n");
+    //             break;
+    //         }
+    //         else
+    //             printf("잘못된 명령어입니다. 도움이 필요하면 \'도움말\'을 입력하세요.\n\n");
+    //     }
+    // }
     }
-
     return 0;
 }
 
@@ -394,35 +398,39 @@ void connServer(char *ip, char *port){
 	
 	if(connect(sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr))==-1)
 		error_handling("connect() error");
+    
 }
 
-void * send_msg(void * arg)
-{
-	int sock=*((int*)arg);
-	while(1) 
-	{
-		fgets(msg, BUF_SIZE, stdin);
-		if(!strcmp(msg,"q\n")||!strcmp(msg,"Q\n")) 
-		{
-			close(sock);
-			exit(0);
-		}
-		write(sock, msg, strlen(msg));
-	}
-	return NULL;
-}
+
+
+
+// void * send_msg(void * arg)
+// {
+// 	int sock=*((int*)arg);
+// 	while(1) 
+// 	{
+// 		fgets(msg, BUF_SIZE, stdin);
+// 		if(!strcmp(msg,"q\n")||!strcmp(msg,"Q\n")) 
+// 		{
+// 			close(sock);
+// 			exit(0);
+// 		}
+// 		write(sock, msg, strlen(msg));
+// 	}
+// 	return NULL;
+// }
 	
-void * recv_msg(void * arg)
-{
-	int sock=*((int*)arg);
-	int str_len;
-	while(1)
-	{
-		str_len=read(sock, msg, BUF_SIZE);
-		if(str_len==-1) 
-			return (void*)-1;
-		name_msg[str_len]=0;
-		fputs(msg, stdout);
-	}
-	return NULL;
-}
+// void * recv_msg(void * arg)
+// {
+// 	int sock=*((int*)arg);
+// 	int str_len;
+// 	while(1)
+// 	{
+// 		str_len=read(sock, msg, BUF_SIZE);
+// 		if(str_len==-1) 
+// 			return (void*)-1;
+// 		name_msg[str_len]=0;
+// 		fputs(msg, stdout);
+// 	}
+// 	return NULL;
+// }
