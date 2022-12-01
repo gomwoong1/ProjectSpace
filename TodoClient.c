@@ -50,18 +50,17 @@ int main(int argc, char *argv[]) {
     printWelcome();
 
     while(1){
+        int strCnt;
         char cmd[CMDSIZE];
         printf("명령어 입력 >> ");
         fgets(cmd, CMDSIZE, stdin);  
 
-        write(sock, cmd, CMDSIZE);
-        printf("서버로 보낸 명령어: %s!\n", cmd);
-        read(sock, cmd, CMDSIZE);
+        write(sock, cmd, strlen(cmd));
+        strCnt=read(sock, cmd, CMDSIZE);
+        cmd[strCnt]=0;
+        printf("서버에서 받은 명령어: %s!\n", cmd);
         
     }
-
-
-    // printf("받아온 값: %s", cmd);
 
     return 0;
 }
