@@ -55,74 +55,73 @@ int main(int argc, char *argv[])
 	while(1)
 	{
 		printf("값 받기 대기중\n");
-		while((str_len=read(clnt_sock, cmd, CMDSIZE))!=0){
-			cmd[str_len-1] = 0;
-			printf("받아온 값: %s!\n", cmd);
-			if(strchr(cmd, ':'))   //명령어중 ':'이 있는지 없는지 확인
-			{
-				char *temp = strtok(cmd, ":"); // 명령어 종류와 명령어 값 분리
-				char *strArr[2];
-				char str1[10], str2[10];
+		str_len=read(clnt_sock, cmd, CMDSIZE);
+		cmd[str_len-1] = 0;
+		printf("받아온 값: %s!\n", cmd);
+		if(strchr(cmd, ':'))   //명령어중 ':'이 있는지 없는지 확인
+		{
+			char *temp = strtok(cmd, ":"); // 명령어 종류와 명령어 값 분리
+			char *strArr[2];
+
+			for (int cnt=0; cnt < 2; cnt++) {
+				strArr[cnt] = temp;
+				temp = strtok(NULL, "\0");
+			}
+
+			printf("[0]:%s!\n", strArr[0]);
+			printf("[1]:%s!\n", strArr[1]);
+
+			if(strcmp(strArr[0], "기록조회") == 0){
+				printf("쿼리를 실행합니다.\n");
+				selectQuery(strArr[1]);
+				// write(clnt_sock, cmd, strlen(cmd));
+			}
+			
+			else if (strcmp(strArr[0], "추가") == 0){
+				sprintf(cmd, "[0]:%s, [1]:%s", strArr[0], strArr[1]);
+				write(clnt_sock, cmd, strlen(cmd));
+				// insertQuery(strArr[1]);
+			}
+			
+			else if (strcmp(strArr[0], "메모수정") == 0){
+				char *tempVal = strtok(strArr[1], ",");
+				char *tempArr[2];
+
 				for (int cnt=0; cnt < 2; cnt++) {
-					strArr[cnt] = temp;
-					temp = strtok(NULL, "\0");
+				tempArr[cnt] = tempVal;
+				tempVal = strtok(NULL, "\0");
 				}
 
-				printf("[0]:%s!\n", strArr[0]);
-				printf("[1]:%s!\n", strArr[1]);
+				sprintf(cmd, "[0]:%s, [1]:%s, [2]:%s", strArr[0], tempArr[1], tempArr[2]);
+				write(clnt_sock, cmd, strlen(cmd));
 
-				if(strcmp(strArr[0], "기록조회") == 0){
-					printf("쿼리를 실행합니다.\n");
-					selectQuery(strArr[1]);
-					// write(clnt_sock, cmd, strlen(cmd));
-				}
-				
-				else if (strcmp(strArr[0], "추가") == 0){
-					sprintf(cmd, "[0]:%s, [1]:%s", strArr[0], strArr[1]);
-					write(clnt_sock, cmd, strlen(cmd));
-					// insertQuery(strArr[1]);
-				}
-				
-				else if (strcmp(strArr[0], "메모수정") == 0){
-					char *tempVal = strtok(strArr[1], ",");
-					char *tempArr[2];
-
-					for (int cnt=0; cnt < 2; cnt++) {
-					tempArr[cnt] = tempVal;
-					tempVal = strtok(NULL, "\0");
-					}
-
-					sprintf(cmd, "[0]:%s, [1]:%s, [2]:%s", strArr[0], tempArr[1], tempArr[2]);
-					write(clnt_sock, cmd, strlen(cmd));
-
-					//updateMemo(tempArr[0], tempArr[1]);
-				}
-
-				else if(strcmp(strArr[0], "기록하기") == 0){
-					sprintf(cmd, "[0]:%s, [1]:%s", strArr[0], strArr[1]);
-					write(clnt_sock, cmd, strlen(cmd));
-				}
-					
-					//startRecord(strArr[1]);
-
-				else{
-					sprintf(cmd, "%s","도움말");
-					write(clnt_sock, cmd, strlen(cmd));
-				}
+				//updateMemo(tempArr[0], tempArr[1]);
 			}
-			else
-			{
-				if ( strcmp(cmd, "목록") == 0 ){
 
-					//printList();
-				}
-				else{
-					sprintf(cmd, "%s","도움말");
-					write(clnt_sock, cmd, strlen(cmd));
-				}
+			else if(strcmp(strArr[0], "기록하기") == 0){
+				sprintf(cmd, "[0]:%s, [1]:%s", strArr[0], strArr[1]);
+				write(clnt_sock, cmd, strlen(cmd));
 			}
-			printf("한바퀴돌았다\n");
+				
+				//startRecord(strArr[1]);
+
+			else{
+				sprintf(cmd, "%s","도움말");
+				write(clnt_sock, cmd, strlen(cmd));
+			}
 		}
+		else
+		{
+			if ( strcmp(cmd, "목록") == 0 ){
+
+				//printList();
+			}
+			else{
+				sprintf(cmd, "%s","도움말");
+				write(clnt_sock, cmd, strlen(cmd));
+			}
+		}
+		printf("한바퀴돌았다\n");
 	}
 	close(serv_sock);
 	return 0;
@@ -163,6 +162,7 @@ void connDB(){
 void selectQuery(char *value){
     int count = 0;
     char sql[255];
+	char result[300];
     sprintf(sql, "select * from list where date='%s'", value);
 
     connDB();
@@ -183,17 +183,16 @@ void selectQuery(char *value){
         printf("+--------+---------------------+--------------+------------+---------------------------------------------------+\n");
 
         while( (row=mysql_fetch_row(res))!=NULL){
-            char result[1024];
 			count++;
-            printf("| %-7s| %-20s| %-13s| %-11s| %-50s|", row[0], row[1], row[2], row[3], row[4]);
-			sprintf(result, "| %-7s| %-20s| %-13s| %-11s| %-50s|%d\n", row[0], row[1], row[2], row[3], row[4],count);
+            printf("| %-7s| %-20s| %-13s| %-11s| %-50s|\n", row[0], row[1], row[2], row[3], row[4]);
+			sprintf(result, "| %-7s| %-20s| %-13s| %-11s| %-50s|\n", row[0], row[1], row[2], row[3], row[4]);
 			write(clnt_sock, result, strlen(result));
-			printf("%ld\n",sizeof(result));
         }
+		
         printf("+--------+---------------------+--------------+------------+---------------------------------------------------+\n\n");
         printf("총 %d개의 할 일이 조회되었습니다.\n\n", count);
-
     }
+
     mysql_close(conn);
 	printf("쿼리종료\n");
 }

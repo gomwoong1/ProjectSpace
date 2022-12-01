@@ -7,7 +7,7 @@
 #include <unistd.h> 
 #include <arpa/inet.h>
 #include <sys/socket.h>
-#define CMDSIZE 1024
+#define CMDSIZE 300
 
 // 년,월,일 데이터 저장 구조체
 typedef struct{
@@ -54,6 +54,7 @@ int main(int argc, char *argv[]) {
         char cmd[CMDSIZE];
         printf("명령어 입력 >> ");
         fgets(cmd, CMDSIZE, stdin);  
+        printf("보낸 명령어: %s\n", cmd);
 
         if(strcmp(cmd, "도움말") == 0)
             printInfo();
@@ -68,10 +69,10 @@ int main(int argc, char *argv[]) {
             printf("서버에서 받은 명령어:\n");
 
             while((strCnt=read(sock, cmd, CMDSIZE)) != 0){
+                cmd[strCnt]=0;
                 printf("%s", cmd);
             }
             printf("출력완료\n");
-            //cmd[strCnt]=0;
         }
         printf("다시드가자\n");
     }
