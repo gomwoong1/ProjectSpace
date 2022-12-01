@@ -8,7 +8,7 @@
 #include <pthread.h>
 #include "/usr/include/mysql/mysql.h"
 
-#define BUF_SIZE 100
+#define CMDSIZE 100
 
 void error_handling(char * msg);
 void connDB();
@@ -18,7 +18,7 @@ void printList();
 void updateMemo(char *, char *);
 
 pthread_mutex_t mutx;
-char msg[BUF_SIZE];
+char cmd[CMDSIZE];
 
 MYSQL *conn;
 MYSQL_RES *res;
@@ -54,59 +54,71 @@ int main(int argc, char *argv[])
 	
 	while(1)
 	{
-		while((str_len=read(clnt_sock, msg, BUF_SIZE))!=0){
-			msg[str_len] = 0;
-			printf("받아온 값: %s!\n", msg);
-			// if(strchr(cmd, ':'))   //명령어중 ':'이 있는지 없는지 확인
-			// {
-			// 	char *temp = strtok(cmd, ":"); // 명령어 종류와 명령어 값 분리
-			// 	char *strArr[2];
-				
-			// 	for (int cnt=0; cnt < 2; cnt++) {
-			// 		strArr[cnt] = temp;
-			// 		temp = strtok(NULL, "\0");
-			// 	}
-				
-			// 	if(strcmp(strArr[0], "기록조회") == 0)
-			// 		selectQuery(strArr[1]);
-				
-			// 	else if (strcmp(strArr[0], "추가") == 0)
-			// 		insertQuery(strArr[1]);
-				
-			// 	else if (strcmp(strArr[0], "메모수정") == 0){
-			// 		char *tempVal = strtok(strArr[1], ",");
-			// 		char *tempArr[2];
+		while((str_len=read(clnt_sock, cmd, CMDSIZE))!=0){
+			cmd[str_len-1] = 0;
+			printf("받아온 값: %s!\n", cmd);
+			if(strchr(cmd, ':'))   //명령어중 ':'이 있는지 없는지 확인
+			{
+				char *temp = strtok(cmd, ":"); // 명령어 종류와 명령어 값 분리
+				char *strArr[2];
+				char str1[10], str2[10];
+				for (int cnt=0; cnt < 2; cnt++) {
+					strArr[cnt] = temp;
+					temp = strtok(NULL, "\0");
+				}
 
-			// 		for (int cnt=0; cnt < 2; cnt++) {
-			// 		tempArr[cnt] = tempVal;
-			// 		tempVal = strtok(NULL, "\0");
-			// 		}
+				printf("[0]:%s!\n", strArr[0]);
+				printf("[1]:%s!\n", strArr[1]);
 
-			// 		updateMemo(tempArr[0], tempArr[1]);
-			// 	}
+				if(strcmp(strArr[0], "기록조회") == 0){
+					selectQuery(strArr[1]);
+					// write(clnt_sock, cmd, strlen(cmd));
+				}
+				
+				else if (strcmp(strArr[0], "추가") == 0){
+					sprintf(cmd, "[0]:%s, [1]:%s", strArr[0], strArr[1]);
+					write(clnt_sock, cmd, strlen(cmd));
+					// insertQuery(strArr[1]);
+				}
+				
+				else if (strcmp(strArr[0], "메모수정") == 0){
+					char *tempVal = strtok(strArr[1], ",");
+					char *tempArr[2];
 
-			// 	else if(strcmp(strArr[0], "기록하기") == 0)
-			// 		startRecord(strArr[1]);
+					for (int cnt=0; cnt < 2; cnt++) {
+					tempArr[cnt] = tempVal;
+					tempVal = strtok(NULL, "\0");
+					}
 
-			// 	else
-			// 		printf("잘못된 명령어입니다. 도움이 필요하면 \'도움말\'을 입력하세요.\n\n");
-			// }
-			// else
-			// {
-			// 	if( strcmp(cmd, "도움말\n") == 0 )
-			// 		printInfo();
-			// 	else if ( strcmp(cmd, "목록\n") == 0 )
-			// 		printList();
-			// 	else if( strcmp(cmd, "종료\n") == 0 ) {
-			// 		system("clear");
-			// 		printf("프로그램을 종료합니다.\n");
-			// 		break;
-			// 	}
-			// 	else
-			// 		printf("잘못된 명령어입니다. 도움이 필요하면 \'도움말\'을 입력하세요.\n\n");
-			// }
-			write(clnt_sock, msg, str_len);
-			// strcpy(msg, "");
+					sprintf(cmd, "[0]:%s, [1]:%s, [2]:%s", strArr[0], tempArr[1], tempArr[2]);
+					write(clnt_sock, cmd, strlen(cmd));
+
+					//updateMemo(tempArr[0], tempArr[1]);
+				}
+
+				else if(strcmp(strArr[0], "기록하기") == 0){
+					sprintf(cmd, "[0]:%s, [1]:%s", strArr[0], strArr[1]);
+					write(clnt_sock, cmd, strlen(cmd));
+				}
+					
+					//startRecord(strArr[1]);
+
+				else{
+					sprintf(cmd, "%s","도움말");
+					write(clnt_sock, cmd, strlen(cmd));
+				}
+			}
+			else
+			{
+				if ( strcmp(cmd, "목록") == 0 ){
+
+					//printList();
+				}
+				else{
+					sprintf(cmd, "%s","도움말");
+					write(clnt_sock, cmd, strlen(cmd));
+				}
+			}
 		}
 	}
 	close(serv_sock);
@@ -120,64 +132,64 @@ void error_handling(char * msg)
 	exit(1);
 }
 
-// void connDB(){
-//     char *server = "localhost";
-//     char *user = "todo";
-//     char *password = "2022iot";
-//     char *database = "iot";
+void connDB(){
+    char *server = "localhost";
+    char *user = "todo";
+    char *password = "2022iot";
+    char *database = "iot";
 
-//     // 연결 객체 초기화
-//     conn = mysql_init(NULL);
+    // 연결 객체 초기화
+    conn = mysql_init(NULL);
 
-//     // Mysql 연결
-//     if (!mysql_real_connect(conn, server, user, password, NULL, 0, NULL, 0)) {
-//         printf("DB 연결 에러! 에러코드: ");
-//         fprintf(stderr, "%s\n", mysql_error(conn));
-//         exit(1);   
-//     }
+    // Mysql 연결
+    if (!mysql_real_connect(conn, server, user, password, NULL, 0, NULL, 0)) {
+        printf("DB 연결 에러! 에러코드: ");
+        fprintf(stderr, "%s\n", mysql_error(conn));
+        exit(1);   
+    }
 
-//     // Database 연결
-//     if(mysql_select_db(conn, database) != 0){
-//         mysql_close(conn);
-//         printf("DB가 없습니다. 프로그램을 종료합니다.\n");
-//         exit(1);
-//     }
-// }
+    // Database 연결
+    if(mysql_select_db(conn, database) != 0){
+        mysql_close(conn);
+        printf("DB가 없습니다. 프로그램을 종료합니다.\n");
+        exit(1);
+    }
+}
 
-// // select query 생성 및 질의 함수
-// void selectQuery(char *value){
-//     int count = 0;
-//     char sql[255];
-//     value[strlen(value)-1] = '\0';
-//     sprintf(sql, "select * from list where date='%s'", value);
+// select query 생성 및 질의 함수
+void selectQuery(char *value){
+    int count = 0;
+    char sql[255];
+    value[strlen(value)-1] = '\0';
+    sprintf(sql, "select * from list where date='%s'", value);
 
-//     connDB();
+    connDB();
 
-//     // 쿼리문 질의. 성공시 false 반환.
-//     if (mysql_query(conn, sql)) {
-//         printf("Query Error!\n");
-//     }
-//     else {
-//         // 쿼리문 결과 res에 저장
-//         res = mysql_store_result(conn);
+    // 쿼리문 질의. 성공시 false 반환.
+    if (mysql_query(conn, sql)) {
+        printf("Query Error!\n");
+    }
+    else {
+        // 쿼리문 결과 res에 저장
+        res = mysql_store_result(conn);
 
-//         system("clear");
-//         // 가져온 레코드 출력
-//         printf("조회일자: %s\n", value);
-//         printf("+--------+---------------------+--------------+------------+---------------------------------------------------+\n");
-//         printf("|  번호　|        할 일        |     날짜     |  경과시간  |  메모                                             |\n");
-//         printf("+--------+---------------------+--------------+------------+---------------------------------------------------+\n");
+        system("clear");
+        // 가져온 레코드 출력
+        printf("조회일자: %s\n", value);
+        printf("+--------+---------------------+--------------+------------+---------------------------------------------------+\n");
+        printf("|  번호　|        할 일        |     날짜     |  경과시간  |  메모                                             |\n");
+        printf("+--------+---------------------+--------------+------------+---------------------------------------------------+\n");
 
-//         while( (row=mysql_fetch_row(res))!=NULL){
-//             count++;
-//             printf("| %-7s| %-20s| %-13s| %-11s| %-50s|\n", row[0], row[1], row[2], row[3], row[4]);
-//         }
-//         printf("+--------+---------------------+--------------+------------+---------------------------------------------------+\n\n");
-//         printf("총 %d개의 할 일이 조회되었습니다.\n\n", count);
+        while( (row=mysql_fetch_row(res))!=NULL){
+            count++;
+            printf("| %-7s| %-20s| %-13s| %-11s| %-50s|\n", row[0], row[1], row[2], row[3], row[4]);
+        }
+        printf("+--------+---------------------+--------------+------------+---------------------------------------------------+\n\n");
+        printf("총 %d개의 할 일이 조회되었습니다.\n\n", count);
 
-//     }
-//     mysql_close(conn);
-// }
+    }
+    mysql_close(conn);
+}
 
 // // insert query 생성 및 질의 함수
 // void insertQuery(char *value){

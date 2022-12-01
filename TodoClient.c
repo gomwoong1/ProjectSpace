@@ -55,11 +55,20 @@ int main(int argc, char *argv[]) {
         printf("명령어 입력 >> ");
         fgets(cmd, CMDSIZE, stdin);  
 
-        write(sock, cmd, strlen(cmd));
-        strCnt=read(sock, cmd, CMDSIZE);
-        cmd[strCnt]=0;
-        printf("서버에서 받은 명령어: %s!\n", cmd);
-        
+        if(strcmp(cmd, "도움말") == 0)
+            printInfo();
+        else if(strcmp(cmd, "종료") == 0){
+            system("clear");
+            printf("프로그램을 종료합니다.\n");
+            exit(1);
+        }
+
+        else{
+            write(sock, cmd, strlen(cmd));
+            strCnt=read(sock, cmd, CMDSIZE);
+            cmd[strCnt]=0;
+            printf("서버에서 받은 명령어: %s!\n", cmd);
+        }
     }
 
     return 0;
