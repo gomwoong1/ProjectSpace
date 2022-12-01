@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
 	int clnt_adr_sz, str_len;
 	pthread_t t_id;
 
+	// 매개변수의 개수가 맞지 않으면 안내문구 출력
 	if(argc!=2) {
 		printf("Usage : %s <port>\n", argv[0]);
 		exit(1);
@@ -54,7 +55,55 @@ int main(int argc, char *argv[])
 	while(1)
 	{
 		while((str_len=read(clnt_sock, msg, BUF_SIZE))!=0){
-			printf("받아온 값: %s", msg);
+			printf("받아온 값: %s!", msg);
+			// if(strchr(cmd, ':'))   //명령어중 ':'이 있는지 없는지 확인
+			// {
+			// 	char *temp = strtok(cmd, ":"); // 명령어 종류와 명령어 값 분리
+			// 	char *strArr[2];
+				
+			// 	for (int cnt=0; cnt < 2; cnt++) {
+			// 		strArr[cnt] = temp;
+			// 		temp = strtok(NULL, "\0");
+			// 	}
+				
+			// 	if(strcmp(strArr[0], "기록조회") == 0)
+			// 		selectQuery(strArr[1]);
+				
+			// 	else if (strcmp(strArr[0], "추가") == 0)
+			// 		insertQuery(strArr[1]);
+				
+			// 	else if (strcmp(strArr[0], "메모수정") == 0){
+			// 		char *tempVal = strtok(strArr[1], ",");
+			// 		char *tempArr[2];
+
+			// 		for (int cnt=0; cnt < 2; cnt++) {
+			// 		tempArr[cnt] = tempVal;
+			// 		tempVal = strtok(NULL, "\0");
+			// 		}
+
+			// 		updateMemo(tempArr[0], tempArr[1]);
+			// 	}
+
+			// 	else if(strcmp(strArr[0], "기록하기") == 0)
+			// 		startRecord(strArr[1]);
+
+			// 	else
+			// 		printf("잘못된 명령어입니다. 도움이 필요하면 \'도움말\'을 입력하세요.\n\n");
+			// }
+			// else
+			// {
+			// 	if( strcmp(cmd, "도움말\n") == 0 )
+			// 		printInfo();
+			// 	else if ( strcmp(cmd, "목록\n") == 0 )
+			// 		printList();
+			// 	else if( strcmp(cmd, "종료\n") == 0 ) {
+			// 		system("clear");
+			// 		printf("프로그램을 종료합니다.\n");
+			// 		break;
+			// 	}
+			// 	else
+			// 		printf("잘못된 명령어입니다. 도움이 필요하면 \'도움말\'을 입력하세요.\n\n");
+			// }
 			write(clnt_sock, msg, str_len);
 		}
 	}
