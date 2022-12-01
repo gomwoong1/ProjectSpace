@@ -23,7 +23,7 @@ typedef struct{
 void printWelcome();
 void printInfo();
 void getTime();
-void connDB();
+
 void selectQuery(char *);
 void insertQuery(char *);
 void printList();
@@ -40,9 +40,7 @@ void error_handling(char * msg);
 
 struct sockaddr_in serv_addr;
 MYTIME TODAY;
-MYSQL *conn;
-MYSQL_RES *res;
-MYSQL_ROW row;
+
 char str[100];
 int sock, d, flag = 1;
 pthread_t snd_thread, rcv_thread;
@@ -171,30 +169,6 @@ void getTime(){
     TODAY.year = t-> tm_year + 1900;
     TODAY.month = t -> tm_mon + 1;
     TODAY.day = t -> tm_mday;
-}
-
-void connDB(){
-    char *server = "localhost";
-    char *user = "todo";
-    char *password = "2022iot";
-    char *database = "iot";
-
-    // 연결 객체 초기화
-    conn = mysql_init(NULL);
-
-    // Mysql 연결
-    if (!mysql_real_connect(conn, server, user, password, NULL, 0, NULL, 0)) {
-        printf("DB 연결 에러! 에러코드: ");
-        fprintf(stderr, "%s\n", mysql_error(conn));
-        exit(1);   
-    }
-
-    // Database 연결
-    if(mysql_select_db(conn, database) != 0){
-        mysql_close(conn);
-        printf("DB가 없습니다. 프로그램을 종료합니다.\n");
-        exit(1);
-    }
 }
 
 // select query 생성 및 질의 함수

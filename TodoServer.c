@@ -6,13 +6,19 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <pthread.h>
+#include "/usr/include/mysql/mysql.h"
 
 #define BUF_SIZE 100
 
 void error_handling(char * msg);
+void connDB();
 
 pthread_mutex_t mutx;
 char msg[BUF_SIZE];
+
+MYSQL *conn;
+MYSQL_RES *res;
+MYSQL_ROW row;
 
 int main(int argc, char *argv[])
 {
@@ -20,12 +26,12 @@ int main(int argc, char *argv[])
 	struct sockaddr_in serv_adr, clnt_adr;
 	int clnt_adr_sz, str_len;
 	pthread_t t_id;
+
 	if(argc!=2) {
 		printf("Usage : %s <port>\n", argv[0]);
 		exit(1);
 	}
 
-	pthread_mutex_init(&mutx, NULL);
 	serv_sock=socket(PF_INET, SOCK_STREAM, 0);
 
 	memset(&serv_adr, 0, sizeof(serv_adr));
@@ -57,4 +63,28 @@ void error_handling(char * msg)
 	fputs(msg, stderr);
 	fputc('\n', stderr);
 	exit(1);
+}
+
+void connDB(){
+    char *server = "localhost";
+    char *user = "todo";
+    char *password = "2022iot";
+    char *database = "iot";
+
+    // 연결 객체 초기화
+    conn = mysql_init(NULL);
+
+    // Mysql 연결
+    if (!mysql_real_connect(conn, server, user, password, NULL, 0, NULL, 0)) {
+        printf("DB 연결 에러! 에러코드: ");
+        fprintf(stderr, "%s\n", mysql_error(conn));
+        exit(1);   
+    }
+
+    // Database 연결
+    if(mysql_select_db(conn, database) != 0){
+        mysql_close(conn);
+        printf("DB가 없습니다. 프로그램을 종료합니다.\n");
+        exit(1);
+    }
 }
