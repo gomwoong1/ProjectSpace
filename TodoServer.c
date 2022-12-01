@@ -23,10 +23,10 @@ char cmd[CMDSIZE];
 MYSQL *conn;
 MYSQL_RES *res;
 MYSQL_ROW row;
+int serv_sock, clnt_sock;
 
 int main(int argc, char *argv[])
 {
-	int serv_sock, clnt_sock;
 	struct sockaddr_in serv_adr, clnt_adr;
 	int clnt_adr_sz, str_len;
 	pthread_t t_id;
@@ -54,6 +54,7 @@ int main(int argc, char *argv[])
 	
 	while(1)
 	{
+		printf("값 받기 대기중\n");
 		while((str_len=read(clnt_sock, cmd, CMDSIZE))!=0){
 			cmd[str_len-1] = 0;
 			printf("받아온 값: %s!\n", cmd);
@@ -71,6 +72,7 @@ int main(int argc, char *argv[])
 				printf("[1]:%s!\n", strArr[1]);
 
 				if(strcmp(strArr[0], "기록조회") == 0){
+					printf("쿼리를 실행합니다.\n");
 					selectQuery(strArr[1]);
 					// write(clnt_sock, cmd, strlen(cmd));
 				}
@@ -119,6 +121,7 @@ int main(int argc, char *argv[])
 					write(clnt_sock, cmd, strlen(cmd));
 				}
 			}
+			printf("한바퀴돌았다\n");
 		}
 	}
 	close(serv_sock);
@@ -160,7 +163,6 @@ void connDB(){
 void selectQuery(char *value){
     int count = 0;
     char sql[255];
-    value[strlen(value)-1] = '\0';
     sprintf(sql, "select * from list where date='%s'", value);
 
     connDB();
@@ -181,14 +183,19 @@ void selectQuery(char *value){
         printf("+--------+---------------------+--------------+------------+---------------------------------------------------+\n");
 
         while( (row=mysql_fetch_row(res))!=NULL){
-            count++;
-            printf("| %-7s| %-20s| %-13s| %-11s| %-50s|\n", row[0], row[1], row[2], row[3], row[4]);
+            char result[1024];
+			count++;
+            printf("| %-7s| %-20s| %-13s| %-11s| %-50s|", row[0], row[1], row[2], row[3], row[4]);
+			sprintf(result, "| %-7s| %-20s| %-13s| %-11s| %-50s|%d\n", row[0], row[1], row[2], row[3], row[4],count);
+			write(clnt_sock, result, strlen(result));
+			printf("%ld\n",sizeof(result));
         }
         printf("+--------+---------------------+--------------+------------+---------------------------------------------------+\n\n");
         printf("총 %d개의 할 일이 조회되었습니다.\n\n", count);
 
     }
     mysql_close(conn);
+	printf("쿼리종료\n");
 }
 
 // // insert query 생성 및 질의 함수
