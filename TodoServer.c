@@ -7,9 +7,16 @@
 #include <netinet/in.h>
 #include <pthread.h>
 #include "/usr/include/mysql/mysql.h"
-
 #define CMDSIZE 100
 
+// 년,월,일 데이터 저장 구조체
+typedef struct{
+    int year;
+    int month;
+    int day;
+}MYTIME;
+
+void getTime();
 void error_handling(char * msg);
 void connDB();
 void selectQuery(char *);
@@ -19,6 +26,7 @@ void updateMemo(char *, char *);
 
 pthread_mutex_t mutx;
 char cmd[CMDSIZE];
+MYTIME TODAY;
 
 MYSQL *conn;
 MYSQL_RES *res;
@@ -37,6 +45,7 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
+	getTime();
 	serv_sock=socket(PF_INET, SOCK_STREAM, 0);
 
 	memset(&serv_adr, 0, sizeof(serv_adr));
@@ -54,7 +63,6 @@ int main(int argc, char *argv[])
 	
 	while(1)
 	{
-		printf("값 받기 대기중\n");
 		str_len=read(clnt_sock, cmd, CMDSIZE);
 		cmd[str_len-1] = 0;
 		printf("받아온 값: %s!\n", cmd);
@@ -68,20 +76,11 @@ int main(int argc, char *argv[])
 				temp = strtok(NULL, "\0");
 			}
 
-			printf("[0]:%s!\n", strArr[0]);
-			printf("[1]:%s!\n", strArr[1]);
-
-			if(strcmp(strArr[0], "기록조회") == 0){
-				printf("쿼리를 실행합니다.\n");
+			if(strcmp(strArr[0], "기록조회") == 0) //기능 구현 완료
 				selectQuery(strArr[1]);
-				// write(clnt_sock, cmd, strlen(cmd));
-			}
 			
-			else if (strcmp(strArr[0], "추가") == 0){
-				sprintf(cmd, "[0]:%s, [1]:%s", strArr[0], strArr[1]);
-				write(clnt_sock, cmd, strlen(cmd));
-				// insertQuery(strArr[1]);
-			}
+			else if (strcmp(strArr[0], "추가") == 0) //기능 구현 완료
+				insertQuery(strArr[1]);
 			
 			else if (strcmp(strArr[0], "메모수정") == 0){
 				char *tempVal = strtok(strArr[1], ",");
@@ -92,39 +91,44 @@ int main(int argc, char *argv[])
 				tempVal = strtok(NULL, "\0");
 				}
 
-				sprintf(cmd, "[0]:%s, [1]:%s, [2]:%s", strArr[0], tempArr[1], tempArr[2]);
-				write(clnt_sock, cmd, strlen(cmd));
-
 				//updateMemo(tempArr[0], tempArr[1]);
 			}
 
 			else if(strcmp(strArr[0], "기록하기") == 0){
-				sprintf(cmd, "[0]:%s, [1]:%s", strArr[0], strArr[1]);
-				write(clnt_sock, cmd, strlen(cmd));
-			}
-				
 				//startRecord(strArr[1]);
+			}
+			
 
 			else{
-				sprintf(cmd, "%s","도움말");
+				sprintf(cmd, "%s","잘못된 명령어입니다. 도움이 필요하면 \'도움말\'을 입력하세요.\n\n"); //기눙 구현 완료
 				write(clnt_sock, cmd, strlen(cmd));
 			}
 		}
 		else
 		{
-			if ( strcmp(cmd, "목록") == 0 ){
+			if ( strcmp(cmd, "목록") == 0 ) //기능 구현 완료
+				printList();
 
-				//printList();
-			}
 			else{
-				sprintf(cmd, "%s","도움말");
+				sprintf(cmd, "%s","잘못된 명령어입니다. 도움이 필요하면 \'도움말\'을 입력하세요.\n\n"); //기눙 구현 완료
 				write(clnt_sock, cmd, strlen(cmd));
 			}
 		}
-		printf("한바퀴돌았다\n");
 	}
 	close(serv_sock);
 	return 0;
+}
+
+// 오늘 날짜를 받아오는 함수
+void getTime(){
+    struct tm* t;
+    time_t base = time(NULL);
+
+    t=localtime(&base);
+    
+    TODAY.year = t-> tm_year + 1900;
+    TODAY.month = t -> tm_mon + 1;
+    TODAY.day = t -> tm_mday;
 }
 
 void error_handling(char * msg)
@@ -188,47 +192,42 @@ void selectQuery(char *value){
 			sprintf(result, "| %-7s| %-20s| %-13s| %-11s| %-50s|\n", row[0], row[1], row[2], row[3], row[4]);
 			write(clnt_sock, result, strlen(result));
         }
-		
-		//sprintf(result, "%s", "\0");
-		//write(clnt_sock, result, strlen(result));
         printf("+--------+---------------------+--------------+------------+---------------------------------------------------+\n\n");
         printf("총 %d개의 할 일이 조회되었습니다.\n\n", count);
     }
     mysql_close(conn);
-	printf("쿼리종료\n");
 }
 
-// // insert query 생성 및 질의 함수
-// void insertQuery(char *value){
-//     char sql[255];
-//     value[strlen(value)-1] = '\0';
-//     char today[30];
+// insert query 생성 및 질의 함수
+void insertQuery(char *value){
+    char sql[255];
+    char today[30];
 
-//     system("clear");
-//     connDB();
+    system("clear");
+    connDB();
 
-//     // sprintf("저장공간", 포매팅 형식, 값들);
-//     sprintf(sql, "select count(number)+1 from list where date='%d-%d-%d'", TODAY.year, TODAY.month, TODAY.day);
-//     mysql_query(conn, sql);
-//     res = mysql_store_result(conn);
+    // sprintf("저장공간", 포매팅 형식, 값들);
+    sprintf(sql, "select count(number)+1 from list where date='%d-%d-%d'", TODAY.year, TODAY.month, TODAY.day);
+    mysql_query(conn, sql);
+    res = mysql_store_result(conn);
 
-//     while((row=mysql_fetch_row(res))!=NULL){
-//         sprintf(sql, "insert into list(number, todo, date) values(%s,'%s','%d-%d-%d')", row[0], value, TODAY.year, TODAY.month, TODAY.day);
-//     }
+    while((row=mysql_fetch_row(res))!=NULL){
+        sprintf(sql, "insert into list(number, todo, date) values(%s,'%s','%d-%d-%d')", row[0], value, TODAY.year, TODAY.month, TODAY.day);
+    }
     
-//     if(mysql_query(conn, sql))
-//         printf("Query Error!\n");
+    if(mysql_query(conn, sql))
+        printf("Query Error!\n");
 
-//     sprintf(today, "%d-%d-%d\n", TODAY.year, TODAY.month, TODAY.day);
-//     selectQuery(today);
-// }
+    sprintf(today, "%d-%d-%d", TODAY.year, TODAY.month, TODAY.day);
+    selectQuery(today);
+}
 
-// // 오늘의 할 일 리스트 출력하는 함수
-// void printList(){
-//     char today[20];
-//     sprintf(today, "%d-%d-%d ", TODAY.year, TODAY.month, TODAY.day);
-//     selectQuery(today);
-// }
+// 오늘의 할 일 리스트 출력하는 함수
+void printList(){
+    char today[20];
+    sprintf(today, "%d-%d-%d", TODAY.year, TODAY.month, TODAY.day);
+    selectQuery(today);
+}
 
 // // 메모 수정해주는 함수
 // void updateMemo(char *date, char *number){

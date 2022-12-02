@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
         fgets(cmd, CMDSIZE, stdin);  
         printf("보낸 명령어: %s\n", cmd);
 
-        if(strcmp(cmd, "도움말") == 0)
+        if(strcmp(cmd, "도움말\n") == 0)
             printInfo();
         else if(strcmp(cmd, "종료") == 0){
             system("clear");
@@ -67,15 +67,8 @@ int main(int argc, char *argv[]) {
 
         else{
             write(sock, cmd, strlen(cmd));
-            printf("서버에서 받은 명령어:\n");
-
-            while(setTimeout(sock, cmd, CMDSIZE, 100)){
-                //cmd[strCnt]=0;
-                //printf("%s", cmd);
-            }
-            printf("출력완료\n");
+            while(setTimeout(sock, cmd, CMDSIZE, 100));
         }
-        printf("다시드가자\n");
     }
 
     return 0;
