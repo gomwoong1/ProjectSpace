@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
 			else if (strcmp(strArr[0], "추가") == 0)
 				insertQuery(strArr[1]);
 			
-			else if (strcmp(strArr[0], "메모수정") == 0){ // 기능 구현중
+			else if (strcmp(strArr[0], "메모수정") == 0){
 				char *tempVal = strtok(strArr[1], ",");
 				char *tempArr[2];
 
@@ -229,11 +229,13 @@ void printList(){
 
 // 메모 수정해주는 함수
 void updateMemo(char *date, char *number){
-    char sql[255];
+    char sql[255], today[30];
     int str_len;
 
+    sprintf(today, "%s", date);
+
     connDB();
-    sprintf(sql, "select memo from list where date='%s' and number=%s", date, number);
+    sprintf(sql, "select memo from list where date='%s' and number=%s", today, number);
     mysql_query(conn, sql);
     res = mysql_store_result(conn);
 
@@ -243,14 +245,13 @@ void updateMemo(char *date, char *number){
     }
 
     str_len=read(clnt_sock, cmd, CMDSIZE);
-    cmd[str_len] = 0;
-    printf("재전송받은 값: .%s.", cmd);
+    cmd[str_len-1] = 0;
 
-    sprintf(sql, "update list set memo='%s' where date='%s' and number=%s", cmd, date, number);
+    sprintf(sql, "update list set memo='%s' where date='%s' and number=%s", cmd, today, number);
     printf("%s", sql);
-    // if(mysql_query(conn, sql))
-    //     printf("Query Error!\n");
+    if(mysql_query(conn, sql))
+        printf("Query Error!\n");
 
     mysql_close(conn);    
-    // selectQuery(date);
+    selectQuery(date);
 }
