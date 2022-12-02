@@ -246,8 +246,10 @@ int setTimeout(int fd, char *buf, int buf_size, int timeout_ms){
         rx_len = read(fd, buf, buf_size);
         buf[rx_len]=0;
 
-        if (strchr(buf, ',')){
-            printf("메모 수정 전용 업데이트 모드\n");
+        if (strchr(buf, '#')){
+            char *temp = strtok(buf, "#");
+            sprintf(buf, "%s", temp);
+            printf("%s", buf);
         }
         else
             printf("%s", buf);

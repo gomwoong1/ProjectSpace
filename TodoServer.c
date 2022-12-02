@@ -238,19 +238,19 @@ void updateMemo(char *date, char *number){
     res = mysql_store_result(conn);
 
     while((row=mysql_fetch_row(res))!=NULL){
-        sprintf(cmd, "1,%s", row[0]);
+        sprintf(cmd, "%s#", row[0]);
 		write(clnt_sock, cmd, strlen(cmd));
     }
 
     str_len=read(clnt_sock, cmd, CMDSIZE);
-    cmd[str_len-1] = 0;
+    cmd[str_len] = 0;
+    printf("재전송받은 값: .%s.", cmd);
 
     sprintf(sql, "update list set memo='%s' where date='%s' and number=%s", cmd, date, number);
-    if(mysql_query(conn, sql))
-        printf("Query Error!\n");
-    
-    sprintf(date, "%s\n", date);
-    mysql_close(conn);
-    
-    selectQuery(date);
+    printf("%s", sql);
+    // if(mysql_query(conn, sql))
+    //     printf("Query Error!\n");
+
+    mysql_close(conn);    
+    // selectQuery(date);
 }
