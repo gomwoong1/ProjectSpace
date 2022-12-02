@@ -26,6 +26,7 @@ void startRecord(char *);
 // 소켓 통신용 함수
 void connServer(char *, char*);
 void error_handling(char * msg);
+int setTimeout(int fd, char *buf, int buf_size, int timeout);
 
 struct sockaddr_in serv_addr;
 MYTIME TODAY;
@@ -68,9 +69,9 @@ int main(int argc, char *argv[]) {
             write(sock, cmd, strlen(cmd));
             printf("서버에서 받은 명령어:\n");
 
-            while((strCnt=read(sock, cmd, CMDSIZE)) != 0){
-                cmd[strCnt]=0;
-                printf("%s", cmd);
+            while(setTimeout(sock, cmd, CMDSIZE, 100)){
+                //cmd[strCnt]=0;
+                //printf("%s", cmd);
             }
             printf("출력완료\n");
         }
@@ -234,4 +235,26 @@ void connServer(char *ip, char *port){
 	if(connect(sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr))==-1)
 		error_handling("connect() error");
     
+}
+
+int setTimeout(int fd, char *buf, int buf_size, int timeout_ms){
+    int rx_len = 0;
+    struct timeval timeout;
+    fd_set readFds;
+
+    timeout.tv_sec  = 0;
+    timeout.tv_usec = timeout_ms*1000;
+
+    FD_ZERO(&readFds);
+    FD_SET(fd, &readFds);
+    select(fd+1, &readFds, NULL, NULL, &timeout);
+
+    if(FD_ISSET(fd, &readFds))
+    {
+        rx_len = read(fd, buf, buf_size);
+        buf[rx_len]=0;
+        printf("%s", buf);
+    }
+
+    return rx_len;
 }
