@@ -76,13 +76,13 @@ int main(int argc, char *argv[])
 				temp = strtok(NULL, "\0");
 			}
 
-			if(strcmp(strArr[0], "기록조회") == 0) //기능 구현 완료
+			if(strcmp(strArr[0], "기록조회") == 0)
 				selectQuery(strArr[1]);
 			
-			else if (strcmp(strArr[0], "추가") == 0) //기능 구현 완료
+			else if (strcmp(strArr[0], "추가") == 0)
 				insertQuery(strArr[1]);
 			
-			else if (strcmp(strArr[0], "메모수정") == 0){
+			else if (strcmp(strArr[0], "메모수정") == 0){ // 기능 구현중
 				char *tempVal = strtok(strArr[1], ",");
 				char *tempArr[2];
 
@@ -91,26 +91,24 @@ int main(int argc, char *argv[])
 				tempVal = strtok(NULL, "\0");
 				}
 
-				//updateMemo(tempArr[0], tempArr[1]);
+				updateMemo(tempArr[0], tempArr[1]);
 			}
 
-			else if(strcmp(strArr[0], "기록하기") == 0){
-				//startRecord(strArr[1]);
-			}
-			
+			else if(strcmp(strArr[0], "기록하기") == 0)
+				printf("TEST");//startRecord(strArr[1]);
 
 			else{
-				sprintf(cmd, "%s","잘못된 명령어입니다. 도움이 필요하면 \'도움말\'을 입력하세요.\n\n"); //기눙 구현 완료
+				sprintf(cmd, "%s","잘못된 명령어입니다. 도움이 필요하면 \'도움말\'을 입력하세요.\n\n");
 				write(clnt_sock, cmd, strlen(cmd));
 			}
 		}
 		else
 		{
-			if ( strcmp(cmd, "목록") == 0 ) //기능 구현 완료
+			if ( strcmp(cmd, "목록") == 0 )
 				printList();
 
 			else{
-				sprintf(cmd, "%s","잘못된 명령어입니다. 도움이 필요하면 \'도움말\'을 입력하세요.\n\n"); //기눙 구현 완료
+				sprintf(cmd, "%s","잘못된 명령어입니다. 도움이 필요하면 \'도움말\'을 입력하세요.\n\n");
 				write(clnt_sock, cmd, strlen(cmd));
 			}
 		}
@@ -229,28 +227,30 @@ void printList(){
     selectQuery(today);
 }
 
-// // 메모 수정해주는 함수
-// void updateMemo(char *date, char *number){
-//     char sql[255];
-//     number[strlen(number)-1] = '\0';
+// 메모 수정해주는 함수
+void updateMemo(char *date, char *number){
+    char sql[255];
+    int str_len;
 
-//     connDB();
-//     sprintf(sql, "select memo from list where date='%s' and number=%s", date, number);
-//     mysql_query(conn, sql);
-//     res = mysql_store_result(conn);
+    connDB();
+    sprintf(sql, "select memo from list where date='%s' and number=%s", date, number);
+    mysql_query(conn, sql);
+    res = mysql_store_result(conn);
 
-//     while((row=mysql_fetch_row(res))!=NULL){
-//         sprintf(str, "%s", row[0]);
-//     }
+    while((row=mysql_fetch_row(res))!=NULL){
+        sprintf(cmd, "1,%s", row[0]);
+		write(clnt_sock, cmd, strlen(cmd));
+    }
 
-//     checkChar();
+    str_len=read(clnt_sock, cmd, CMDSIZE);
+    cmd[str_len-1] = 0;
 
-//     sprintf(sql, "update list set memo='%s' where date='%s' and number=%s", str, date, number);
-//     if(mysql_query(conn, sql))
-//         printf("Query Error!\n");
+    sprintf(sql, "update list set memo='%s' where date='%s' and number=%s", cmd, date, number);
+    if(mysql_query(conn, sql))
+        printf("Query Error!\n");
     
-//     sprintf(date, "%s\n", date);
-//     mysql_close(conn);
+    sprintf(date, "%s\n", date);
+    mysql_close(conn);
     
-//     selectQuery(date);
-// }
+    selectQuery(date);
+}

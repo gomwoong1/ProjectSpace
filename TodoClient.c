@@ -55,7 +55,6 @@ int main(int argc, char *argv[]) {
         char cmd[CMDSIZE];
         printf("명령어 입력 >> ");
         fgets(cmd, CMDSIZE, stdin);  
-        printf("보낸 명령어: %s\n", cmd);
 
         if(strcmp(cmd, "도움말\n") == 0)
             printInfo();
@@ -246,7 +245,12 @@ int setTimeout(int fd, char *buf, int buf_size, int timeout_ms){
     {
         rx_len = read(fd, buf, buf_size);
         buf[rx_len]=0;
-        printf("%s", buf);
+
+        if (strchr(buf, ',')){
+            printf("메모 수정 전용 업데이트 모드\n");
+        }
+        else
+            printf("%s", buf);
     }
 
     return rx_len;
