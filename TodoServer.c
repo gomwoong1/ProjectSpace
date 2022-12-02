@@ -193,6 +193,9 @@ void selectQuery(char *value){
         printf("총 %d개의 할 일이 조회되었습니다.\n\n", count);
     }
 
+	sprintf(result, "%d", EOF);
+	write(clnt_sock, result, strlen(result));
+
     mysql_close(conn);
 	printf("쿼리종료\n");
 }
