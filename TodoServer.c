@@ -229,13 +229,15 @@ void printList(){
 
 // 메모 수정해주는 함수
 void updateMemo(char *date, char *number){
-    char sql[255], today[30];
+    char sql[255], today[30], num[5];
     int str_len;
 
     sprintf(today, "%s", date);
+    sprintf(num, "%s", number);
 
     connDB();
-    sprintf(sql, "select memo from list where date='%s' and number=%s", today, number);
+    sprintf(sql, "select memo from list where date='%s' and number=%s", today, num);
+    printf("1번째 sel:%s.", sql);
     mysql_query(conn, sql);
     res = mysql_store_result(conn);
 
@@ -245,13 +247,13 @@ void updateMemo(char *date, char *number){
     }
 
     str_len=read(clnt_sock, cmd, CMDSIZE);
-    cmd[str_len-1] = 0;
+    cmd[str_len] = 0;
 
-    sprintf(sql, "update list set memo='%s' where date='%s' and number=%s", cmd, today, number);
-    printf("%s", sql);
+    sprintf(sql, "update list set memo='%s' where date='%s' and number=%s", cmd, today, num);
+    printf("업데이트:%s.", sql);
     if(mysql_query(conn, sql))
         printf("Query Error!\n");
 
     mysql_close(conn);    
-    selectQuery(date);
+    selectQuery(today);
 }

@@ -248,8 +248,10 @@ int setTimeout(int fd, char *buf, int buf_size, int timeout_ms){
 
         if (strchr(buf, '#')){
             char *temp = strtok(buf, "#");
-            sprintf(buf, "%s", temp);
-            printf("%s", buf);
+            sprintf(str, "%s", temp);
+
+            checkChar();
+            write(sock, str, strlen(str));
         }
         else
             printf("%s", buf);
