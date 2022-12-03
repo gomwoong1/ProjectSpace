@@ -23,16 +23,17 @@ int getAscii();
 void* cntStr(void *);
 void checkChar();
 void startRecord(char *);
-// 소켓 통신용 함수
 void connServer(char *, char*);
 void error_handling(char * msg);
 int setTimeout(int fd, char *buf, int buf_size, int timeout);
+void* timer();
 
 struct sockaddr_in serv_addr;
 MYTIME TODAY;
 
 char str[100];
 int sock, d, flag = 1;
+int hour, min, sec = 0;
 pthread_t snd_thread, rcv_thread;
 void * thread_return;
 
@@ -206,10 +207,6 @@ void* cntStr(void* arg) {
     pthread_exit(NULL);
 }
 
-void startRecord(char *number){
-    
-}
-
 void error_handling(char *msg)
 {
 	fputs(msg, stderr);
@@ -262,4 +259,33 @@ int setTimeout(int fd, char *buf, int buf_size, int timeout_ms){
     }
 
     return rx_len;
+}
+
+void startRecord(char *number){
+    
+}
+
+void* timer(){ 
+    system("clear");
+    printf("00:00:00\n");
+
+    // 1초마다 시간 출력하기
+    while(1){
+        sleep(1);
+        sec++;
+
+        if((sec%60) == 0){
+            min++;
+            sec = 0;
+            if((min%60) == 0){
+                hour++;
+                min = 0;
+            }
+        }
+
+        printf("\x1b[%d;%dH", 1,1);
+        printf("%02d:%02d:%02d\n", hour, min, sec);
+        printf("\x1b[%d;%ldH", 2, strlen(msg));
+    }
+    pthread_exit(NULL);
 }
