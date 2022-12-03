@@ -23,6 +23,7 @@ void selectQuery(char *);
 void insertQuery(char *);
 void printList();
 void updateMemo(char *, char *);
+void updateTime(char *);
 
 pthread_mutex_t mutx;
 char cmd[CMDSIZE];
@@ -95,7 +96,7 @@ int main(int argc, char *argv[])
 			}
 
 			else if(strcmp(strArr[0], "기록하기") == 0)
-				printf("TEST");//startRecord(strArr[1]);
+				updateTime(strArr[1]);
 
 			else{
 				sprintf(cmd, "%s","잘못된 명령어입니다. 도움이 필요하면 \'도움말\'을 입력하세요.\n\n");
@@ -252,7 +253,6 @@ void updateMemo(char *date, char *number){
 
     connDB();
     sprintf(sql, "select memo from list where date='%s' and number=%s", today, num);
-    printf("1번째 sel:%s.", sql);
     mysql_query(conn, sql);
     res = mysql_store_result(conn);
 
@@ -270,5 +270,41 @@ void updateMemo(char *date, char *number){
         printf("Query Error!\n");
 
     //mysql_close(conn);    
+    selectQuery(today);
+}
+
+void updateTime(char *number){
+    int str_len;
+    char sql[255], result[300], today[30], num[5], line[120];
+
+    sprintf(today, "%d-%d-%d", TODAY.year, TODAY.month, TODAY.day);
+    sprintf(num, "%s", number);
+
+    connDB();
+    sprintf(sql, "select * from list where date='%s' and number=%s", today, num);
+    mysql_query(conn, sql);
+    res = mysql_store_result(conn);
+
+    strcpy(line, "+--------+---------------------+--------------+------------+---------------------------------------------------+\n");
+    write(clnt_sock, line, strlen(line));
+
+    strcpy(result, "|  번호　|        할 일        |     날짜     |  경과시간  |  메모                                             |\n");
+    write(clnt_sock, result, strlen(result));
+    write(clnt_sock, line, strlen(line));
+
+    while((row=mysql_fetch_row(res))!=NULL){
+        sprintf(cmd, "%s$", row[0]);
+		write(clnt_sock, cmd, strlen(cmd));
+    }
+    write(clnt_sock, line, strlen(line));
+
+    str_len=read(clnt_sock, cmd, CMDSIZE);
+    cmd[str_len] = 0;
+
+    sprintf(sql, "update list set endtime='%s' where date='%s' and number=%s", cmd, today, num);
+    
+    if(mysql_query(conn, sql))
+        printf("Query Error!\n");
+
     selectQuery(today);
 }

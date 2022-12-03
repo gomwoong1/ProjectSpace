@@ -254,6 +254,9 @@ int setTimeout(int fd, char *buf, int buf_size, int timeout_ms){
             checkChar();
             write(sock, str, strlen(str));
         }
+        else if (strchr(buf, '$')){
+            
+        }
         else
             printf("%s", buf);
     }
