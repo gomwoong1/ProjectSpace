@@ -163,9 +163,9 @@ void connDB(){
 // select query 생성 및 질의 함수
 void selectQuery(char *value){
     int count = 0;
-    char sql[255];
-	char result[300];
-    sprintf(sql, "select * from list where date='%s'", value);
+    char sql[255], result[300], val[30], line[120];
+    sprintf(val, "%s", value);
+    sprintf(sql, "select * from list where date='%s'", val);
 
     connDB();
 
@@ -179,10 +179,21 @@ void selectQuery(char *value){
 
         system("clear");
         // 가져온 레코드 출력
-        printf("조회일자: %s\n", value);
+        printf("조회일자: %s\n", val);
+        sprintf(result, "조회일자: %s\n", val);
+        write(clnt_sock, result, strlen(result));
+
         printf("+--------+---------------------+--------------+------------+---------------------------------------------------+\n");
+        strcpy(line, "+--------+---------------------+--------------+------------+---------------------------------------------------+\n");
+        write(clnt_sock, line, strlen(line));
+
         printf("|  번호　|        할 일        |     날짜     |  경과시간  |  메모                                             |\n");
+        strcpy(result, "|  번호　|        할 일        |     날짜     |  경과시간  |  메모                                             |\n");
+        write(clnt_sock, result, strlen(result));
+
         printf("+--------+---------------------+--------------+------------+---------------------------------------------------+\n");
+        write(clnt_sock, line, strlen(line));
+
 
         while( (row=mysql_fetch_row(res))!=NULL){
 			count++;
@@ -191,7 +202,11 @@ void selectQuery(char *value){
 			write(clnt_sock, result, strlen(result));
         }
         printf("+--------+---------------------+--------------+------------+---------------------------------------------------+\n\n");
+        write(clnt_sock, line, strlen(line));
+
         printf("총 %d개의 할 일이 조회되었습니다.\n\n", count);
+        sprintf(result, "총 %d개의 할 일이 조회되었습니다.\n\n", count);
+        write(clnt_sock, result, strlen(result));
     }
     mysql_close(conn);
 }
@@ -254,6 +269,6 @@ void updateMemo(char *date, char *number){
     if(mysql_query(conn, sql))
         printf("Query Error!\n");
 
-    mysql_close(conn);    
+    //mysql_close(conn);    
     selectQuery(today);
 }
