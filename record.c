@@ -96,5 +96,5 @@ void* timer(){
         printf("%02d:%02d:%02d\n", hour, min, sec);
         printf("\x1b[%d;%ldH", 2, strlen(msg));
     }
-    pthread_exit(NULL);
+    pthread_exit(NULL); 
 }
