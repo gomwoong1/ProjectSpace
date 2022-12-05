@@ -199,6 +199,11 @@ public class gameFrame extends JFrame implements ActionListener{
 					timer.cancel();
 					DB db = new DB();
 					db.resultInsert(username, score);
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 					callProgram();
 				}
 			}
