@@ -22,7 +22,7 @@ void printInfo();
 int getAscii();
 void* cntStr(void *);
 void checkChar();
-void startRecord(char *);
+void startRecord();
 void connServer(char *, char*);
 void error_handling(char * msg);
 int setTimeout(int fd, char *buf, int buf_size, int timeout);
@@ -252,7 +252,10 @@ int setTimeout(int fd, char *buf, int buf_size, int timeout_ms){
             write(sock, str, strlen(str));
         }
         else if (strchr(buf, '$')){
-            
+            char *temp = strtok(buf, "$");
+            printf(str, "%s", temp);
+
+            startRecord();
         }
         else
             printf("%s", buf);
@@ -261,8 +264,41 @@ int setTimeout(int fd, char *buf, int buf_size, int timeout_ms){
     return rx_len;
 }
 
-void startRecord(char *number){
-    
+void startRecord(){
+    char a[5];
+    // char input[100];
+    pthread_t thread;
+
+    strcmp(str, "");
+    pthread_create(&thread, NULL, timer, NULL);
+
+    while(1){
+        d = getAscii();
+        sprintf(a, "%c", d);
+        strcat(str, a);
+        printf("\x1b[%d;%ldH", 2,strlen(str));
+        printf("%s", a);
+
+        if (d == 127){
+            str[strlen(str)-2] = '\0';
+            system("clear");
+            printf("\x1b[%d;%dH", 1,1);
+            printf("%02d:%02d:%02d\n", hour, min, sec);
+            printf("\x1b[%d;%dH", 2,1);
+            printf("%s",str);
+        }
+
+        if (d == 10){
+            // strcpy(input, msg);
+            // strcpy(msg, "");
+            // system("clear");
+            // printf("\x1b[%d;%dH", 1,1);
+            // printf("%02d:%02d:%02d\n", hour, min, sec);
+            // printf("\x1b[%d;%ldH", 2,strlen(msg));
+        }
+    }
+
+    pthread_join(thread, NULL);
 }
 
 void* timer(){ 
@@ -285,7 +321,7 @@ void* timer(){
 
         printf("\x1b[%d;%dH", 1,1);
         printf("%02d:%02d:%02d\n", hour, min, sec);
-        printf("\x1b[%d;%ldH", 2, strlen(msg));
+        printf("\x1b[%d;%ldH", 2, strlen(str));
     }
     pthread_exit(NULL);
 }
