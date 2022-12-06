@@ -22,7 +22,7 @@ void printInfo();
 int getAscii();
 void* cntStr(void *);
 void checkChar();
-void startRecord();
+void startRecord(char *);
 void connServer(char *, char*);
 void error_handling(char * msg);
 int setTimeout(int fd, char *buf, int buf_size, int timeout);
@@ -252,10 +252,11 @@ int setTimeout(int fd, char *buf, int buf_size, int timeout_ms){
             write(sock, str, strlen(str));
         }
         else if (strchr(buf, '$')){
+            system("clear");
             char *temp = strtok(buf, "$");
             printf("%s", temp);
 
-            //startRecord();
+            //startRecord(temp);
         }
         else
             printf("%s", buf);
@@ -264,11 +265,13 @@ int setTimeout(int fd, char *buf, int buf_size, int timeout_ms){
     return rx_len;
 }
 
-void startRecord(){
+void startRecord(char *info){
     char a[5];
-    // char input[100];
+    char input[100];
     pthread_t thread;
 
+    sprintf(input, "%s", info);
+    printf("%s", input);
     strcmp(str, "");
     pthread_create(&thread, NULL, timer, NULL);
 
@@ -282,7 +285,7 @@ void startRecord(){
         if (d == 127){
             str[strlen(str)-2] = '\0';
             system("clear");
-            printf("\x1b[%d;%dH", 1,1);
+            printf("\x1b[%d;%dH", 1,7);
             printf("%02d:%02d:%02d\n", hour, min, sec);
             printf("\x1b[%d;%dH", 2,1);
             printf("%s",str);
@@ -302,7 +305,6 @@ void startRecord(){
 }
 
 void* timer(){ 
-    system("clear");
     printf("00:00:00\n");
 
     // 1초마다 시간 출력하기
@@ -319,7 +321,7 @@ void* timer(){
             }
         }
 
-        printf("\x1b[%d;%dH", 1,1);
+        printf("\x1b[%d;%dH", 1,7);
         printf("%02d:%02d:%02d\n", hour, min, sec);
         printf("\x1b[%d;%ldH", 2, strlen(str));
     }

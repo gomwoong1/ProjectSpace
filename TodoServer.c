@@ -280,17 +280,10 @@ void updateMemo(char *date, char *number){
 
 void updateTime(char *number){
     int str_len;
-    char sql[255], result[300], today[30], num[5], line[120];
+    char sql[255], result[300], today[30], num[5];
 
     sprintf(today, "%d-%d-%d", TODAY.year, TODAY.month, TODAY.day);
     sprintf(num, "%s", number);
-
-    strcpy(line, "+--------+---------------------+--------------+------------+---------------------------------------------------+\n");
-    write(clnt_sock, line, strlen(line));
-
-    strcpy(result, "|  번호　|        할 일        |     날짜     |  경과시간  |  메모                                             |\n");
-    write(clnt_sock, result, strlen(result));
-    write(clnt_sock, line, strlen(line));
     
     connDB();
     sprintf(sql, "select * from list where date='%s' and number=%s", today, num);
@@ -306,12 +299,10 @@ void updateTime(char *number){
     }
     else{
         while((row=mysql_fetch_row(res))!=NULL){
-            sprintf(result, "| %-7s| %-20s| %-13s| %-11s| %-50s|$", row[0], row[1], row[2], row[3], row[4]);
+            sprintf(result, "할일: %s 경과시간:%s$", row[1], row[3]);
             write(clnt_sock, result, strlen(result));
         }
     }
-
-    write(clnt_sock, line, strlen(line));
 
     // str_len=read(clnt_sock, cmd, CMDSIZE);
     // cmd[str_len] = 0;
