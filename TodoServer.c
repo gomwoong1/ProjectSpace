@@ -256,20 +256,25 @@ void updateMemo(char *date, char *number){
     mysql_query(conn, sql);
     res = mysql_store_result(conn);
 
-    while((row=mysql_fetch_row(res))!=NULL){
-        sprintf(cmd, "%s#", row[0]);
-		write(clnt_sock, cmd, strlen(cmd));
+    if(mysql_query(conn, sql)){
+        printf("Query Error!\n");
+        sprintf(cmd, "%s","잘못된 명령어입니다. 도움이 필요하면 \'도움말\'을 입력하세요.\n\n");
+        write(clnt_sock, cmd, strlen(cmd));
+    }
+    else{
+        while((row=mysql_fetch_row(res))!=NULL){
+            sprintf(cmd, "%s#", row[0]);
+            write(clnt_sock, cmd, strlen(cmd));
+        }
     }
 
     str_len=read(clnt_sock, cmd, CMDSIZE);
     cmd[str_len] = 0;
 
     sprintf(sql, "update list set memo='%s' where date='%s' and number=%s", cmd, today, num);
-    printf("업데이트:%s.", sql);
     if(mysql_query(conn, sql))
         printf("Query Error!\n");
 
-    //mysql_close(conn);    
     selectQuery(today);
 }
 
@@ -294,16 +299,18 @@ void updateTime(char *number){
     mysql_query(conn, sql);
     res = mysql_store_result(conn);
 
-    if (mysql_query(conn, sql)) {
-        printf("응안돼\n");
+    if(mysql_query(conn, sql)){
+        printf("Query Error!\n");
+        sprintf(cmd, "%s","잘못된 명령어입니다. 도움이 필요하면 \'도움말\'을 입력하세요.\n\n");
+        write(clnt_sock, cmd, strlen(cmd));
     }
     else{
         while((row=mysql_fetch_row(res))!=NULL){
-        sprintf(cmd, "%s$", row[0]);
-		write(clnt_sock, cmd, strlen(cmd));
-        printf("%s", row[0]);
+            sprintf(result, "| %-7s| %-20s| %-13s| %-11s| %-50s|$", row[0], row[1], row[2], row[3], row[4]);
+            write(clnt_sock, result, strlen(result));
         }
     }
+
     write(clnt_sock, line, strlen(line));
 
     // str_len=read(clnt_sock, cmd, CMDSIZE);
