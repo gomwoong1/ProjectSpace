@@ -252,10 +252,11 @@ int setTimeout(int fd, char *buf, int buf_size, int timeout_ms){
             write(sock, str, strlen(str));
         }
         else if (strchr(buf, '$')){
-            char *temp = strtok(buf, "$");
-            printf(str, "%s", temp);
+            // char *temp = strtok(buf, "$");
+            // printf("%s", temp);
+            printf("%s", buf);
 
-            startRecord();
+            //startRecord();
         }
         else
             printf("%s", buf);

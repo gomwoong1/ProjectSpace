@@ -280,31 +280,39 @@ void updateTime(char *number){
     sprintf(today, "%d-%d-%d", TODAY.year, TODAY.month, TODAY.day);
     sprintf(num, "%s", number);
 
-    connDB();
-    sprintf(sql, "select * from list where date='%s' and number=%s", today, num);
-    mysql_query(conn, sql);
-    res = mysql_store_result(conn);
-
     strcpy(line, "+--------+---------------------+--------------+------------+---------------------------------------------------+\n");
     write(clnt_sock, line, strlen(line));
 
     strcpy(result, "|  번호　|        할 일        |     날짜     |  경과시간  |  메모                                             |\n");
     write(clnt_sock, result, strlen(result));
     write(clnt_sock, line, strlen(line));
+    
+    connDB();
+    sprintf(sql, "select * from list where date='%s' and number=%s", today, num);
+    printf("sql:%s.\n", sql);
 
-    while((row=mysql_fetch_row(res))!=NULL){
+    mysql_query(conn, sql);
+    res = mysql_store_result(conn);
+
+    if (mysql_query(conn, sql)) {
+        printf("응안돼\n");
+    }
+    else{
+        while((row=mysql_fetch_row(res))!=NULL){
         sprintf(cmd, "%s$", row[0]);
 		write(clnt_sock, cmd, strlen(cmd));
+        printf("%s", row[0]);
+        }
     }
     write(clnt_sock, line, strlen(line));
 
-    str_len=read(clnt_sock, cmd, CMDSIZE);
-    cmd[str_len] = 0;
+    // str_len=read(clnt_sock, cmd, CMDSIZE);
+    // cmd[str_len] = 0;
 
-    sprintf(sql, "update list set endtime='%s' where date='%s' and number=%s", cmd, today, num);
+    // sprintf(sql, "update list set endtime='%s' where date='%s' and number=%s", cmd, today, num);
     
-    if(mysql_query(conn, sql))
-        printf("Query Error!\n");
+    // if(mysql_query(conn, sql))
+    //     printf("Query Error!\n");
 
-    selectQuery(today);
+    //selectQuery(today);
 }
