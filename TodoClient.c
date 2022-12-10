@@ -274,7 +274,6 @@ void startRecord(char *info){
     sprintf(input, "%s", info);
     strcpy(str, "");
     pthread_create(&thread, NULL, timer, NULL);
-
     while(1){
         d = getAscii();
         sprintf(a, "%c", d);
@@ -298,8 +297,8 @@ void startRecord(char *info){
                 sprintf(str, "%02d:%02d:%02d", hour, min, sec);
                 write(sock, str, strlen(str));
                 flag = 2;
-                break;
                 system("clear");
+                break;
             }
             else{
                 system("clear");
