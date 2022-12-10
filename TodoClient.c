@@ -269,16 +269,17 @@ void startRecord(char *info){
     char a[5];
     char input[100];
     pthread_t thread;
+    flag = 1;
 
     sprintf(input, "%s", info);
-    strcmp(str, "");
+    strcpy(str, "");
     pthread_create(&thread, NULL, timer, NULL);
 
     while(1){
         d = getAscii();
         sprintf(a, "%c", d);
         strcat(str, a);
-        printf("\x1b[%d;%ldH", 3,strlen(str));
+        printf("\x1b[%d;%ldH", 4, strlen(str));
         printf("%s", a);
 
         if (d == 127){
@@ -288,12 +289,26 @@ void startRecord(char *info){
             printf("%s", input);
             printf("\x1b[%d;%dH", 2, 10);
             printf("%02d:%02d:%02d\n", hour, min, sec);
-            printf("\x1b[%d;%dH", 3,1);
+            printf("\x1b[%d;%dH", 4,1);
             printf("%s",str);
         }
 
         if (d == 10){
-            // system("clear");
+            if(strcmp(str, "1\n")==0){
+                // 시분초 전송
+                flag = 2;
+                break;
+            }
+            else{
+                system("clear");
+                strcpy(str, "");
+                printf("\x1b[%d;%dH", 1, 0);
+                printf("%s", input);
+                printf("\x1b[%d;%dH", 2, 10);
+                printf("%02d:%02d:%02d\n", hour, min, sec);
+                printf("\x1b[%d;%dH", 4,1);
+                printf("%s",str);
+            }
         }
     }
 
@@ -302,7 +317,7 @@ void startRecord(char *info){
 
 void* timer(){ 
     // 1초마다 시간 출력하기
-    while(1){
+    while(!(flag==2)){
         sleep(1);
         sec++;
 
@@ -317,7 +332,7 @@ void* timer(){
 
         printf("\x1b[%d;%dH", 2, 10);
         printf("%02d:%02d:%02d\n", hour, min, sec);
-        printf("\x1b[%d;%ldH", 3, strlen(str));
+        printf("\x1b[%d;%ldH", 4, strlen(str));
     }
     pthread_exit(NULL);
 }
