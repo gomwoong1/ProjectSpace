@@ -289,7 +289,6 @@ void updateTime(char *number){
     
     connDB();
     sprintf(sql, "select * from list where date='%s' and number=%s", today, num);
-    printf("sql:%s.\n", sql);
 
     mysql_query(conn, sql);
     res = mysql_store_result(conn);
@@ -306,13 +305,14 @@ void updateTime(char *number){
         }
     }
 
-    // str_len=read(clnt_sock, cmd, CMDSIZE);
-    // cmd[str_len] = 0;
+    str_len = read(clnt_sock, cmd, CMDSIZE);
+    cmd[str_len] = 0;
 
-    // sprintf(sql, "update list set endtime='%s' where date='%s' and number=%s", cmd, today, num);
-    
-    // if(mysql_query(conn, sql))
-    //     printf("Query Error!\n");
+    sprintf(sql, "update list set endtime='%s' where date='%s' and number=%s", cmd, today, num);
+    connDB();
 
-    //selectQuery(today);
+    if(mysql_query(conn, sql))
+        printf("Query Error!\n");
+
+    selectQuery(today);
 }

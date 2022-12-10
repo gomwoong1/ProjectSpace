@@ -295,9 +295,11 @@ void startRecord(char *info){
 
         if (d == 10){
             if(strcmp(str, "1\n")==0){
-                // 시분초 전송
+                sprintf(str, "%02d:%02d:%02d", hour, min, sec);
+                write(sock, str, strlen(str));
                 flag = 2;
                 break;
+                system("clear");
             }
             else{
                 system("clear");
