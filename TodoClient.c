@@ -7,6 +7,7 @@
 #include <unistd.h> 
 #include <arpa/inet.h>
 #include <sys/socket.h>
+#include <signal.h>
 #define CMDSIZE 300
 
 // 년,월,일 데이터 저장 구조체
@@ -27,6 +28,7 @@ void connServer(char *, char*);
 void error_handling(char * msg);
 int setTimeout(int fd, char *buf, int buf_size, int timeout);
 void* timer();
+void check_exit(int);
 
 struct sockaddr_in serv_addr;
 MYTIME TODAY;
@@ -50,6 +52,12 @@ int main(int argc, char *argv[]) {
     
     getTime();
     printWelcome();
+
+    struct sigaction act;
+    act.sa_handler = check_exit;
+    sigemptyset(&act.sa_mask);
+    act.sa_flags = 0;
+    sigaction(SIGINT, &act, 0);
 
     while(1){
         int strCnt;
@@ -338,4 +346,17 @@ void* timer(){
     system("clear");
     printf("\x1b[%d;%dH", 1, 1);
     pthread_exit(NULL);
+}
+
+void check_exit(int sig){
+    if (sig == SIGINT){
+        char res[3];
+
+        system("clear");
+        printf("종료하시겠습니까? (Y/N): ");
+        fgets(res, 3, stdin);
+
+        if(strcmp(res, "Y\n") == 0 || strcmp(res, "y\n") == 0)
+            exit(1);
+    }
 }
