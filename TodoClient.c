@@ -274,11 +274,12 @@ void startRecord(char *info){
     sprintf(input, "%s", info);
     strcpy(str, "");
     pthread_create(&thread, NULL, timer, NULL);
+
     while(1){
         d = getAscii();
         sprintf(a, "%c", d);
         strcat(str, a);
-        printf("\x1b[%d;%ldH", 4, strlen(str));
+        printf("\x1b[%d;%ldH", 5, strlen(str));
         printf("%s", a);
 
         if (d == 127){
@@ -288,7 +289,7 @@ void startRecord(char *info){
             printf("%s", input);
             printf("\x1b[%d;%dH", 2, 10);
             printf("%02d:%02d:%02d\n", hour, min, sec);
-            printf("\x1b[%d;%dH", 4,1);
+            printf("\x1b[%d;%dH", 5,1);
             printf("%s",str);
         }
 
@@ -297,7 +298,6 @@ void startRecord(char *info){
                 sprintf(str, "%02d:%02d:%02d", hour, min, sec);
                 write(sock, str, strlen(str));
                 flag = 2;
-                system("clear");
                 break;
             }
             else{
@@ -307,7 +307,7 @@ void startRecord(char *info){
                 printf("%s", input);
                 printf("\x1b[%d;%dH", 2, 10);
                 printf("%02d:%02d:%02d\n", hour, min, sec);
-                printf("\x1b[%d;%dH", 4,1);
+                printf("\x1b[%d;%dH", 5,1);
                 printf("%s",str);
             }
         }
@@ -333,7 +333,8 @@ void* timer(){
 
         printf("\x1b[%d;%dH", 2, 10);
         printf("%02d:%02d:%02d\n", hour, min, sec);
-        printf("\x1b[%d;%ldH", 4, strlen(str));
+        printf("\x1b[%d;%ldH", 5, strlen(str));
     }
+    system("clear");
     pthread_exit(NULL);
 }
