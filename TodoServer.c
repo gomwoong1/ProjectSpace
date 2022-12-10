@@ -272,6 +272,8 @@ void updateMemo(char *date, char *number){
     cmd[str_len] = 0;
 
     sprintf(sql, "update list set memo='%s' where date='%s' and number=%s", cmd, today, num);
+    connDB();
+
     if(mysql_query(conn, sql))
         printf("Query Error!\n");
 
