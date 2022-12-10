@@ -301,7 +301,7 @@ void updateTime(char *number){
     }
     else{
         while((row=mysql_fetch_row(res))!=NULL){
-            sprintf(result, "할일: %s\n경과시간:%s$", row[1], row[3]);
+            sprintf(result, "할일: %s\n경과시간:%s\n\n명령어>>$", row[1], row[3]);
             write(clnt_sock, result, strlen(result));
         }
     }

@@ -256,7 +256,7 @@ int setTimeout(int fd, char *buf, int buf_size, int timeout_ms){
             char *temp = strtok(buf, "$");
             printf("%s", temp);
 
-            //startRecord(temp);
+            startRecord(temp);
         }
         else
             printf("%s", buf);
@@ -271,7 +271,6 @@ void startRecord(char *info){
     pthread_t thread;
 
     sprintf(input, "%s", info);
-    printf("%s", input);
     strcmp(str, "");
     pthread_create(&thread, NULL, timer, NULL);
 
@@ -285,6 +284,8 @@ void startRecord(char *info){
         if (d == 127){
             str[strlen(str)-2] = '\0';
             system("clear");
+            printf("\x1b[%d;%dH", 1, 0);
+            printf("%s", input);
             printf("\x1b[%d;%dH", 2, 10);
             printf("%02d:%02d:%02d\n", hour, min, sec);
             printf("\x1b[%d;%dH", 3,1);
@@ -292,12 +293,7 @@ void startRecord(char *info){
         }
 
         if (d == 10){
-            // strcpy(input, msg);
-            // strcpy(msg, "");
             // system("clear");
-            // printf("\x1b[%d;%dH", 1,1);
-            // printf("%02d:%02d:%02d\n", hour, min, sec);
-            // printf("\x1b[%d;%ldH", 2,strlen(msg));
         }
     }
 
