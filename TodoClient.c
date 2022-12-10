@@ -279,15 +279,15 @@ void startRecord(char *info){
         d = getAscii();
         sprintf(a, "%c", d);
         strcat(str, a);
-        printf("\x1b[%d;%ldH", 2,strlen(str));
+        printf("\x1b[%d;%ldH", 3,strlen(str));
         printf("%s", a);
 
         if (d == 127){
             str[strlen(str)-2] = '\0';
             system("clear");
-            printf("\x1b[%d;%dH", 1,7);
+            printf("\x1b[%d;%dH", 2, 10);
             printf("%02d:%02d:%02d\n", hour, min, sec);
-            printf("\x1b[%d;%dH", 2,1);
+            printf("\x1b[%d;%dH", 3,1);
             printf("%s",str);
         }
 
@@ -305,8 +305,6 @@ void startRecord(char *info){
 }
 
 void* timer(){ 
-    printf("00:00:00\n");
-
     // 1초마다 시간 출력하기
     while(1){
         sleep(1);
@@ -321,9 +319,9 @@ void* timer(){
             }
         }
 
-        printf("\x1b[%d;%dH", 1,7);
+        printf("\x1b[%d;%dH", 2, 10);
         printf("%02d:%02d:%02d\n", hour, min, sec);
-        printf("\x1b[%d;%ldH", 2, strlen(str));
+        printf("\x1b[%d;%ldH", 3, strlen(str));
     }
     pthread_exit(NULL);
 }
