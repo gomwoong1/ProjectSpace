@@ -290,8 +290,7 @@ void updateTime(char *number){
     connDB();
     sprintf(sql, "select * from list where date='%s' and number=%s", today, num);
 
-    mysql_query(conn, sql);
-    res = mysql_store_result(conn);
+    //mysql_query(conn, sql);
 
     if(mysql_query(conn, sql)){
         printf("Query Error!\n");
@@ -299,6 +298,7 @@ void updateTime(char *number){
         write(clnt_sock, cmd, strlen(cmd));
     }
     else{
+        res = mysql_store_result(conn);
         while((row=mysql_fetch_row(res))!=NULL){
             sprintf(result, "할일: %s\n경과시간:%s\n\n기록을 종료하시려면 1을 입력하세요.$", row[1], row[3]);
             write(clnt_sock, result, strlen(result));

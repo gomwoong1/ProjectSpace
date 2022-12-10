@@ -336,5 +336,6 @@ void* timer(){
         printf("\x1b[%d;%ldH", 5, strlen(str));
     }
     system("clear");
+    printf("\x1b[%d;%dH", 1, 1);
     pthread_exit(NULL);
 }
