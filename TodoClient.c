@@ -355,7 +355,7 @@ void check_exit(int sig){
         system("clear");
         printf("종료하시겠습니까? (Y/N): ");
         fgets(res, 3, stdin);
-
+ 
         if(strcmp(res, "Y\n") == 0 || strcmp(res, "y\n") == 0)
             exit(1);
     }
