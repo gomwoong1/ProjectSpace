@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/gomwoong/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_list_item_1.xml" value="0.12056434373663959" />
+        <entry key="..\:/Users/gomwoong/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_list_item_2.xml" value="0.12056434373663959" />
+        <entry key="..\:/Users/gomwoong/Desktop/Mobile_Project/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/gomwoong/Desktop/Mobile_Project/app/src/main/res/layout/activity_slide.xml" value="0.2962287104622871" />
+        <entry key="..\:/Users/gomwoong/Desktop/Mobile_Project_0510/app/src/main/res/layout/activity_alram.xml" value="0.30055579307396324" />
+        <entry key="..\:/Users/gomwoong/Desktop/Mobile_Project_0510/app/src/main/res/layout/activity_car_management.xml" value="0.30055579307396324" />
+        <entry key="..\:/Users/gomwoong/Desktop/Mobile_Project_0510/app/src/main/res/layout/activity_choose.xml" value="0.24796010879419764" />
+        <entry key="..\:/Users/gomwoong/Desktop/Mobile_Project_0510/app/src/main/res/layout/activity_main.xml" value="0.20820863616930313" />
+        <entry key="..\:/Users/gomwoong/Desktop/Mobile_Project_0510/app/src/main/res/layout/activity_slide.xml" value="0.20820863616930313" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0514_add_act/app/src/main/res/font/fontstyle.xml" value="0.23300555793073963" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0514_add_act/app/src/main/res/layout/activity_car_management.xml" value="0.1" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0514_add_act/app/src/main/res/layout/activity_choose.xml" value="0.2" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0514_add_act/app/src/main/res/layout/activity_main.xml" value="0.30055579307396324" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0514_add_act/app/src/main/res/layout/activity_slide.xml" value="0.15391192817443353" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0517_choose_end/app/src/main/res/layout/activity_choose.xml" value="0.1573321932449765" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0517_choose_end/app/src/main/res/layout/activity_main.xml" value="0.176" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0519_design/app/src/main/res/font/fontstyle.xml" value="0.14731954411143944" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0519_design/app/src/main/res/layout/activity_alram.xml" value="0.20820863616930313" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0519_design/app/src/main/res/layout/activity_car_management.xml" value="0.2" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0519_design/app/src/main/res/layout/activity_choose.xml" value="0.12441214194100043" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0519_design/app/src/main/res/layout/activity_main.xml" value="0.20820863616930313" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0519_design/app/src/main/res/layout/list_view.xml" value="0.176" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0519_design/app/src/main/res/menu/menu.xml" value="0.264" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0520_mk_list/app/src/main/res/layout/activity_car_management.xml" value="0.20820863616930313" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0520_mk_list/app/src/main/res/layout/list_view.xml" value="0.20820863616930313" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0520_mk_list_ing/app/src/main/res/layout/activity_car_management.xml" value="0.20820863616930313" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0520_mk_list_ing/app/src/main/res/layout/activity_choose.xml" value="0.20820863616930313" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0520_mk_list_ing/app/src/main/res/layout/activity_main.xml" value="0.20820863616930313" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0520_mk_list_ing/app/src/main/res/layout/activity_slide.xml" value="0.20820863616930313" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0520_mk_list_ing/app/src/main/res/layout/custom_dialog.xml" value="0.20820863616930313" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0520_mk_list_ing/app/src/main/res/layout/list_view.xml" value="0.20820863616930313" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0520_mk_list_ing/app/src/main/res/menu/menu.xml" value="0.20820863616930313" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0521_begin/app/src/main/res/layout/activity_car_management.xml" value="0.2159042325780248" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0521_begin/app/src/main/res/layout/activity_choose.xml" value="0.2159042325780248" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0521_begin/app/src/main/res/layout/custom_dialog.xml" value="0.30055579307396324" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0521_begin/app/src/main/res/layout/listview_item.xml" value="0.264" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0521_begin/app/src/main/res/menu/menu.xml" value="0.2159042325780248" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0521_mking/app/src/main/res/layout/activity_car_management.xml" value="0.2159042325780248" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0521_mking/app/src/main/res/layout/custom_dialog.xml" value="0.4" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0521_mking/app/src/main/res/menu/menu.xml" value="0.2159042325780248" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0522_continue/app/src/main/res/layout/activity_car_management.xml" value="0.29238440616500455" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0522_continue/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1595" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0522_cuslist_cut/app/src/main/res/layout/activity_car_management.xml" value="0.2159042325780248" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0522_cuslist_cut/app/src/main/res/layout/custom_dialog.xml" value="0.2159042325780248" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0522_cuslist_cut/app/src/main/res/layout/listview_item.xml" value="0.30055579307396324" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0522_this/app/src/main/res/layout/activity_car_management.xml" value="0.1671654553227875" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0522_this/app/src/main/res/layout/activity_main.xml" value="0.1671654553227875" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0522_this/app/src/main/res/layout/activity_slide.xml" value="0.1671654553227875" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0522_this/app/src/main/res/layout/listview_item.xml" value="0.264" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0522_this/app/src/main/res/menu/menu.xml" value="0.1671654553227875" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0523_this/app/src/main/res/layout/activity_alram.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0523_this/app/src/main/res/layout/activity_car_management.xml" value="0.20820863616930313" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0523_this/app/src/main/res/layout/activity_choose.xml" value="0.20820863616930313" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0523_this/app/src/main/res/layout/activity_main.xml" value="0.20820863616930313" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0523_this/app/src/main/res/layout/activity_slide.xml" value="0.20820863616930313" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0523_this/app/src/main/res/layout/custom_dialog.xml" value="0.264" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0523_this/app/src/main/res/layout/listview_item.xml" value="0.264" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0523_this/app/src/main/res/menu/menu.xml" value="0.20820863616930313" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0603_finish/app/src/main/res/font/fontstyle.xml" value="0.17400598546387344" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0603_finish/app/src/main/res/layout/activity_alram.xml" value="0.2" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0603_finish/app/src/main/res/layout/activity_car_management.xml" value="0.12058023572076156" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0603_finish/app/src/main/res/layout/activity_choose.xml" value="0.176" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0603_finish/app/src/main/res/layout/activity_main.xml" value="0.136" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0603_finish/app/src/main/res/layout/activity_slide.xml" value="0.12058023572076156" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0603_finish/app/src/main/res/layout/custom_dialog.xml" value="0.12058023572076156" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0603_finish/app/src/main/res/layout/listview_item.xml" value="0.2" />
+        <entry key="..\:/Users/gomwoong/Desktop/backup/Mobile_Project_0603_finish/app/src/main/res/menu/menu.xml" value="0.14920906370243694" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.128" />
+      </ProjectState>
+    </option>
+  </component>
+</project>

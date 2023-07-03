@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#BDD7EE"
+        android:fontFamily= "@font/foot"
+        android:gravity="center"
+        android:text="정보입력"
+        android:textColor="#000000"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/car_number_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="25dp"
+        android:fontFamily="@font/foot"
+        android:text="차량번호"
+        android:textColor="#000000"
+        android:textSize="20dp" />
+
+    <EditText
+        android:id="@+id/input_carNumber"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/car_number_text"
+        android:layout_marginLeft="18dp"
+        android:layout_toRightOf="@+id/car_number_text"
+        android:fontFamily="@font/foot"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/home_number_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="세대번호"
+        android:fontFamily="@font/foot"
+        android:textSize="20dp"
+        android:textColor="#000000"
+        android:layout_below="@+id/car_number_text"
+        android:layout_marginTop="20dp"
+        android:layout_alignLeft="@+id/car_number_text"/>
+
+    <EditText
+        android:id="@+id/input_homeNumber"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_carNumber"
+        android:layout_alignLeft="@id/input_carNumber"
+        android:layout_alignBottom="@id/home_number_text"
+        android:fontFamily="@font/foot"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/car_kind_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="차량종류"
+        android:fontFamily="@font/foot"
+        android:textSize="20dp"
+        android:textColor="#000000"
+        android:layout_below="@+id/home_number_text"
+        android:layout_marginTop="20dp"
+        android:layout_alignLeft="@+id/home_number_text"/>
+
+    <EditText
+        android:id="@+id/input_carKind"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/input_carNumber"
+        android:layout_alignBottom="@+id/car_kind_text"
+        android:layout_toRightOf="@+id/car_kind_text"
+        android:fontFamily="@font/foot"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/phone_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/foot"
+        android:layout_below="@+id/car_kind_text"
+        android:layout_alignLeft="@+id/car_kind_text"
+        android:layout_marginTop="20dp"
+        android:textSize="20dp"
+        android:text="전화번호"
+        android:textColor="#000000"/>
+
+    <EditText
+        android:id="@+id/input_phNumber"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/phone_text"
+        android:layout_alignBottom="@+id/phone_text"
+        android:layout_alignLeft="@id/input_carKind"
+        android:fontFamily="@font/foot"
+        android:textSize="18dp"/>
+
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="확인"
+        android:textSize="15dp"
+        android:textColor="#000000"
+        android:fontFamily="@font/foot"
+        android:layout_below="@+id/phone_text"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="55dp" />
+
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="취소"
+        android:textSize="15dp"
+        android:textColor="#000000"
+        android:fontFamily="@font/foot"
+        android:layout_toRightOf="@+id/submit"
+        android:layout_alignTop="@+id/submit"
+        android:layout_marginLeft="10dp"/>
+
+</RelativeLayout>

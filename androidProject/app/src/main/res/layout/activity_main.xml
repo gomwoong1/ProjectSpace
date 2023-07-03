@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#595959"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/pillar1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="244dp"
+        android:layout_marginTop="95dp"
+        android:src="@drawable/pillar" />
+
+    <ImageButton
+        android:id="@+id/smcar_park"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/pillar1"
+        android:layout_toRightOf="@id/pillar1"
+        android:background="@android:color/transparent"
+        android:src="@drawable/park_smallcar_btn" />
+
+    <ImageButton
+        android:id="@+id/car1_park"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/smcar_park"
+        android:layout_marginLeft="10dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/park_car1_btn" />
+
+    <ImageView
+        android:id="@+id/pillar2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/car1_park"
+        android:layout_marginLeft="60dp"
+        android:src="@drawable/pillar2" />
+
+    <ImageButton
+        android:id="@+id/car2_park"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/car1_park"
+        android:layout_alignLeft="@id/car1_park"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/park_car1_btn" />
+
+    <ImageView
+        android:id="@+id/pointer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/car2_park"
+        android:layout_marginLeft="40dp"
+        android:layout_toRightOf="@id/car1_park"
+        android:src="@drawable/pointer" />
+
+    <ImageButton
+        android:id="@+id/car3_park"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/smcar_park"
+        android:layout_alignLeft="@id/smcar_park"
+        android:layout_marginTop="305dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/park_car_btn" />
+
+    <ImageView
+        android:id="@+id/pillar3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/pillar"
+        android:layout_toLeftOf="@id/car3_park"
+        android:layout_alignTop="@id/car3_park"/>
+
+    <ImageButton
+        android:id="@+id/car4_park"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/car3_park"
+        android:layout_alignLeft="@id/car3_park"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/park_car_btn" />
+
+    <ImageButton
+        android:id="@+id/car5_park"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/car3_park"
+        android:layout_toLeftOf="@+id/pillar3"
+        android:background="@android:color/transparent"
+        android:src="@drawable/park_car_btn" />
+
+    <ImageView
+        android:id="@+id/pillar4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pillar3"
+        android:layout_alignLeft="@id/pillar3"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/pillar" />
+
+    <ImageButton
+        android:id="@+id/car6_park"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/car4_park"
+        android:layout_alignRight="@id/car5_park"
+        android:layout_toLeftOf="@+id/car4_park"
+        android:background="@android:color/transparent"
+        android:src="@drawable/park_car_btn" />
+
+    <ImageView
+        android:id="@+id/pillar5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/pillar"
+        android:layout_toRightOf="@id/car6_park"
+        android:layout_alignBottom="@id/car6_park"/>
+    <ImageButton
+        android:id="@+id/car7_park"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/car6_park"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@+id/car6_park"
+        android:background="@android:color/transparent"
+        android:src="@drawable/park_car_btn" />
+
+</RelativeLayout>

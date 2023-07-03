@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AlramActivity">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#BDD7EE"
+        android:fontFamily="@font/foot"
+        android:gravity="center"
+        android:text="예상 출차시간"
+        android:textColor="#000000"
+        android:textSize="26dp" />
+
+    <EditText
+        android:id="@+id/inputTf"
+        android:layout_width="295dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/foot"
+        android:textSize="22dp" />
+
+    <Button
+        android:id="@+id/input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/inputTf"
+        android:layout_alignBottom="@id/inputTf"
+        android:text="입력"
+        android:fontFamily="@font/foot"
+        android:textSize="20dp"/>
+
+    <ListView
+        android:id="@+id/outTimeList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/inputTf" />
+
+</RelativeLayout>
